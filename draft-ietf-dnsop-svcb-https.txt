@@ -5,9 +5,9 @@
 DNSOP Working Group                                          B. Schwartz
 Internet-Draft                                                    Google
 Intended status: Standards Track                               M. Bishop
-Expires: 14 October 2022                                       E. Nygren
+Expires: 15 October 2022                                       E. Nygren
                                                      Akamai Technologies
-                                                           12 April 2022
+                                                           13 April 2022
 
 
  Service binding and parameter specification via the DNS (DNS SVCB and
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 October 2022.
+   This Internet-Draft will expire on 15 October 2022.
 
 Copyright Notice
 
@@ -1611,7 +1611,7 @@ Table of Contents
                     AAAA 2001:db8:198::7
                     AAAA 2001:db8:198::12
 
-    ; Resolutions following the customer.svc2.example
+    ; Resolutions following the cdn3.svc3.example
     ; path use these records.
     ; Note that this CDN has no HTTPS records
     ; and thus no ECH support.
