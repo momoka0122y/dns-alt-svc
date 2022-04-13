@@ -5,9 +5,9 @@
 DNSOP Working Group                                          B. Schwartz
 Internet-Draft                                                    Google
 Intended status: Standards Track                               M. Bishop
-Expires: 10 October 2022                                       E. Nygren
+Expires: 15 October 2022                                       E. Nygren
                                                      Akamai Technologies
-                                                            8 April 2022
+                                                           13 April 2022
 
 
  Service binding and parameter specification via the DNS (DNS SVCB and
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 October 2022.
+   This Internet-Draft will expire on 15 October 2022.
 
 Copyright Notice
 
@@ -1387,9 +1387,9 @@ Table of Contents
    requestURL.
 
    When HTTP is used in a context where URLs or redirects are not
-   applicable (e.g.  Proxy Auto-Configuration), clients MUST implement
-   transport security equivalent to the HSTS behavior specified in
-   Section 9.5 or forego the use of HTTPS records.
+   applicable (e.g. connections to an HTTP proxy), clients that find a
+   corresponding HTTPS RR SHOULD implement a security upgrade behavior
+   equivalent to the one specified in Section 9.5.
 
    Such protocols MAY define their own SVCB mappings, which MAY be
    defined to take precedence over HTTPS RRs.
