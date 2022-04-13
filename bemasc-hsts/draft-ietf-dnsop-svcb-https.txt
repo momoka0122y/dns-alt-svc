@@ -5,9 +5,9 @@
 DNSOP Working Group                                          B. Schwartz
 Internet-Draft                                                    Google
 Intended status: Standards Track                               M. Bishop
-Expires: 14 October 2022                                       E. Nygren
+Expires: 15 October 2022                                       E. Nygren
                                                      Akamai Technologies
-                                                           12 April 2022
+                                                           13 April 2022
 
 
  Service binding and parameter specification via the DNS (DNS SVCB and
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 October 2022.
+   This Internet-Draft will expire on 15 October 2022.
 
 Copyright Notice
 
@@ -1363,10 +1363,11 @@ Table of Contents
    redirect behavior.)  Because HTTPS RRs are received over an often
    insecure channel (DNS), clients MUST NOT place any more trust in this
    signal than if they had received a 307 redirect over cleartext HTTP.
-   Where the "http" resource does not redirect to the "https" resource
-   or reference the same underlying resource, as is commonplace,
-   requests directed to the "http" resource will be processed by the
-   "https" resource with potentially unexpected results.
+
+   Publishing an HTTPS RR has the potential to have unexpected results
+   or a loss in functionality in cases where the "http" resource neither
+   redirects to the "https" resource nor references the same underlying
+   resource.
 
    When an "https" connection fails due to an error in the underlying
    secure transport, such as an error in certificate validation, some
