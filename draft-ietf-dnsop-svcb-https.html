@@ -1749,7 +1749,10 @@ number if a non-default port number is specified.  We term this behavior
 "Port Prefix Naming", and use it in the examples throughout this document.<a href="#section-2.3-2" class="pilcrow">¶</a></p>
 <p id="section-2.3-3">See <a href="#httpsnames" class="xref">Section 9.1</a> for the HTTPS RR behavior.<a href="#section-2.3-3" class="pilcrow">¶</a></p>
 <p id="section-2.3-4">When a prior CNAME or SVCB record has aliased to
-a SVCB record, each RR shall be returned under its own owner name.<a href="#section-2.3-4" class="pilcrow">¶</a></p>
+a SVCB record, each RR SHALL be returned under its own owner name, as in
+ordinary CNAME processing (<span>[<a href="#RFC1034" class="xref">RFC1034</a>], <a href="https://rfc-editor.org/rfc/rfc1034#section-3.6.2" class="relref">Section 3.6.2</a></span>).  For details, see
+the recommendations regarding aliases for clients (<a href="#client-behavior" class="xref">Section 3</a>),
+servers (<a href="#server-behavior" class="xref">Section 4</a>), and zones (<a href="#zone-structures" class="xref">Section 11</a>).<a href="#section-2.3-4" class="pilcrow">¶</a></p>
 <p id="section-2.3-5">Note that none of these forms alter the origin or authority for validation
 purposes.
 For example, TLS clients MUST continue to validate TLS certificates
@@ -3466,6 +3469,10 @@ and suggestions on this draft.<a href="#section-16-2" class="pilcrow">¶</a></p>
 <dt id="HTTP">[HTTP]</dt>
         <dd>
 <span class="refAuthor">Fielding, R. T.</span>, <span class="refAuthor">Nottingham, M.</span>, and <span class="refAuthor">J. Reschke</span>, <span class="refTitle">"HTTP Semantics"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-semantics-19</span>, <time datetime="2021-09-12" class="refDate">12 September 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC1034">[RFC1034]</dt>
+        <dd>
+<span class="refAuthor">Mockapetris, P.</span>, <span class="refTitle">"Domain names - concepts and facilities"</span>, <span class="seriesInfo">STD 13</span>, <span class="seriesInfo">RFC 1034</span>, <span class="seriesInfo">DOI 10.17487/RFC1034</span>, <time datetime="1987-11" class="refDate">November 1987</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc1034">https://www.rfc-editor.org/rfc/rfc1034</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC1035">[RFC1035]</dt>
         <dd>

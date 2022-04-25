@@ -448,7 +448,10 @@ Table of Contents
    See Section 9.1 for the HTTPS RR behavior.
 
    When a prior CNAME or SVCB record has aliased to a SVCB record, each
-   RR shall be returned under its own owner name.
+   RR SHALL be returned under its own owner name, as in ordinary CNAME
+   processing ([RFC1034], Section 3.6.2).  For details, see the
+   recommendations regarding aliases for clients (Section 3), servers
+   (Section 4), and zones (Section 11).
 
    Note that none of these forms alter the origin or authority for
    validation purposes.  For example, TLS clients MUST continue to
@@ -1930,6 +1933,10 @@ Table of Contents
               httpbis-semantics-19, 12 September 2021,
               <https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-
               semantics-19>.
+
+   [RFC1034]  Mockapetris, P., "Domain names - concepts and facilities",
+              STD 13, RFC 1034, DOI 10.17487/RFC1034, November 1987,
+              <https://www.rfc-editor.org/rfc/rfc1034>.
 
    [RFC1035]  Mockapetris, P., "Domain names - implementation and
               specification", STD 13, RFC 1035, DOI 10.17487/RFC1035,
