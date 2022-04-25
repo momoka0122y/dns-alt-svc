@@ -1531,19 +1531,19 @@ scheme should be used instead of "http" for this request (see <a href="#hsts" cl
         <h3 id="name-overview-of-the-svcb-rr">
 <a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-overview-of-the-svcb-rr" class="section-name selfRef">Overview of the SVCB RR</a>
         </h3>
-<p id="section-1.2-1">This subsection briefly describes the SVCB RR in
-a non-normative manner.  (As mentioned above, this all
+<p id="section-1.2-1">This subsection briefly describes the SVCB RR with forward references to
+the full exposition of each component.  (As mentioned above, this all
 applies equally to the HTTPS RR which shares
 the same encoding, format, and high-level semantics.)<a href="#section-1.2-1" class="pilcrow">¶</a></p>
-<p id="section-1.2-2">The SVCB RR has two modes: AliasMode, which aliases a name to another name,
-and ServiceMode, which provides connection information bound to a service
-endpoint domain.  Placing both forms in a single RR type allows clients to
-fetch the relevant information with a single query.<a href="#section-1.2-2" class="pilcrow">¶</a></p>
+<p id="section-1.2-2">The SVCB RR has two modes: AliasMode (<a href="#alias-mode" class="xref">Section 2.4.2</a>), which aliases a name
+to another name, and ServiceMode (<a href="#service-mode" class="xref">Section 2.4.3</a>), which provides connection
+information bound to a service endpoint domain.  Placing both forms in a single
+RR type allows clients to
+fetch the relevant information with a single query (<a href="#svcb-names" class="xref">Section 2.3</a>).<a href="#section-1.2-2" class="pilcrow">¶</a></p>
 <p id="section-1.2-3">The SVCB RR has two required fields and one optional field.  The fields are:<a href="#section-1.2-3" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-1.2-4">
-<li id="section-1.2-4.1">SvcPriority: The priority of this record (relative to others,
-with lower values preferred).  A value of 0 indicates AliasMode.
-(Described in <a href="#pri" class="xref">Section 2.4.1</a>.)<a href="#section-1.2-4.1" class="pilcrow">¶</a>
+<li id="section-1.2-4.1">SvcPriority (<a href="#pri" class="xref">Section 2.4.1</a>): The priority of this record (relative to others,
+with lower values preferred).  A value of 0 indicates AliasMode.<a href="#section-1.2-4.1" class="pilcrow">¶</a>
 </li>
           <li id="section-1.2-4.2">TargetName: The domain name of either the alias target (for
 AliasMode) or the alternative endpoint (for ServiceMode).<a href="#section-1.2-4.2" class="pilcrow">¶</a>
@@ -1556,16 +1556,16 @@ Described in <a href="#presentation" class="xref">Section 2.1</a>.<a href="#sect
         </ol>
 <p id="section-1.2-5">Cooperating DNS recursive resolvers will perform subsequent record
 resolution (for SVCB, A, and AAAA records) and return them in the
-Additional Section of the response.  Clients either use responses
+Additional Section of the response (<a href="#recursive-behavior" class="xref">Section 4.2</a>).  Clients either use responses
 included in the additional section returned by the recursive resolver
-or perform necessary SVCB, A, and AAAA record resolutions.  DNS
+or perform necessary SVCB, A, and AAAA record resolutions (<a href="#client-behavior" class="xref">Section 3</a>).  DNS
 authoritative servers can attach in-bailiwick SVCB, A, AAAA, and CNAME
-records in the Additional Section to responses for a SVCB query.<a href="#section-1.2-5" class="pilcrow">¶</a></p>
+records in the Additional Section to responses for a SVCB query (<a href="#authoritative-behavior" class="xref">Section 4.1</a>).<a href="#section-1.2-5" class="pilcrow">¶</a></p>
 <p id="section-1.2-6">In ServiceMode, the SvcParams of the SVCB RR
 provide an extensible data model for describing alternative
 endpoints that are authoritative for the origin, along with
-parameters associated with each of these alternative endpoints.<a href="#section-1.2-6" class="pilcrow">¶</a></p>
-<p id="section-1.2-7">For HTTP use-cases, the HTTPS RR enables many of the benefits of Alt-Svc
+parameters associated with each of these alternative endpoints (<a href="#keys" class="xref">Section 7</a>).<a href="#section-1.2-6" class="pilcrow">¶</a></p>
+<p id="section-1.2-7">For HTTP use-cases, the HTTPS RR (<a href="#https" class="xref">Section 9</a>) enables many of the benefits of Alt-Svc
 <span>[<a href="#AltSvc" class="xref">AltSvc</a>]</span>
 without waiting for a full HTTP connection initiation (multiple roundtrips)
 before learning of the preferred alternative,

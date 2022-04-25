@@ -238,21 +238,23 @@ Table of Contents
 
 1.2.  Overview of the SVCB RR
 
-   This subsection briefly describes the SVCB RR in a non-normative
-   manner.  (As mentioned above, this all applies equally to the HTTPS
-   RR which shares the same encoding, format, and high-level semantics.)
+   This subsection briefly describes the SVCB RR with forward references
+   to the full exposition of each component.  (As mentioned above, this
+   all applies equally to the HTTPS RR which shares the same encoding,
+   format, and high-level semantics.)
 
-   The SVCB RR has two modes: AliasMode, which aliases a name to another
-   name, and ServiceMode, which provides connection information bound to
-   a service endpoint domain.  Placing both forms in a single RR type
-   allows clients to fetch the relevant information with a single query.
+   The SVCB RR has two modes: AliasMode (Section 2.4.2), which aliases a
+   name to another name, and ServiceMode (Section 2.4.3), which provides
+   connection information bound to a service endpoint domain.  Placing
+   both forms in a single RR type allows clients to fetch the relevant
+   information with a single query (Section 2.3).
 
    The SVCB RR has two required fields and one optional field.  The
    fields are:
 
-   1.  SvcPriority: The priority of this record (relative to others,
-       with lower values preferred).  A value of 0 indicates AliasMode.
-       (Described in Section 2.4.1.)
+   1.  SvcPriority (Section 2.4.1): The priority of this record
+       (relative to others, with lower values preferred).  A value of 0
+       indicates AliasMode.
 
    2.  TargetName: The domain name of either the alias target (for
        AliasMode) or the alternative endpoint (for ServiceMode).
@@ -263,23 +265,23 @@ Table of Contents
 
    Cooperating DNS recursive resolvers will perform subsequent record
    resolution (for SVCB, A, and AAAA records) and return them in the
-   Additional Section of the response.  Clients either use responses
-   included in the additional section returned by the recursive resolver
-   or perform necessary SVCB, A, and AAAA record resolutions.  DNS
-   authoritative servers can attach in-bailiwick SVCB, A, AAAA, and
-   CNAME records in the Additional Section to responses for a SVCB
-   query.
+   Additional Section of the response (Section 4.2).  Clients either use
+   responses included in the additional section returned by the
+   recursive resolver or perform necessary SVCB, A, and AAAA record
+   resolutions (Section 3).  DNS authoritative servers can attach in-
+   bailiwick SVCB, A, AAAA, and CNAME records in the Additional
+   Section to responses for a SVCB query (Section 4.1).
 
    In ServiceMode, the SvcParams of the SVCB RR provide an extensible
    data model for describing alternative endpoints that are
    authoritative for the origin, along with parameters associated with
-   each of these alternative endpoints.
+   each of these alternative endpoints (Section 7).
 
-   For HTTP use-cases, the HTTPS RR enables many of the benefits of Alt-
-   Svc [AltSvc] without waiting for a full HTTP connection initiation
-   (multiple roundtrips) before learning of the preferred alternative,
-   and without necessarily revealing the user's intended destination to
-   all entities along the network path.
+   For HTTP use-cases, the HTTPS RR (Section 9) enables many of the
+   benefits of Alt-Svc [AltSvc] without waiting for a full HTTP
+   connection initiation (multiple roundtrips) before learning of the
+   preferred alternative, and without necessarily revealing the user's
+   intended destination to all entities along the network path.
 
 1.3.  Parameter for Encrypted ClientHello
 
