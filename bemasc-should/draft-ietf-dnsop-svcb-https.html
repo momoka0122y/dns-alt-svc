@@ -1635,7 +1635,8 @@ for the case of "https" origins as described in <a href="#https" class="xref">Se
 <p id="section-2-4">SVCB RRs are extensible by a list of SvcParams, which are pairs consisting of a
 SvcParamKey and a SvcParamValue. Each SvcParamKey has a presentation name and a
 registered number. Values are in a format specific to the SvcParamKey. Their
-definition must specify both their presentation format and wire encoding
+definition must specify both their presentation format (used in zone files) and
+wire encoding
 (e.g., domain names, binary data, or numeric values). The initial SvcParamKeys
 and formats are defined in <a href="#keys" class="xref">Section 7</a>.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <div id="presentation">
@@ -1665,7 +1666,7 @@ In ABNF <span>[<a href="#RFC5234" class="xref">RFC5234</a>]</span>,<a href="#sec
 alpha-lc      = %x61-7A   ;  a-z
 SvcParamKey   = 1*63(alpha-lc / DIGIT / "-")
 SvcParam      = SvcParamKey ["=" SvcParamValue]
-SvcParamValue = char-string
+SvcParamValue = char-string ; See Appendix A
 value         = *OCTET
 </pre><a href="#section-2.1-6" class="pilcrow">¶</a>
 </div>
@@ -1673,7 +1674,8 @@ value         = *OCTET
 character-string decoding algorithm (<a href="#decoding" class="xref">Appendix A</a>), producing a <code>value</code>.
 The <code>value</code> is then validated and converted into wire-format in a manner
 specific to each key.<a href="#section-2.1-7" class="pilcrow">¶</a></p>
-<p id="section-2.1-8">When the "=" is omitted, the <code>value</code> is interpreted as empty.<a href="#section-2.1-8" class="pilcrow">¶</a></p>
+<p id="section-2.1-8">When the optional "=" and SvcParamValue are omitted, the <code>value</code> is
+interpreted as empty.<a href="#section-2.1-8" class="pilcrow">¶</a></p>
 <p id="section-2.1-9">Arbitrary keys can be represented using the unknown-key presentation format
 "keyNNNNN" where NNNNN is the numeric
 value of the key type without leading zeros.
@@ -1693,7 +1695,7 @@ repeated.<a href="#section-2.1-11" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-2.2-1">The RDATA for the SVCB RR consists of:<a href="#section-2.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2-2.1">a 2 octet field for SvcPriority as an integer in network
+<li class="normal" id="section-2.2-2.1">a 2-octet field for SvcPriority as an integer in network
 byte order.<a href="#section-2.2-2.1" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-2.2-2.2">the uncompressed, fully-qualified TargetName, represented as
@@ -1707,10 +1709,10 @@ and DNS message sizes).<a href="#section-2.2-2.3" class="pilcrow">¶</a>
 <p id="section-2.2-3">When the list of SvcParams is non-empty, it contains a series of
 SvcParamKey=SvcParamValue pairs, represented as:<a href="#section-2.2-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2-4.1">a 2 octet field containing the SvcParamKey as an
+<li class="normal" id="section-2.2-4.1">a 2-octet field containing the SvcParamKey as an
 integer in network byte order.  (See <a href="#iana-keys" class="xref">Section 15.3.2</a> for the defined values.)<a href="#section-2.2-4.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-2.2-4.2">a 2 octet field containing the length of the SvcParamValue
+          <li class="normal" id="section-2.2-4.2">a 2-octet field containing the length of the SvcParamValue
 as an integer between 0 and 65535 in network byte order.<a href="#section-2.2-4.2" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-2.2-4.3">an octet string of this length whose contents are the SvcParamValue in a
@@ -1992,8 +1994,8 @@ to avoid additional latency in comparison to ordinary AAAA/A lookups.<a href="#s
 <p id="section-3.1-1">If DNS responses are cryptographically protected (e.g. using DNSSEC or
 TLS <span>[<a href="#DoT" class="xref">DoT</a>]</span><span>[<a href="#DoH" class="xref">DoH</a>]</span>), and SVCB resolution fails
 due to an authentication error, SERVFAIL response, transport error, or
-timeout, the client SHOULD abandon the connection attempt even if the client
-is SVCB-optional.  Otherwise, an active attacker
+timeout, the client SHOULD abandon its attempt to reach the service, even
+if the client is SVCB-optional.  Otherwise, an active attacker
 could mount a downgrade attack by denying the user access to the SvcParams.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">A SERVFAIL error can occur if the domain is DNSSEC-signed, the recursive
 resolver is DNSSEC-validating, and the attacker is between the recursive
@@ -2173,11 +2175,11 @@ resolvers SHOULD treat any records in the Additional section as having
 SOURCE PREFIX-LENGTH zero and SCOPE PREFIX-LENGTH as specified
 in the ECS option.  Authoritative servers MUST omit such records if they are
 not suitable for use by any stub resolvers that set SOURCE PREFIX-LENGTH to
-zero.  This will cause the resolver to perform a followup query that can
+zero.  This will cause the resolver to perform a follow-up query that can
 receive properly tailored ECS.  (This is similar to the usage of CNAME with
 ECS discussed in <span>[<a href="#RFC7871" class="xref">RFC7871</a>], <a href="https://rfc-editor.org/rfc/rfc7871#section-7.2.1" class="relref">Section 7.2.1</a></span>.)<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 <p id="section-4.4-3">Authoritative servers that omit Additional records can avoid the added
-latency of a followup query by following the advice in <a href="#zone-performance" class="xref">Section 11.2</a>.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
+latency of a follow-up query by following the advice in <a href="#zone-performance" class="xref">Section 11.2</a>.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2190,7 +2192,7 @@ latency of a followup query by following the advice in <a href="#zone-performanc
 <p id="section-5-1">For optimal performance (i.e. minimum connection setup time), clients
 SHOULD implement a client-side DNS cache.
 Responses in the Additional section of a SVCB response SHOULD be placed
-in cache before performing any followup queries.
+in cache before performing any follow-up queries.
 With this behavior, and conforming DNS servers,
 using SVCB does not add network latency to connection setup.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">To improve performance when using a non-conforming recursive resolver, clients
@@ -2467,7 +2469,7 @@ of one or more IP addresses of the appropriate
 family in standard textual format <span>[<a href="#RFC5952" class="xref">RFC5952</a>]</span>, <span>[<a href="#RFC4001" class="xref">RFC4001</a>]</span>.  To enable simpler parsing,
 this SvcParamValue MUST NOT contain escape sequences.<a href="#section-7.4-2" class="pilcrow">¶</a></p>
 <p id="section-7.4-3">The wire format for each parameter is a sequence of IP addresses in network
-byte order (for the respective address-family).<br>
+byte order (for the respective address-family).
 Like an A or AAAA RRSet, the list of addresses represents an
 unordered collection, and clients SHOULD pick addresses to use in a random order.
 An empty list of addresses is invalid.<a href="#section-7.4-3" class="pilcrow">¶</a></p>
@@ -2816,16 +2818,16 @@ be defined to take precedence over HTTPS RRs.<a href="#section-9.6-3" class="pil
 <p id="section-10-1">The SVCB "ech" parameter is defined for
 conveying the ECH configuration of an alternative endpoint.
 In wire format, the value of the parameter is an ECHConfigList
-<span>[<a href="#ECH" class="xref">ECH</a>]</span>, including the redundant length prefix.  In presentation format,
-the value is the ECHConfigList encoded in Base64 <span>[<a href="#base64" class="xref">base64</a>]</span>.
-Base64 is used here to simplify integration with TLS server software.
+<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-14#section-4" class="relref">Section 4</a> of [<a href="#ECH" class="xref">ECH</a>]</span>, including the redundant length prefix.  In presentation format,
+the value is the ECHConfigList in Base 64 Encoding (<span><a href="https://rfc-editor.org/rfc/rfc4648#section-4" class="relref">Section 4</a> of [<a href="#RFC4648" class="xref">RFC4648</a>]</span>).
+Base 64 is used here to simplify integration with TLS server software.
 To enable simpler parsing, this SvcParam MUST NOT contain escape sequences.<a href="#section-10-1" class="pilcrow">¶</a></p>
 <p id="section-10-2">When ECH is in use, the TLS ClientHello is divided into an unencrypted "outer"
 and an encrypted "inner" ClientHello.  The outer ClientHello is an implementation
 detail of ECH, and its contents are controlled by the ECHConfig in accordance
 with <span>[<a href="#ECH" class="xref">ECH</a>]</span>.  The inner ClientHello is used for establishing a connection to the
 service, so its contents may be influenced by other SVCB parameters.  For example,
-the requirements on the ProtocolNameList in <a href="#alpn-key" class="xref">Section 7.1</a> apply only to the inner
+the requirements on the ALPN protocol identifiers in <a href="#alpn-key" class="xref">Section 7.1</a> apply only to the inner
 ClientHello.  Similarly, it is the inner ClientHello whose Server Name Indication
 identifies the desired service.<a href="#section-10-2" class="pilcrow">¶</a></p>
 <div id="ech-client-behavior">
@@ -2851,7 +2853,7 @@ in SVCB-optional mode.<a href="#section-10.1-2" class="pilcrow">¶</a></p>
 <p id="section-10.2-1">An HTTPS RRSet containing some RRs with "ech" and some without is
 vulnerable to a downgrade attack.  This configuration is NOT RECOMMENDED.
 Zone owners who do use such a mixed configuration SHOULD mark the RRs with
-"ech" as more preferred (i.e. smaller SvcPriority) than those
+"ech" as more preferred (i.e. lower SvcPriority value) than those
 without, in order to maximize the likelihood that ECH will be used in the
 absence of an active adversary.<a href="#section-10.2-1" class="pilcrow">¶</a></p>
 </section>
@@ -3221,7 +3223,7 @@ SVCB support in a new context.<a href="#section-14-1" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-15.1-1">This document defines a new DNS RR type, SVCB, whose value 64 has
 been allocated by IANA from the "Resource Record (RR) TYPEs"
-subregistry of the "Domain Name System (DNS) Parameters" registry:<a href="#section-15.1-1" class="pilcrow">¶</a></p>
+registry on the "Domain Name System (DNS) Parameters" page:<a href="#section-15.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-15.1-2.1">Type: SVCB<a href="#section-15.1-2.1" class="pilcrow">¶</a>
 </li>
@@ -3241,7 +3243,7 @@ subregistry of the "Domain Name System (DNS) Parameters" registry:<a href="#sect
         </h3>
 <p id="section-15.2-1">This document defines a new DNS RR type, "HTTPS", whose value 65 has
 been allocated by IANA from the "Resource Record (RR) TYPEs"
-subregistry of the "Domain Name System (DNS) Parameters" registry:<a href="#section-15.2-1" class="pilcrow">¶</a></p>
+registry on the "Domain Name System (DNS) Parameters" page:<a href="#section-15.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-15.2-2.1">Type: HTTPS<a href="#section-15.2-2.1" class="pilcrow">¶</a>
 </li>
@@ -3282,10 +3284,12 @@ category.<a href="#section-15.3-2" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-15.3.1-2.4">Format Reference: pointer to specification text<a href="#section-15.3.1-2.4" class="pilcrow">¶</a>
 </li>
+            <li class="normal" id="section-15.3.1-2.5">Change Controller: Person or entity, with contact information if appropriate.<a href="#section-15.3.1-2.5" class="pilcrow">¶</a>
+</li>
           </ul>
 <p id="section-15.3.1-3">The characters in the registered Name MUST be lower-case alphanumeric or "-"
 (<a href="#presentation" class="xref">Section 2.1</a>).  The name MUST NOT start with "key" or "invalid".<a href="#section-15.3.1-3" class="pilcrow">¶</a></p>
-<p id="section-15.3.1-4">Entries in this registry are subject to an Expert Review registration
+<p id="section-15.3.1-4">New entries in this registry are subject to an Expert Review registration
 policy (<span>[<a href="#RFC8126" class="xref">RFC8126</a>], <a href="https://rfc-editor.org/rfc/rfc8126#section-4.5" class="relref">Section 4.5</a></span>).  The designated expert MUST ensure that
 the Format Reference is stable and publicly available, and that it specifies
 how to convert the SvcParamValue's presentation format to wire format.  The
@@ -3313,6 +3317,7 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <th class="text-left" rowspan="1" colspan="1">Name</th>
                 <th class="text-left" rowspan="1" colspan="1">Meaning</th>
                 <th class="text-left" rowspan="1" colspan="1">Format Reference</th>
+                <th class="text-left" rowspan="1" colspan="1">Change Controller</th>
               </tr>
             </thead>
             <tbody>
@@ -3322,6 +3327,7 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <td class="text-left" rowspan="1" colspan="1">Mandatory keys in this RR</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document) <a href="#mandatory" class="xref">Section 8</a>
 </td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">1</td>
@@ -3329,6 +3335,7 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <td class="text-left" rowspan="1" colspan="1">Additional supported protocols</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document) <a href="#alpn-key" class="xref">Section 7.1</a>
 </td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">2</td>
@@ -3336,6 +3343,7 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <td class="text-left" rowspan="1" colspan="1">No support for default protocol</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document) <a href="#alpn-key" class="xref">Section 7.1</a>
 </td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">3</td>
@@ -3343,6 +3351,7 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <td class="text-left" rowspan="1" colspan="1">Port for alternative endpoint</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document) <a href="#svcparamkeys-port" class="xref">Section 7.2</a>
 </td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">4</td>
@@ -3350,6 +3359,7 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <td class="text-left" rowspan="1" colspan="1">IPv4 address hints</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document) <a href="#svcparamkeys-iphints" class="xref">Section 7.4</a>
 </td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">5</td>
@@ -3357,6 +3367,7 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <td class="text-left" rowspan="1" colspan="1">Encrypted ClientHello info</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document) <a href="#svcparamkeys-ech" class="xref">Section 7.3</a>
 </td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">6</td>
@@ -3364,18 +3375,21 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <td class="text-left" rowspan="1" colspan="1">IPv6 address hints</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document) <a href="#svcparamkeys-iphints" class="xref">Section 7.4</a>
 </td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">65280-65534</td>
                 <td class="text-left" rowspan="1" colspan="1">N/A</td>
                 <td class="text-left" rowspan="1" colspan="1">Private Use</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document)</td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">65535</td>
                 <td class="text-left" rowspan="1" colspan="1">N/A</td>
                 <td class="text-left" rowspan="1" colspan="1">Reserved ("Invalid key")</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document)</td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
             </tbody>
           </table>
@@ -3450,10 +3464,6 @@ and suggestions on this draft.<a href="#section-16-2" class="pilcrow">¶</a></p>
         <dd>
 <span class="refAuthor">Crocker, D.</span>, <span class="refTitle">"Scoped Interpretation of DNS Resource Records through "Underscored" Naming of Attribute Leaves"</span>, <span class="seriesInfo">BCP 222</span>, <span class="seriesInfo">RFC 8552</span>, <span class="seriesInfo">DOI 10.17487/RFC8552</span>, <time datetime="2019-03" class="refDate">March 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8552">https://www.rfc-editor.org/rfc/rfc8552</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="base64">[base64]</dt>
-        <dd>
-<span class="refAuthor">Josefsson, S.</span>, <span class="refTitle">"The Base16, Base32, and Base64 Data Encodings"</span>, <span class="seriesInfo">RFC 4648</span>, <span class="seriesInfo">DOI 10.17487/RFC4648</span>, <time datetime="2006-10" class="refDate">October 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4648">https://www.rfc-editor.org/rfc/rfc4648</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="DNAME">[DNAME]</dt>
         <dd>
 <span class="refAuthor">Rose, S.</span> and <span class="refAuthor">W. Wijngaards</span>, <span class="refTitle">"DNAME Redirection in the DNS"</span>, <span class="seriesInfo">RFC 6672</span>, <span class="seriesInfo">DOI 10.17487/RFC6672</span>, <time datetime="2012-06" class="refDate">June 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6672">https://www.rfc-editor.org/rfc/rfc6672</a>&gt;</span>. </dd>
@@ -3513,6 +3523,10 @@ and suggestions on this draft.<a href="#section-16-2" class="pilcrow">¶</a></p>
 <dt id="RFC4001">[RFC4001]</dt>
         <dd>
 <span class="refAuthor">Daniele, M.</span>, <span class="refAuthor">Haberman, B.</span>, <span class="refAuthor">Routhier, S.</span>, and <span class="refAuthor">J. Schoenwaelder</span>, <span class="refTitle">"Textual Conventions for Internet Network Addresses"</span>, <span class="seriesInfo">RFC 4001</span>, <span class="seriesInfo">DOI 10.17487/RFC4001</span>, <time datetime="2005-02" class="refDate">February 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4001">https://www.rfc-editor.org/rfc/rfc4001</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4648">[RFC4648]</dt>
+        <dd>
+<span class="refAuthor">Josefsson, S.</span>, <span class="refTitle">"The Base16, Base32, and Base64 Data Encodings"</span>, <span class="seriesInfo">RFC 4648</span>, <span class="seriesInfo">DOI 10.17487/RFC4648</span>, <time datetime="2006-10" class="refDate">October 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4648">https://www.rfc-editor.org/rfc/rfc4648</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC5234">[RFC5234]</dt>
         <dd>
@@ -3651,41 +3665,48 @@ although the output length in this document is not limited to 255 octets.<a href
 comma-separated lists.  When the allowed items in the list cannot contain ","
 or "\", this is trivial.  (For simplicity, empty items are not allowed.)
 A value-list parser that splits on "," and prohibits items containing "\"
-is sufficient to comply with all requirements in this document.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
-<p id="appendix-A.1-2">For implementations that allow "," and "\" in item values, the following
-escaping syntax applies:<a href="#appendix-A.1-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.1-3">
+is sufficient to comply with all requirements in this document.  This
+corresponds to the <code>simple-comma-separated</code> syntax:<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1-2">
+<pre>
+; item-allowed is OCTET minus "," and "\".
+item-allowed           = %x00-2B / %x2D-5B / %x5D-FF
+simple-item            = 1*item-allowed
+simple-comma-separated = [simple-item *("," simple-item)]
+</pre><a href="#appendix-A.1-2" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.1-3">For implementations that allow "," and "\" in item values, the following
+escaping syntax applies:<a href="#appendix-A.1-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1-4">
 <pre>
 item            = 1*OCTET
-; item-allowed is OCTET minus "," and "\".
-item-allowed    = %x00-2B / %x2D-5B / %x5D-FF
 escaped-item    = 1*(item-allowed / "\," / "\\")
 comma-separated = [escaped-item *("," escaped-item)]
-</pre><a href="#appendix-A.1-3" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1-4" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.1-4">Decoding of value-lists happens after character-string decoding.
-For example, consider these <code>char-string</code> SvcParamValues:<a href="#appendix-A.1-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.1-5">
+<p id="appendix-A.1-5">Decoding of value-lists happens after character-string decoding.
+For example, consider these <code>char-string</code> SvcParamValues:<a href="#appendix-A.1-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1-6">
 <pre>
 "part1,part2,part3\\,part4\\\\"
 part1\,\p\a\r\t2\044part3\092,part4\092\\
-</pre><a href="#appendix-A.1-5" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1-6" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.1-6">These inputs are equivalent: character-string decoding either of them would
-produce the same <code>value</code>:<a href="#appendix-A.1-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.1-7">
+<p id="appendix-A.1-7">These inputs are equivalent: character-string decoding either of them would
+produce the same <code>value</code>:<a href="#appendix-A.1-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1-8">
 <pre>
 part1,part2,part3\,part4\\
-</pre><a href="#appendix-A.1-7" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1-8" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.1-8">Applying comma-separated list decoding to this <code>value</code> would produce a list
-of three <code>item</code>s:<a href="#appendix-A.1-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.1-9">
+<p id="appendix-A.1-9">Applying comma-separated list decoding to this <code>value</code> would produce a list
+of three <code>item</code>s:<a href="#appendix-A.1-9" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1-10">
 <pre>
 part1
 part2
 part3,part4\
-</pre><a href="#appendix-A.1-9" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1-10" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
