@@ -1635,7 +1635,8 @@ for the case of "https" origins as described in <a href="#https" class="xref">Se
 <p id="section-2-4">SVCB RRs are extensible by a list of SvcParams, which are pairs consisting of a
 SvcParamKey and a SvcParamValue. Each SvcParamKey has a presentation name and a
 registered number. Values are in a format specific to the SvcParamKey. Their
-definition should specify both their presentation format and wire encoding
+definition must specify both their presentation format (use in zone files) and
+wire encoding
 (e.g., domain names, binary data, or numeric values). The initial SvcParamKeys
 and formats are defined in <a href="#keys" class="xref">Section 7</a>.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <div id="presentation">
@@ -1673,7 +1674,8 @@ value         = *OCTET
 character-string decoding algorithm (<a href="#decoding" class="xref">Appendix A</a>), producing a <code>value</code>.
 The <code>value</code> is then validated and converted into wire-format in a manner
 specific to each key.<a href="#section-2.1-7" class="pilcrow">¶</a></p>
-<p id="section-2.1-8">When the "=" is omitted, the <code>value</code> is interpreted as empty.<a href="#section-2.1-8" class="pilcrow">¶</a></p>
+<p id="section-2.1-8">When the optional "=" and SvcParamValue are omitted, the <code>value</code> is
+interpreted as empty.<a href="#section-2.1-8" class="pilcrow">¶</a></p>
 <p id="section-2.1-9">Arbitrary keys can be represented using the unknown-key presentation format
 "keyNNNNN" where NNNNN is the numeric
 value of the key type without leading zeros.
@@ -2813,8 +2815,8 @@ be defined to take precedence over HTTPS RRs.<a href="#section-9.6-3" class="pil
 conveying the ECH configuration of an alternative endpoint.
 In wire format, the value of the parameter is an ECHConfigList
 <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-14#section-4" class="relref">Section 4</a> of [<a href="#ECH" class="xref">ECH</a>]</span>, including the redundant length prefix.  In presentation format,
-the value is the ECHConfigList encoded in Base64 <span>[<a href="#base64" class="xref">base64</a>]</span>.
-Base64 is used here to simplify integration with TLS server software.
+the value is the ECHConfigList in Base 64 Encoding (<span><a href="https://rfc-editor.org/rfc/rfc4648#section-4" class="relref">Section 4</a> of [<a href="#RFC4648" class="xref">RFC4648</a>]</span>).
+Base 64 is used here to simplify integration with TLS server software.
 To enable simpler parsing, this SvcParam MUST NOT contain escape sequences.<a href="#section-10-1" class="pilcrow">¶</a></p>
 <p id="section-10-2">When ECH is in use, the TLS ClientHello is divided into an unencrypted "outer"
 and an encrypted "inner" ClientHello.  The outer ClientHello is an implementation
@@ -3278,10 +3280,12 @@ category.<a href="#section-15.3-2" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-15.3.1-2.4">Format Reference: pointer to specification text<a href="#section-15.3.1-2.4" class="pilcrow">¶</a>
 </li>
+            <li class="normal" id="section-15.3.1-2.5">Change Controller: Person or entity, with contact information if appropriate.<a href="#section-15.3.1-2.5" class="pilcrow">¶</a>
+</li>
           </ul>
 <p id="section-15.3.1-3">The characters in the registered Name MUST be lower-case alphanumeric or "-"
 (<a href="#presentation" class="xref">Section 2.1</a>).  The name MUST NOT start with "key" or "invalid".<a href="#section-15.3.1-3" class="pilcrow">¶</a></p>
-<p id="section-15.3.1-4">Entries in this registry are subject to an Expert Review registration
+<p id="section-15.3.1-4">New entries in this registry are subject to an Expert Review registration
 policy (<span>[<a href="#RFC8126" class="xref">RFC8126</a>], <a href="https://rfc-editor.org/rfc/rfc8126#section-4.5" class="relref">Section 4.5</a></span>).  The designated expert MUST ensure that
 the Format Reference is stable and publicly available, and that it specifies
 how to convert the SvcParamValue's presentation format to wire format.  The
@@ -3309,6 +3313,7 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <th class="text-left" rowspan="1" colspan="1">Name</th>
                 <th class="text-left" rowspan="1" colspan="1">Meaning</th>
                 <th class="text-left" rowspan="1" colspan="1">Format Reference</th>
+                <th class="text-left" rowspan="1" colspan="1">Change Controller</th>
               </tr>
             </thead>
             <tbody>
@@ -3318,6 +3323,7 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <td class="text-left" rowspan="1" colspan="1">Mandatory keys in this RR</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document) <a href="#mandatory" class="xref">Section 8</a>
 </td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">1</td>
@@ -3325,6 +3331,7 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <td class="text-left" rowspan="1" colspan="1">Additional supported protocols</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document) <a href="#alpn-key" class="xref">Section 7.1</a>
 </td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">2</td>
@@ -3332,6 +3339,7 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <td class="text-left" rowspan="1" colspan="1">No support for default protocol</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document) <a href="#alpn-key" class="xref">Section 7.1</a>
 </td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">3</td>
@@ -3339,6 +3347,7 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <td class="text-left" rowspan="1" colspan="1">Port for alternative endpoint</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document) <a href="#svcparamkeys-port" class="xref">Section 7.2</a>
 </td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">4</td>
@@ -3346,6 +3355,7 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <td class="text-left" rowspan="1" colspan="1">IPv4 address hints</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document) <a href="#svcparamkeys-iphints" class="xref">Section 7.4</a>
 </td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">5</td>
@@ -3353,6 +3363,7 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <td class="text-left" rowspan="1" colspan="1">Encrypted ClientHello info</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document) <a href="#svcparamkeys-ech" class="xref">Section 7.3</a>
 </td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">6</td>
@@ -3360,18 +3371,21 @@ be populated with the registrations below:<a href="#section-15.3.2-1" class="pil
                 <td class="text-left" rowspan="1" colspan="1">IPv6 address hints</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document) <a href="#svcparamkeys-iphints" class="xref">Section 7.4</a>
 </td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">65280-65534</td>
                 <td class="text-left" rowspan="1" colspan="1">N/A</td>
                 <td class="text-left" rowspan="1" colspan="1">Private Use</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document)</td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">65535</td>
                 <td class="text-left" rowspan="1" colspan="1">N/A</td>
                 <td class="text-left" rowspan="1" colspan="1">Reserved ("Invalid key")</td>
                 <td class="text-left" rowspan="1" colspan="1">(This document)</td>
+                <td class="text-left" rowspan="1" colspan="1">IETF</td>
               </tr>
             </tbody>
           </table>
@@ -3446,10 +3460,6 @@ and suggestions on this draft.<a href="#section-16-2" class="pilcrow">¶</a></p>
         <dd>
 <span class="refAuthor">Crocker, D.</span>, <span class="refTitle">"Scoped Interpretation of DNS Resource Records through "Underscored" Naming of Attribute Leaves"</span>, <span class="seriesInfo">BCP 222</span>, <span class="seriesInfo">RFC 8552</span>, <span class="seriesInfo">DOI 10.17487/RFC8552</span>, <time datetime="2019-03" class="refDate">March 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8552">https://www.rfc-editor.org/rfc/rfc8552</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="base64">[base64]</dt>
-        <dd>
-<span class="refAuthor">Josefsson, S.</span>, <span class="refTitle">"The Base16, Base32, and Base64 Data Encodings"</span>, <span class="seriesInfo">RFC 4648</span>, <span class="seriesInfo">DOI 10.17487/RFC4648</span>, <time datetime="2006-10" class="refDate">October 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4648">https://www.rfc-editor.org/rfc/rfc4648</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="DNAME">[DNAME]</dt>
         <dd>
 <span class="refAuthor">Rose, S.</span> and <span class="refAuthor">W. Wijngaards</span>, <span class="refTitle">"DNAME Redirection in the DNS"</span>, <span class="seriesInfo">RFC 6672</span>, <span class="seriesInfo">DOI 10.17487/RFC6672</span>, <time datetime="2012-06" class="refDate">June 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6672">https://www.rfc-editor.org/rfc/rfc6672</a>&gt;</span>. </dd>
@@ -3509,6 +3519,10 @@ and suggestions on this draft.<a href="#section-16-2" class="pilcrow">¶</a></p>
 <dt id="RFC4001">[RFC4001]</dt>
         <dd>
 <span class="refAuthor">Daniele, M.</span>, <span class="refAuthor">Haberman, B.</span>, <span class="refAuthor">Routhier, S.</span>, and <span class="refAuthor">J. Schoenwaelder</span>, <span class="refTitle">"Textual Conventions for Internet Network Addresses"</span>, <span class="seriesInfo">RFC 4001</span>, <span class="seriesInfo">DOI 10.17487/RFC4001</span>, <time datetime="2005-02" class="refDate">February 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4001">https://www.rfc-editor.org/rfc/rfc4001</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4648">[RFC4648]</dt>
+        <dd>
+<span class="refAuthor">Josefsson, S.</span>, <span class="refTitle">"The Base16, Base32, and Base64 Data Encodings"</span>, <span class="seriesInfo">RFC 4648</span>, <span class="seriesInfo">DOI 10.17487/RFC4648</span>, <time datetime="2006-10" class="refDate">October 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4648">https://www.rfc-editor.org/rfc/rfc4648</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC5234">[RFC5234]</dt>
         <dd>

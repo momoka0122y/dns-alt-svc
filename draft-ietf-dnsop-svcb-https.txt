@@ -337,10 +337,10 @@ Table of Contents
    SVCB RRs are extensible by a list of SvcParams, which are pairs
    consisting of a SvcParamKey and a SvcParamValue.  Each SvcParamKey
    has a presentation name and a registered number.  Values are in a
-   format specific to the SvcParamKey.  Their definition should specify
-   both their presentation format and wire encoding (e.g., domain names,
-   binary data, or numeric values).  The initial SvcParamKeys and
-   formats are defined in Section 7.
+   format specific to the SvcParamKey.  Their definition must specify
+   both their presentation format (use in zone files) and wire encoding
+   (e.g., domain names, binary data, or numeric values).  The initial
+   SvcParamKeys and formats are defined in Section 7.
 
 2.1.  Zone file presentation format
 
@@ -373,7 +373,8 @@ Table of Contents
    validated and converted into wire-format in a manner specific to each
    key.
 
-   When the "=" is omitted, the value is interpreted as empty.
+   When the optional "=" and SvcParamValue are omitted, the value is
+   interpreted as empty.
 
    Arbitrary keys can be represented using the unknown-key presentation
    format "keyNNNNN" where NNNNN is the numeric value of the key type
@@ -1415,9 +1416,10 @@ Table of Contents
    configuration of an alternative endpoint.  In wire format, the value
    of the parameter is an ECHConfigList Section 4 of [ECH], including
    the redundant length prefix.  In presentation format, the value is
-   the ECHConfigList encoded in Base64 [base64].  Base64 is used here to
-   simplify integration with TLS server software.  To enable simpler
-   parsing, this SvcParam MUST NOT contain escape sequences.
+   the ECHConfigList in Base 64 Encoding (Section 4 of [RFC4648]).  Base
+   64 is used here to simplify integration with TLS server software.  To
+   enable simpler parsing, this SvcParam MUST NOT contain escape
+   sequences.
 
    When ECH is in use, the TLS ClientHello is divided into an
    unencrypted "outer" and an encrypted "inner" ClientHello.  The outer
@@ -1807,19 +1809,22 @@ Table of Contents
 
    *  Format Reference: pointer to specification text
 
+   *  Change Controller: Person or entity, with contact information if
+      appropriate.
+
    The characters in the registered Name MUST be lower-case alphanumeric
    or "-" (Section 2.1).  The name MUST NOT start with "key" or
    "invalid".
 
-   Entries in this registry are subject to an Expert Review registration
-   policy ([RFC8126], Section 4.5).  The designated expert MUST ensure
-   that the Format Reference is stable and publicly available, and that
-   it specifies how to convert the SvcParamValue's presentation format
-   to wire format.  The Format Reference MAY be any individual's
-   Internet-Draft, or a document from any other source with similar
-   assurances of stability and availability.  An entry MAY specify a
-   Format Reference of the form "Same as (other key Name)" if it uses
-   the same presentation and wire formats as an existing key.
+   New entries in this registry are subject to an Expert Review
+   registration policy ([RFC8126], Section 4.5).  The designated expert
+   MUST ensure that the Format Reference is stable and publicly
+   available, and that it specifies how to convert the SvcParamValue's
+   presentation format to wire format.  The Format Reference MAY be any
+   individual's Internet-Draft, or a document from any other source with
+   similar assurances of stability and availability.  An entry MAY
+   specify a Format Reference of the form "Same as (other key Name)" if
+   it uses the same presentation and wire formats as an existing key.
 
    This arrangement supports the development of new parameters while
    ensuring that zone files can be made interoperable.
@@ -1829,43 +1834,53 @@ Table of Contents
    The "Service Binding (SVCB) Parameter Registry" shall initially be
    populated with the registrations below:
 
-   +=============+=================+================+=================+
-   | Number      | Name            | Meaning        | Format          |
-   |             |                 |                | Reference       |
-   +=============+=================+================+=================+
-   | 0           | mandatory       | Mandatory keys | (This document) |
-   |             |                 | in this RR     | Section 8       |
-   +-------------+-----------------+----------------+-----------------+
-   | 1           | alpn            | Additional     | (This document) |
-   |             |                 | supported      | Section 7.1     |
-   |             |                 | protocols      |                 |
-   +-------------+-----------------+----------------+-----------------+
-   | 2           | no-default-alpn | No support for | (This document) |
-   |             |                 | default        | Section 7.1     |
-   |             |                 | protocol       |                 |
-   +-------------+-----------------+----------------+-----------------+
-   | 3           | port            | Port for       | (This document) |
-   |             |                 | alternative    | Section 7.2     |
-   |             |                 | endpoint       |                 |
-   +-------------+-----------------+----------------+-----------------+
-   | 4           | ipv4hint        | IPv4 address   | (This document) |
-   |             |                 | hints          | Section 7.4     |
-   +-------------+-----------------+----------------+-----------------+
-   | 5           | ech             | Encrypted      | (This document) |
-   |             |                 | ClientHello    | Section 7.3     |
-   |             |                 | info           |                 |
-   +-------------+-----------------+----------------+-----------------+
-   | 6           | ipv6hint        | IPv6 address   | (This document) |
-   |             |                 | hints          | Section 7.4     |
-   +-------------+-----------------+----------------+-----------------+
-   | 65280-65534 | N/A             | Private Use    | (This document) |
-   +-------------+-----------------+----------------+-----------------+
-   | 65535       | N/A             | Reserved       | (This document) |
-   |             |                 | ("Invalid      |                 |
-   |             |                 | key")          |                 |
-   +-------------+-----------------+----------------+-----------------+
+   +=============+=================+=============+=========+===========+
+   | Number      | Name            |Meaning      |Format   |Change     |
+   |             |                 |             |Reference|Controller |
+   +=============+=================+=============+=========+===========+
+   | 0           | mandatory       |Mandatory    |(This    |IETF       |
+   |             |                 |keys in this |document)|           |
+   |             |                 |RR           |Section 8|           |
+   +-------------+-----------------+-------------+---------+-----------+
+   | 1           | alpn            |Additional   |(This    |IETF       |
+   |             |                 |supported    |document)|           |
+   |             |                 |protocols    |Section  |           |
+   |             |                 |             |7.1      |           |
+   +-------------+-----------------+-------------+---------+-----------+
+   | 2           | no-default-alpn |No support   |(This    |IETF       |
+   |             |                 |for default  |document)|           |
+   |             |                 |protocol     |Section  |           |
+   |             |                 |             |7.1      |           |
+   +-------------+-----------------+-------------+---------+-----------+
+   | 3           | port            |Port for     |(This    |IETF       |
+   |             |                 |alternative  |document)|           |
+   |             |                 |endpoint     |Section  |           |
+   |             |                 |             |7.2      |           |
+   +-------------+-----------------+-------------+---------+-----------+
+   | 4           | ipv4hint        |IPv4 address |(This    |IETF       |
+   |             |                 |hints        |document)|           |
+   |             |                 |             |Section  |           |
+   |             |                 |             |7.4      |           |
+   +-------------+-----------------+-------------+---------+-----------+
+   | 5           | ech             |Encrypted    |(This    |IETF       |
+   |             |                 |ClientHello  |document)|           |
+   |             |                 |info         |Section  |           |
+   |             |                 |             |7.3      |           |
+   +-------------+-----------------+-------------+---------+-----------+
+   | 6           | ipv6hint        |IPv6 address |(This    |IETF       |
+   |             |                 |hints        |document)|           |
+   |             |                 |             |Section  |           |
+   |             |                 |             |7.4      |           |
+   +-------------+-----------------+-------------+---------+-----------+
+   | 65280-65534 | N/A             |Private Use  |(This    |IETF       |
+   |             |                 |             |document)|           |
+   +-------------+-----------------+-------------+---------+-----------+
+   | 65535       | N/A             |Reserved     |(This    |IETF       |
+   |             |                 |("Invalid    |document)|           |
+   |             |                 |key")        |         |           |
+   +-------------+-----------------+-------------+---------+-----------+
 
-                                 Table 1
+                                  Table 1
 
 15.4.  Other registry updates
 
@@ -1906,10 +1921,6 @@ Table of Contents
               Records through "Underscored" Naming of Attribute Leaves",
               BCP 222, RFC 8552, DOI 10.17487/RFC8552, March 2019,
               <https://www.rfc-editor.org/rfc/rfc8552>.
-
-   [base64]   Josefsson, S., "The Base16, Base32, and Base64 Data
-              Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
-              <https://www.rfc-editor.org/rfc/rfc4648>.
 
    [DNAME]    Rose, S. and W. Wijngaards, "DNAME Redirection in the
               DNS", RFC 6672, DOI 10.17487/RFC6672, June 2012,
@@ -1981,6 +1992,10 @@ Table of Contents
               Schoenwaelder, "Textual Conventions for Internet Network
               Addresses", RFC 4001, DOI 10.17487/RFC4001, February 2005,
               <https://www.rfc-editor.org/rfc/rfc4001>.
+
+   [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
+              Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
+              <https://www.rfc-editor.org/rfc/rfc4648>.
 
    [RFC5234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
               Specifications: ABNF", STD 68, RFC 5234,
