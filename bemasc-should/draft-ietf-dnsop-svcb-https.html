@@ -1634,11 +1634,11 @@ HTTPS RR (RR type 65) provides special handling
 for the case of "https" origins as described in <a href="#https" class="xref">Section 9</a>.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <p id="section-2-4">SVCB RRs are extensible by a list of SvcParams, which are pairs consisting of a
 SvcParamKey and a SvcParamValue. Each SvcParamKey has a presentation name and a
-registered number. Values are in a format specific to the SvcParamKey. Their
-definition must specify both their presentation format (used in zone files) and
+registered number. Values are in a format specific to the SvcParamKey.  Each
+SvcParam has a specified presentation format (used in zone files) and
 wire encoding
 (e.g., domain names, binary data, or numeric values). The initial SvcParamKeys
-and formats are defined in <a href="#keys" class="xref">Section 7</a>.<a href="#section-2-4" class="pilcrow">¶</a></p>
+and their formats are defined in <a href="#keys" class="xref">Section 7</a>.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <div id="presentation">
 <section id="section-2.1">
         <h3 id="name-zone-file-presentation-form">
@@ -1858,8 +1858,8 @@ limit on the total number of SVCB aliases they will follow for each resolution
 request.  This limit MUST NOT be zero, i.e. implementations MUST be able to
 follow at least one AliasMode record.  The exact value of this limit
 is left to implementations.<a href="#section-2.4.2-10" class="pilcrow">¶</a></p>
-<p id="section-2.4.2-11">For compatibility and performance, zone owners should not configure their zones
-to require following multiple AliasMode records.<a href="#section-2.4.2-11" class="pilcrow">¶</a></p>
+<p id="section-2.4.2-11">Zones that require following multiple AliasMode records could encounter
+compatibility and performance issues.<a href="#section-2.4.2-11" class="pilcrow">¶</a></p>
 <p id="section-2.4.2-12">As legacy clients will not know to use this record, service
 operators will likely need to retain fallback AAAA and A records
 alongside this SVCB record, although in a common case
