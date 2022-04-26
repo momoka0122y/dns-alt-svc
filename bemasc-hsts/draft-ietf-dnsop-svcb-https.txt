@@ -1362,7 +1362,8 @@ Table of Contents
    (Receipt of an incompatible ServiceMode RR does not trigger the
    redirect behavior.)  Because HTTPS RRs are received over an often-
    insecure channel (DNS), clients MUST NOT place any more trust in this
-   signal than if they had received a 307 redirect over cleartext HTTP.
+   signal than if they had received a 307 (Temporary Redirect) over
+   cleartext HTTP.
 
    Publishing an HTTPS RR has the potential to have unexpected results
    or a loss in functionality in cases where the "http" resource neither
