@@ -2758,8 +2758,8 @@ with this "https" URL in the "Location" field.  (Receipt of an incompatible Serv
 trigger the redirect behavior.)
 Because HTTPS RRs are received over an often-insecure channel (DNS),
 clients MUST NOT place any more trust in this signal than if they
-had received a 307 (Temporary Redirect) over cleartext HTTP.<a href="#section-9.5-4" class="pilcrow">¶</a></p>
-<p id="section-9.5-5">Publishing an HTTPS RR has the potential to have unexpected results 
+had received a 307 (Temporary Redirect) response over cleartext HTTP.<a href="#section-9.5-4" class="pilcrow">¶</a></p>
+<p id="section-9.5-5">Publishing an HTTPS RR has the potential to have unexpected results
 or a loss in functionality in cases where the "http" resource neither
 redirects to the "https" resource nor references the same underlying resource.<a href="#section-9.5-5" class="pilcrow">¶</a></p>
 <p id="section-9.5-6">When an "https" connection fails due to an error in the underlying secure
