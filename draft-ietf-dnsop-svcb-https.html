@@ -1695,7 +1695,7 @@ repeated.<a href="#section-2.1-11" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-2.2-1">The RDATA for the SVCB RR consists of:<a href="#section-2.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2-2.1">a 2 octet field for SvcPriority as an integer in network
+<li class="normal" id="section-2.2-2.1">a 2-octet field for SvcPriority as an integer in network
 byte order.<a href="#section-2.2-2.1" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-2.2-2.2">the uncompressed, fully-qualified TargetName, represented as
@@ -1709,10 +1709,10 @@ and DNS message sizes).<a href="#section-2.2-2.3" class="pilcrow">¶</a>
 <p id="section-2.2-3">When the list of SvcParams is non-empty, it contains a series of
 SvcParamKey=SvcParamValue pairs, represented as:<a href="#section-2.2-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2-4.1">a 2 octet field containing the SvcParamKey as an
+<li class="normal" id="section-2.2-4.1">a 2-octet field containing the SvcParamKey as an
 integer in network byte order.  (See <a href="#iana-keys" class="xref">Section 15.3.2</a> for the defined values.)<a href="#section-2.2-4.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-2.2-4.2">a 2 octet field containing the length of the SvcParamValue
+          <li class="normal" id="section-2.2-4.2">a 2-octet field containing the length of the SvcParamValue
 as an integer between 0 and 65535 in network byte order.<a href="#section-2.2-4.2" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-2.2-4.3">an octet string of this length whose contents are the SvcParamValue in a
@@ -2171,11 +2171,11 @@ resolvers SHOULD treat any records in the Additional section as having
 SOURCE PREFIX-LENGTH zero and SCOPE PREFIX-LENGTH as specified
 in the ECS option.  Authoritative servers MUST omit such records if they are
 not suitable for use by any stub resolvers that set SOURCE PREFIX-LENGTH to
-zero.  This will cause the resolver to perform a followup query that can
+zero.  This will cause the resolver to perform a follow-up query that can
 receive properly tailored ECS.  (This is similar to the usage of CNAME with
 ECS discussed in <span>[<a href="#RFC7871" class="xref">RFC7871</a>], <a href="https://rfc-editor.org/rfc/rfc7871#section-7.2.1" class="relref">Section 7.2.1</a></span>.)<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 <p id="section-4.4-3">Authoritative servers that omit Additional records can avoid the added
-latency of a followup query by following the advice in <a href="#zone-performance" class="xref">Section 11.2</a>.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
+latency of a follow-up query by following the advice in <a href="#zone-performance" class="xref">Section 11.2</a>.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2188,7 +2188,7 @@ latency of a followup query by following the advice in <a href="#zone-performanc
 <p id="section-5-1">For optimal performance (i.e. minimum connection setup time), clients
 SHOULD implement a client-side DNS cache.
 Responses in the Additional section of a SVCB response SHOULD be placed
-in cache before performing any followup queries.
+in cache before performing any follow-up queries.
 With this behavior, and conforming DNS servers,
 using SVCB does not add network latency to connection setup.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">To improve performance when using a non-conforming recursive resolver, clients
@@ -2465,7 +2465,7 @@ of one or more IP addresses of the appropriate
 family in standard textual format <span>[<a href="#RFC5952" class="xref">RFC5952</a>]</span>, <span>[<a href="#RFC4001" class="xref">RFC4001</a>]</span>.  To enable simpler parsing,
 this SvcParamValue MUST NOT contain escape sequences.<a href="#section-7.4-2" class="pilcrow">¶</a></p>
 <p id="section-7.4-3">The wire format for each parameter is a sequence of IP addresses in network
-byte order (for the respective address-family).<br>
+byte order (for the respective address-family).
 Like an A or AAAA RRSet, the list of addresses represents an
 unordered collection, and clients SHOULD pick addresses to use in a random order.
 An empty list of addresses is invalid.<a href="#section-7.4-3" class="pilcrow">¶</a></p>
@@ -3219,7 +3219,7 @@ SVCB support in a new context.<a href="#section-14-1" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-15.1-1">This document defines a new DNS RR type, SVCB, whose value 64 has
 been allocated by IANA from the "Resource Record (RR) TYPEs"
-subregistry of the "Domain Name System (DNS) Parameters" registry:<a href="#section-15.1-1" class="pilcrow">¶</a></p>
+registry on the "Domain Name System (DNS) Parameters" page:<a href="#section-15.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-15.1-2.1">Type: SVCB<a href="#section-15.1-2.1" class="pilcrow">¶</a>
 </li>
@@ -3239,7 +3239,7 @@ subregistry of the "Domain Name System (DNS) Parameters" registry:<a href="#sect
         </h3>
 <p id="section-15.2-1">This document defines a new DNS RR type, "HTTPS", whose value 65 has
 been allocated by IANA from the "Resource Record (RR) TYPEs"
-subregistry of the "Domain Name System (DNS) Parameters" registry:<a href="#section-15.2-1" class="pilcrow">¶</a></p>
+registry on the "Domain Name System (DNS) Parameters" page:<a href="#section-15.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-15.2-2.1">Type: HTTPS<a href="#section-15.2-2.1" class="pilcrow">¶</a>
 </li>

@@ -393,7 +393,7 @@ Table of Contents
 
    The RDATA for the SVCB RR consists of:
 
-   *  a 2 octet field for SvcPriority as an integer in network byte
+   *  a 2-octet field for SvcPriority as an integer in network byte
       order.
 
    *  the uncompressed, fully-qualified TargetName, represented as a
@@ -406,10 +406,10 @@ Table of Contents
    When the list of SvcParams is non-empty, it contains a series of
    SvcParamKey=SvcParamValue pairs, represented as:
 
-   *  a 2 octet field containing the SvcParamKey as an integer in
+   *  a 2-octet field containing the SvcParamKey as an integer in
       network byte order.  (See Section 15.3.2 for the defined values.)
 
-   *  a 2 octet field containing the length of the SvcParamValue as an
+   *  a 2-octet field containing the length of the SvcParamValue as an
       integer between 0 and 65535 in network byte order.
 
    *  an octet string of this length whose contents are the
@@ -828,12 +828,12 @@ Table of Contents
    PREFIX-LENGTH zero and SCOPE PREFIX-LENGTH as specified in the ECS
    option.  Authoritative servers MUST omit such records if they are not
    suitable for use by any stub resolvers that set SOURCE PREFIX-LENGTH
-   to zero.  This will cause the resolver to perform a followup query
+   to zero.  This will cause the resolver to perform a follow-up query
    that can receive properly tailored ECS.  (This is similar to the
    usage of CNAME with ECS discussed in [RFC7871], Section 7.2.1.)
 
    Authoritative servers that omit Additional records can avoid the
-   added latency of a followup query by following the advice in
+   added latency of a follow-up query by following the advice in
    Section 11.2.
 
 5.  Performance optimizations
@@ -841,7 +841,7 @@ Table of Contents
    For optimal performance (i.e. minimum connection setup time), clients
    SHOULD implement a client-side DNS cache.  Responses in the
    Additional section of a SVCB response SHOULD be placed in cache
-   before performing any followup queries.  With this behavior, and
+   before performing any follow-up queries.  With this behavior, and
    conforming DNS servers, using SVCB does not add network latency to
    connection setup.
 
@@ -1107,10 +1107,10 @@ Table of Contents
    SvcParamValue MUST NOT contain escape sequences.
 
    The wire format for each parameter is a sequence of IP addresses in
-   network byte order (for the respective address-family).
-   Like an A or AAAA RRSet, the list of addresses represents an
-   unordered collection, and clients SHOULD pick addresses to use in a
-   random order.  An empty list of addresses is invalid.
+   network byte order (for the respective address-family).  Like an A or
+   AAAA RRSet, the list of addresses represents an unordered collection,
+   and clients SHOULD pick addresses to use in a random order.  An empty
+   list of addresses is invalid.
 
    When selecting between IPv4 and IPv6 addresses to use, clients may
    use an approach such as Happy Eyeballs [HappyEyeballsV2].  When only
@@ -1760,8 +1760,8 @@ Table of Contents
 15.1.  SVCB RRType
 
    This document defines a new DNS RR type, SVCB, whose value 64 has
-   been allocated by IANA from the "Resource Record (RR) TYPEs"
-   subregistry of the "Domain Name System (DNS) Parameters" registry:
+   been allocated by IANA from the "Resource Record (RR) TYPEs" registry
+   on the "Domain Name System (DNS) Parameters" page:
 
    *  Type: SVCB
 
@@ -1774,8 +1774,8 @@ Table of Contents
 15.2.  HTTPS RRType
 
    This document defines a new DNS RR type, "HTTPS", whose value 65 has
-   been allocated by IANA from the "Resource Record (RR) TYPEs"
-   subregistry of the "Domain Name System (DNS) Parameters" registry:
+   been allocated by IANA from the "Resource Record (RR) TYPEs" registry
+   on the "Domain Name System (DNS) Parameters" page:
 
    *  Type: HTTPS
 
