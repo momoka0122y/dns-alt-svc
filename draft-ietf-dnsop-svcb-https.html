@@ -1634,11 +1634,11 @@ HTTPS RR (RR type 65) provides special handling
 for the case of "https" origins as described in <a href="#https" class="xref">Section 9</a>.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <p id="section-2-4">SVCB RRs are extensible by a list of SvcParams, which are pairs consisting of a
 SvcParamKey and a SvcParamValue. Each SvcParamKey has a presentation name and a
-registered number. Values are in a format specific to the SvcParamKey. Their
-definition must specify both their presentation format (use in zone files) and
+registered number. Values are in a format specific to the SvcParamKey.  Each
+SvcParam has a specified presentation format (used in zone files) and
 wire encoding
 (e.g., domain names, binary data, or numeric values). The initial SvcParamKeys
-and formats are defined in <a href="#keys" class="xref">Section 7</a>.<a href="#section-2-4" class="pilcrow">¶</a></p>
+and their formats are defined in <a href="#keys" class="xref">Section 7</a>.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <div id="presentation">
 <section id="section-2.1">
         <h3 id="name-zone-file-presentation-form">
@@ -1659,7 +1659,7 @@ consisting of a SvcParamKey=SvcParamValue pair or a standalone SvcParamKey.
 SvcParamKeys are subject to IANA control (<a href="#svcparamregistry" class="xref">Section 15.3</a>).<a href="#section-2.1-4" class="pilcrow">¶</a></p>
 <p id="section-2.1-5">Each SvcParamKey SHALL appear at most once in the SvcParams.
 In presentation format, SvcParamKeys are lower-case alphanumeric strings.
-Key names should contain 1-63 characters from the ranges "a"-"z", "0"-"9", and "-".
+Key names contain 1-63 characters from the ranges "a"-"z", "0"-"9", and "-".
 In ABNF <span>[<a href="#RFC5234" class="xref">RFC5234</a>]</span>,<a href="#section-2.1-5" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-2.1-6">
 <pre>
@@ -1798,8 +1798,8 @@ If an RRSet contains a record in AliasMode, the recipient MUST ignore
 any ServiceMode records in the set.<a href="#section-2.4.1-2" class="pilcrow">¶</a></p>
 <p id="section-2.4.1-3">RRSets are explicitly unordered collections, so the
 SvcPriority field is used to impose an ordering on SVCB RRs.
-ServiceMode RRs with a smaller SvcPriority value SHOULD be given
-preference over RRs with a larger SvcPriority value.<a href="#section-2.4.1-3" class="pilcrow">¶</a></p>
+A smaller SvcPriority indicates that the domain owner recommends use of this
+record over ServiceMode RRs with a larger SvcPriority value.<a href="#section-2.4.1-3" class="pilcrow">¶</a></p>
 <p id="section-2.4.1-4">When receiving an RRSet containing multiple SVCB records with the
 same SvcPriority value, clients SHOULD apply a random shuffle within a
 priority level to the records before using them, to ensure uniform
@@ -1824,8 +1824,10 @@ Unlike CNAME, AliasMode records do not affect the resolution of other RR
 types, and apply only to a specific service, not an entire domain name.<a href="#section-2.4.2-2" class="pilcrow">¶</a></p>
 <p id="section-2.4.2-3">The AliasMode TargetName SHOULD NOT be equal
 to the owner name, as this would result in a loop.
-In AliasMode, records SHOULD NOT include any SvcParams, and recipients MUST
-ignore any SvcParams that are present.<a href="#section-2.4.2-3" class="pilcrow">¶</a></p>
+In AliasMode, recipients MUST ignore any SvcParams that are present.
+Zone-file parsers MAY emit a warning if an AliasMode record has SvcParams.
+The use of SvcParams in AliasMode records is currently not defined, but a
+future specification could extend AliasMode records to include SvcParams.<a href="#section-2.4.2-3" class="pilcrow">¶</a></p>
 <p id="section-2.4.2-4">For example, the operator of foo://example.com:8080 could
 point requests to a service operating at foosvc.example.net
 by publishing:<a href="#section-2.4.2-4" class="pilcrow">¶</a></p>
@@ -1856,8 +1858,8 @@ limit on the total number of SVCB aliases they will follow for each resolution
 request.  This limit MUST NOT be zero, i.e. implementations MUST be able to
 follow at least one AliasMode record.  The exact value of this limit
 is left to implementations.<a href="#section-2.4.2-10" class="pilcrow">¶</a></p>
-<p id="section-2.4.2-11">For compatibility and performance, zone owners SHOULD NOT configure their zones
-to require following multiple AliasMode records.<a href="#section-2.4.2-11" class="pilcrow">¶</a></p>
+<p id="section-2.4.2-11">Zones that require following multiple AliasMode records could encounter
+compatibility and performance issues.<a href="#section-2.4.2-11" class="pilcrow">¶</a></p>
 <p id="section-2.4.2-12">As legacy clients will not know to use this record, service
 operators will likely need to retain fallback AAAA and A records
 alongside this SVCB record, although in a common case
@@ -1981,7 +1983,7 @@ fallback to lower-priority alternatives.  Clients resolve AAAA and/or A
 records for the selected TargetName, and MAY choose between them using an
 approach such as Happy Eyeballs <span>[<a href="#HappyEyeballsV2" class="xref">HappyEyeballsV2</a>]</span>.<a href="#section-3-7" class="pilcrow">¶</a></p>
 <p id="section-3-8">If the client is SVCB-optional, and connecting using this list of endpoints has
-failed, the client SHOULD attempt non-SVCB connection modes.<a href="#section-3-8" class="pilcrow">¶</a></p>
+failed, the client now attempts to use non-SVCB connection modes.<a href="#section-3-8" class="pilcrow">¶</a></p>
 <p id="section-3-9">Some important optimizations are discussed in <a href="#optimizations" class="xref">Section 5</a>
 to avoid additional latency in comparison to ordinary AAAA/A lookups.<a href="#section-3-9" class="pilcrow">¶</a></p>
 <div id="client-failures">
@@ -2006,7 +2008,7 @@ apply the same validation policy to SVCB.<a href="#section-3.1-3" class="pilcrow
 <p id="section-3.1-4">If DNS responses are not cryptographically protected, clients MAY treat
 SVCB resolution failure as fatal or nonfatal.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
 <p id="section-3.1-5">If the client is unable to complete SVCB resolution due to its chain length
-limit, the client SHOULD fall back to the authority endpoint, as if the
+limit, the client MUST fall back to the authority endpoint, as if the
 origin's SVCB record did not exist.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2018,13 +2020,15 @@ origin's SVCB record did not exist.<a href="#section-3.1-5" class="pilcrow">¶</
 <p id="section-3.2-1">Clients using a domain-oriented transport proxy like HTTP CONNECT
 (<span>[<a href="#RFC7231" class="xref">RFC7231</a>], <a href="https://rfc-editor.org/rfc/rfc7231#section-4.3.6" class="relref">Section 4.3.6</a></span>) or SOCKS5 (<span>[<a href="#RFC1928" class="xref">RFC1928</a>]</span>) have the option to
 use named destinations, in which case the client does not perform
-any A or AAAA queries for destination domains.  If the client is using named
+any A or AAAA queries for destination domains.  If the client is configured
+to use named
 destinations with a proxy that does not provide SVCB query capability
 (e.g. through an affiliated DNS resolver), the client would have to perform
 SVCB resolution separately, likely disclosing the destinations to additional parties than just the proxy.
-Clients that support such proxies SHOULD arrange for a separate SVCB resolution
-procedure with appropriate privacy properties, or disable SVCB resolution entirely if
-SVCB-optional.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+Clients in this configuration SHOULD arrange for a separate SVCB resolution
+procedure with appropriate privacy properties.  If this is not possible,
+SVCB-optional clients MUST disable SVCB resolution entirely, and SVCB-required
+clients MUST treat the configuration as invalid.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.2-2">If the client does use SVCB and named destinations, the client SHOULD follow
 the standard SVCB resolution process, selecting the smallest-SvcPriority
 option that is compatible with the client and the proxy.  When connecting
@@ -2395,9 +2399,9 @@ consistency of behavior, clients MAY reject the entire SVCB RRSet and fall
 back to basic connection establishment if all of the compatible RRs indicate
 "no-default-alpn", even if connection could have succeeded using a
 non-default alpn.<a href="#section-7.1.2-7" class="pilcrow">¶</a></p>
-<p id="section-7.1.2-8">For compatibility with clients that require default transports,
-zone operators SHOULD ensure that at least one RR in each RRSet supports the
-default transports.<a href="#section-7.1.2-8" class="pilcrow">¶</a></p>
+<p id="section-7.1.2-8">Zone operators SHOULD ensure that at least one RR in each RRSet supports the
+default transports.  This enables compatibility with the greatest number of
+clients.<a href="#section-7.1.2-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3149,8 +3153,8 @@ However, performance improvements, and some modest privacy improvements,
 are possible without the use of those standards.<a href="#section-12-2" class="pilcrow">¶</a></p>
 <p id="section-12-3">Any specification for use of SVCB with a protocol MUST have an entry for its
 scheme under the SVCB RR type in the IANA DNS Underscore Global Scoped Entry
-Registry <span>[<a href="#Attrleaf" class="xref">Attrleaf</a>]</span>.  The scheme SHOULD have an entry in the IANA URI Schemes
-Registry <span>[<a href="#RFC7595" class="xref">RFC7595</a>]</span>.  The scheme SHOULD have a defined specification for use
+Registry <span>[<a href="#Attrleaf" class="xref">Attrleaf</a>]</span>.  The scheme MUST have an entry in the IANA URI Schemes
+Registry <span>[<a href="#RFC7595" class="xref">RFC7595</a>]</span>, and MUST have a defined specification for use
 with SVCB.<a href="#section-12-3" class="pilcrow">¶</a></p>
 </section>
 </div>
