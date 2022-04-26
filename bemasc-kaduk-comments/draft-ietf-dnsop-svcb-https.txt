@@ -5,9 +5,9 @@
 DNSOP Working Group                                          B. Schwartz
 Internet-Draft                                                    Google
 Intended status: Standards Track                               M. Bishop
-Expires: 13 October 2022                                       E. Nygren
+Expires: 28 October 2022                                       E. Nygren
                                                      Akamai Technologies
-                                                           11 April 2022
+                                                           26 April 2022
 
 
  Service binding and parameter specification via the DNS (DNS SVCB and
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 October 2022.
+   This Internet-Draft will expire on 28 October 2022.
 
 Copyright Notice
 
@@ -1335,7 +1335,7 @@ Table of Contents
 
    Clients MUST NOT use an HTTPS RR response unless the client supports
    TLS Server Name Indication (SNI) and indicates the origin name in the
-   TLS ClientHello (which may be encrypted).  This supports the
+   TLS ClientHello (which might be encrypted).  This supports the
    conservation of IP addresses.
 
    Note that the TLS SNI (and also the HTTP "Host" or ":authority") will
