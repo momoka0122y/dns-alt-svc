@@ -1665,7 +1665,7 @@ In ABNF <span>[<a href="#RFC5234" class="xref">RFC5234</a>]</span>,<a href="#sec
 alpha-lc      = %x61-7A   ;  a-z
 SvcParamKey   = 1*63(alpha-lc / DIGIT / "-")
 SvcParam      = SvcParamKey ["=" SvcParamValue]
-SvcParamValue = char-string
+SvcParamValue = char-string ; See Appendix A
 value         = *OCTET
 </pre><a href="#section-2.1-6" class="pilcrow">¶</a>
 </div>
@@ -1990,8 +1990,8 @@ to avoid additional latency in comparison to ordinary AAAA/A lookups.<a href="#s
 <p id="section-3.1-1">If DNS responses are cryptographically protected (e.g. using DNSSEC or
 TLS <span>[<a href="#DoT" class="xref">DoT</a>]</span><span>[<a href="#DoH" class="xref">DoH</a>]</span>), and SVCB resolution fails
 due to an authentication error, SERVFAIL response, transport error, or
-timeout, the client SHOULD abandon the connection attempt even if the client
-is SVCB-optional.  Otherwise, an active attacker
+timeout, the client SHOULD abandon its attempt to reach the service, even
+if the client is SVCB-optional.  Otherwise, an active attacker
 could mount a downgrade attack by denying the user access to the SvcParams.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">A SERVFAIL error can occur if the domain is DNSSEC-signed, the recursive
 resolver is DNSSEC-validating, and the attacker is between the recursive
@@ -2812,7 +2812,7 @@ be defined to take precedence over HTTPS RRs.<a href="#section-9.6-3" class="pil
 <p id="section-10-1">The SVCB "ech" parameter is defined for
 conveying the ECH configuration of an alternative endpoint.
 In wire format, the value of the parameter is an ECHConfigList
-<span>[<a href="#ECH" class="xref">ECH</a>]</span>, including the redundant length prefix.  In presentation format,
+<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-14#section-4" class="relref">Section 4</a> of [<a href="#ECH" class="xref">ECH</a>]</span>, including the redundant length prefix.  In presentation format,
 the value is the ECHConfigList encoded in Base64 <span>[<a href="#base64" class="xref">base64</a>]</span>.
 Base64 is used here to simplify integration with TLS server software.
 To enable simpler parsing, this SvcParam MUST NOT contain escape sequences.<a href="#section-10-1" class="pilcrow">¶</a></p>
@@ -2821,7 +2821,7 @@ and an encrypted "inner" ClientHello.  The outer ClientHello is an implementatio
 detail of ECH, and its contents are controlled by the ECHConfig in accordance
 with <span>[<a href="#ECH" class="xref">ECH</a>]</span>.  The inner ClientHello is used for establishing a connection to the
 service, so its contents may be influenced by other SVCB parameters.  For example,
-the requirements on the ProtocolNameList in <a href="#alpn-key" class="xref">Section 7.1</a> apply only to the inner
+the requirements on the ALPN protocol identifiers in <a href="#alpn-key" class="xref">Section 7.1</a> apply only to the inner
 ClientHello.  Similarly, it is the inner ClientHello whose Server Name Indication
 identifies the desired service.<a href="#section-10-2" class="pilcrow">¶</a></p>
 <div id="ech-client-behavior">
@@ -2847,7 +2847,7 @@ in SVCB-optional mode.<a href="#section-10.1-2" class="pilcrow">¶</a></p>
 <p id="section-10.2-1">An HTTPS RRSet containing some RRs with "ech" and some without is
 vulnerable to a downgrade attack.  This configuration is NOT RECOMMENDED.
 Zone owners who do use such a mixed configuration SHOULD mark the RRs with
-"ech" as more preferred (i.e. smaller SvcPriority) than those
+"ech" as more preferred (i.e. lower SvcPriority value) than those
 without, in order to maximize the likelihood that ECH will be used in the
 absence of an active adversary.<a href="#section-10.2-1" class="pilcrow">¶</a></p>
 </section>
@@ -3647,41 +3647,48 @@ although the output length in this document is not limited to 255 octets.<a href
 comma-separated lists.  When the allowed items in the list cannot contain ","
 or "\", this is trivial.  (For simplicity, empty items are not allowed.)
 A value-list parser that splits on "," and prohibits items containing "\"
-is sufficient to comply with all requirements in this document.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
-<p id="appendix-A.1-2">For implementations that allow "," and "\" in item values, the following
-escaping syntax applies:<a href="#appendix-A.1-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.1-3">
+is sufficient to comply with all requirements in this document.  This
+corresponds to the <code>simple-comma-separated</code> syntax:<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1-2">
+<pre>
+; item-allowed is OCTET minus "," and "\".
+item-allowed           = %x00-2B / %x2D-5B / %x5D-FF
+simple-item            = 1*item-allowed
+simple-comma-separated = [simple-item *("," simple-item)]
+</pre><a href="#appendix-A.1-2" class="pilcrow">¶</a>
+</div>
+<p id="appendix-A.1-3">For implementations that allow "," and "\" in item values, the following
+escaping syntax applies:<a href="#appendix-A.1-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1-4">
 <pre>
 item            = 1*OCTET
-; item-allowed is OCTET minus "," and "\".
-item-allowed    = %x00-2B / %x2D-5B / %x5D-FF
 escaped-item    = 1*(item-allowed / "\," / "\\")
 comma-separated = [escaped-item *("," escaped-item)]
-</pre><a href="#appendix-A.1-3" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1-4" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.1-4">Decoding of value-lists happens after character-string decoding.
-For example, consider these <code>char-string</code> SvcParamValues:<a href="#appendix-A.1-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.1-5">
+<p id="appendix-A.1-5">Decoding of value-lists happens after character-string decoding.
+For example, consider these <code>char-string</code> SvcParamValues:<a href="#appendix-A.1-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1-6">
 <pre>
 "part1,part2,part3\\,part4\\\\"
 part1\,\p\a\r\t2\044part3\092,part4\092\\
-</pre><a href="#appendix-A.1-5" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1-6" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.1-6">These inputs are equivalent: character-string decoding either of them would
-produce the same <code>value</code>:<a href="#appendix-A.1-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.1-7">
+<p id="appendix-A.1-7">These inputs are equivalent: character-string decoding either of them would
+produce the same <code>value</code>:<a href="#appendix-A.1-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1-8">
 <pre>
 part1,part2,part3\,part4\\
-</pre><a href="#appendix-A.1-7" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1-8" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.1-8">Applying comma-separated list decoding to this <code>value</code> would produce a list
-of three <code>item</code>s:<a href="#appendix-A.1-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.1-9">
+<p id="appendix-A.1-9">Applying comma-separated list decoding to this <code>value</code> would produce a list
+of three <code>item</code>s:<a href="#appendix-A.1-9" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A.1-10">
 <pre>
 part1
 part2
 part3,part4\
-</pre><a href="#appendix-A.1-9" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1-10" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
