@@ -1672,9 +1672,9 @@ Table of Contents
       resolvers may observe and follow different CNAMEs to different
       CDNs.  Clients may thus find that the A and AAAA responses do not
       correspond to the TargetName in the HTTPS response, and will need
-      to perform additional queries to retrieve its IP addresses.
-      Including ipv6hint and ipv4hint will reduce the performance impact
-      of this case.
+      to perform additional queries to retrieve the correct IP
+      addresses.  Including ipv6hint and ipv4hint will reduce the
+      performance impact of this case.
 
    *  If not all CDNs publish HTTPS records, clients will sometimes
       receive NODATA for HTTPS queries (as with cdn3.svc3.example
