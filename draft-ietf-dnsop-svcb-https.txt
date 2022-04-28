@@ -5,9 +5,9 @@
 DNSOP Working Group                                          B. Schwartz
 Internet-Draft                                                    Google
 Intended status: Standards Track                               M. Bishop
-Expires: 28 October 2022                                       E. Nygren
+Expires: 30 October 2022                                       E. Nygren
                                                      Akamai Technologies
-                                                           26 April 2022
+                                                           28 April 2022
 
 
  Service binding and parameter specification via the DNS (DNS SVCB and
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 October 2022.
+   This Internet-Draft will expire on 30 October 2022.
 
 Copyright Notice
 
@@ -233,8 +233,8 @@ Table of Contents
       above) for HTTP, where SRV [SRV] has not been widely adopted
 
    *  Provide an HSTS-like indication [HSTS] signaling that the "https"
-      scheme should be used instead of "http" for this request (see
-      Section 9.5).
+      scheme should be used instead of "http" for all HTTP requests to
+      this host and port (see Section 9.5).
 
 1.2.  Overview of the SVCB RR
 
@@ -1380,12 +1380,15 @@ Table of Contents
    client SHOULD behave as if it has received an HTTP 307 (Temporary
    Redirect) status code with this "https" URL in the "Location" field.
    (Receipt of an incompatible ServiceMode RR does not trigger the
-   redirect behavior.)  Because HTTPS RRs are received over an often
+   redirect behavior.)  Because HTTPS RRs are received over an often-
    insecure channel (DNS), clients MUST NOT place any more trust in this
-   signal than if they had received a 307 redirect over cleartext HTTP.
-   If this redirection would result in a loss of functionality (e.g.
-   important resources that are only available on the "http" origin),
-   the operator MUST NOT publish an HTTPS RR.
+   signal than if they had received a 307 (Temporary Redirect) response
+   over cleartext HTTP.
+
+   Publishing an HTTPS RR has the potential to have unexpected results
+   or a loss in functionality in cases where the "http" resource neither
+   redirects to the "https" resource nor references the same underlying
+   resource.
 
    When an "https" connection fails due to an error in the underlying
    secure transport, such as an error in certificate validation, some
