@@ -5,9 +5,9 @@
 DNSOP Working Group                                          B. Schwartz
 Internet-Draft                                                    Google
 Intended status: Standards Track                               M. Bishop
-Expires: 30 October 2022                                       E. Nygren
+Expires: 31 October 2022                                       E. Nygren
                                                      Akamai Technologies
-                                                           28 April 2022
+                                                           29 April 2022
 
 
  Service binding and parameter specification via the DNS (DNS SVCB and
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 30 October 2022.
+   This Internet-Draft will expire on 31 October 2022.
 
 Copyright Notice
 
@@ -89,6 +89,7 @@ Table of Contents
    4.  DNS Server Behavior
      4.1.  Authoritative servers
      4.2.  Recursive resolvers
+       4.2.1.  DNS64
      4.3.  General requirements
      4.4.  EDNS Client Subnet (ECS)
    5.  Performance optimizations
@@ -790,6 +791,19 @@ Table of Contents
 
    See Section 5.2 for possible optimizations of this procedure.
 
+4.2.1.  DNS64
+
+   DNS64 resolvers synthesize responses to AAAA queries for names that
+   only have an A record (Section 5.1.7 of [RFC6147]).  SVCB-aware DNS64
+   resolvers SHOULD apply the same synthesis logic when resolving AAAA
+   records for the TargetName (Step 2 in Section 4.2), and MAY omit the
+   Additional A records.
+
+   DNS64 resolvers MUST NOT extrapolate the AAAA synthesis logic to the
+   IP hints in the SvcParams (Section 7.4).  Modifying the IP hints
+   would break DNSSEC validation and would not improve performance when
+   the above recommendation is implemented.
+
 4.3.  General requirements
 
    Recursive resolvers MUST be able to convey SVCB records with
@@ -1120,12 +1134,11 @@ Table of Contents
 
    When selecting between IPv4 and IPv6 addresses to use, clients may
    use an approach such as Happy Eyeballs [HappyEyeballsV2].  When only
-   "ipv4hint" is present, IPv6-only clients may synthesize IPv6
-   addresses as specified in [RFC7050] or ignore the "ipv4hint" key and
-   wait for AAAA resolution (Section 3).  Recursive resolvers MUST NOT
-   perform DNS64 ([RFC6147]) on parameters within a SVCB record.  For
-   best performance, server operators SHOULD include an "ipv6hint"
-   parameter whenever they include an "ipv4hint" parameter.
+   "ipv4hint" is present, NAT64 clients may synthesize IPv6 addresses as
+   specified in [RFC7050] or ignore the "ipv4hint" key and wait for AAAA
+   resolution (Section 3).  For best performance, server operators
+   SHOULD include an "ipv6hint" parameter whenever they include an
+   "ipv4hint" parameter.
 
    These parameters are intended to minimize additional connection
    latency when a recursive resolver is not compliant with the
@@ -2016,6 +2029,12 @@ Table of Contents
               DOI 10.17487/RFC6066, January 2011,
               <https://www.rfc-editor.org/rfc/rfc6066>.
 
+   [RFC6147]  Bagnulo, M., Sullivan, A., Matthews, P., and I. van
+              Beijnum, "DNS64: DNS Extensions for Network Address
+              Translation from IPv6 Clients to IPv4 Servers", RFC 6147,
+              DOI 10.17487/RFC6147, April 2011,
+              <https://www.rfc-editor.org/rfc/rfc6147>.
+
    [RFC7050]  Savolainen, T., Korhonen, J., and D. Wing, "Discovery of
               the IPv6 Prefix Used for IPv6 Address Synthesis",
               RFC 7050, DOI 10.17487/RFC7050, November 2013,
@@ -2099,12 +2118,6 @@ Table of Contents
    [RFC1912]  Barr, D., "Common DNS Operational and Configuration
               Errors", RFC 1912, DOI 10.17487/RFC1912, February 1996,
               <https://www.rfc-editor.org/rfc/rfc1912>.
-
-   [RFC6147]  Bagnulo, M., Sullivan, A., Matthews, P., and I. van
-              Beijnum, "DNS64: DNS Extensions for Network Address
-              Translation from IPv6 Clients to IPv4 Servers", RFC 6147,
-              DOI 10.17487/RFC6147, April 2011,
-              <https://www.rfc-editor.org/rfc/rfc6147>.
 
    [RFC6454]  Barth, A., "The Web Origin Concept", RFC 6454,
               DOI 10.17487/RFC6454, December 2011,
