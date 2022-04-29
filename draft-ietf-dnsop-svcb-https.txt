@@ -5,9 +5,9 @@
 DNSOP Working Group                                          B. Schwartz
 Internet-Draft                                                    Google
 Intended status: Standards Track                               M. Bishop
-Expires: 30 October 2022                                       E. Nygren
+Expires: 31 October 2022                                       E. Nygren
                                                      Akamai Technologies
-                                                           28 April 2022
+                                                           29 April 2022
 
 
  Service binding and parameter specification via the DNS (DNS SVCB and
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 30 October 2022.
+   This Internet-Draft will expire on 31 October 2022.
 
 Copyright Notice
 
@@ -598,6 +598,9 @@ Table of Contents
 
    For ServiceMode SVCB RRs, if TargetName has the value ".", then the
    owner name of this record MUST be used as the effective TargetName.
+   If the record has a wildcard owner name in the zone file, the
+   recipient SHALL use the response's synthesized owner name as the
+   effective TargetName.
 
    For example, in the following example "svc2.example.net" is the
    effective TargetName:
