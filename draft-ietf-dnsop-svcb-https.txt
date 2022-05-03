@@ -5,9 +5,9 @@
 DNSOP Working Group                                          B. Schwartz
 Internet-Draft                                                    Google
 Intended status: Standards Track                               M. Bishop
-Expires: 31 October 2022                                       E. Nygren
+Expires: 4 November 2022                                       E. Nygren
                                                      Akamai Technologies
-                                                           29 April 2022
+                                                              3 May 2022
 
 
  Service binding and parameter specification via the DNS (DNS SVCB and
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 31 October 2022.
+   This Internet-Draft will expire on 4 November 2022.
 
 Copyright Notice
 
@@ -89,6 +89,7 @@ Table of Contents
    4.  DNS Server Behavior
      4.1.  Authoritative servers
      4.2.  Recursive resolvers
+       4.2.1.  DNS64
      4.3.  General requirements
      4.4.  EDNS Client Subnet (ECS)
    5.  Performance optimizations
@@ -274,7 +275,7 @@ Table of Contents
 
    In ServiceMode, the SvcParams of the SVCB RR provide an extensible
    data model for describing alternative endpoints that are
-   authoritative for the origin, along with parameters associated with
+   authoritative for a service, along with parameters associated with
    each of these alternative endpoints (Section 7).
 
    For HTTP use-cases, the HTTPS RR (Section 9) enables many of the
@@ -344,12 +345,13 @@ Table of Contents
 
 2.1.  Zone file presentation format
 
-   The presentation format of the record is:
+   The presentation format <RDATA> of the record ([RFC1035],
+   Section 5.1) has the form:
 
-   Name TTL IN SVCB SvcPriority TargetName SvcParams
+   SvcPriority TargetName SvcParams
 
    The SVCB record is defined specifically within the Internet ("IN")
-   Class ([RFC1035]).
+   Class ([RFC1035], Section 3.2.4).
 
    SvcPriority is a number in the range 0-65535, TargetName is a
    <domain-name> ([RFC1035], Section 5.1), and the SvcParams are a
@@ -366,7 +368,7 @@ Table of Contents
    SvcParamKey   = 1*63(alpha-lc / DIGIT / "-")
    SvcParam      = SvcParamKey ["=" SvcParamValue]
    SvcParamValue = char-string ; See Appendix A
-   value         = *OCTET
+   value         = *OCTET ; Value before key-specific parsing
 
    The SvcParamValue is parsed using the character-string decoding
    algorithm (Appendix A), producing a value.  The value is then
@@ -530,8 +532,8 @@ Table of Contents
    foosvc.example.net can add or remove ServiceMode SVCB records without
    requiring a corresponding change to example.com.  Note that if
    foosvc.example.net promises to always publish a SVCB record, this
-   AliasMode record can be replaced by a CNAME, which would likely
-   improve performance.
+   AliasMode record can be replaced by a CNAME at the same owner name,
+   which would likely improve performance.
 
    AliasMode is especially useful for SVCB-compatible RR types that do
    not require an underscore prefix, such as the HTTPS RR type.  For
@@ -792,6 +794,19 @@ Table of Contents
 
    See Section 5.2 for possible optimizations of this procedure.
 
+4.2.1.  DNS64
+
+   DNS64 resolvers synthesize responses to AAAA queries for names that
+   only have an A record (Section 5.1.7 of [RFC6147]).  SVCB-aware DNS64
+   resolvers SHOULD apply the same synthesis logic when resolving AAAA
+   records for the TargetName for inclusion as Additionals (Step 2 in
+   Section 4.2), and MAY omit the Additional A records.
+
+   DNS64 resolvers MUST NOT extrapolate the AAAA synthesis logic to the
+   IP hints in the SvcParams (Section 7.4).  Modifying the IP hints
+   would break DNSSEC validation for the SVCB record and would not
+   improve performance when the above recommendation is implemented.
+
 4.3.  General requirements
 
    Recursive resolvers MUST be able to convey SVCB records with
@@ -1047,11 +1062,12 @@ Table of Contents
    one protocol from the SVCB ALPN set.
 
    Clients SHOULD NOT attempt connection to a service endpoint whose
-   SVCB ALPN set does not contain any supported protocols.  To ensure
-   consistency of behavior, clients MAY reject the entire SVCB RRSet and
-   fall back to basic connection establishment if all of the compatible
-   RRs indicate "no-default-alpn", even if connection could have
-   succeeded using a non-default alpn.
+   SVCB ALPN set does not contain any supported protocols.
+
+   To ensure consistency of behavior, clients MAY reject the entire SVCB
+   RRSet and fall back to basic connection establishment if all of the
+   compatible RRs indicate "no-default-alpn", even if connection could
+   have succeeded using a non-default alpn.
 
    Zone operators SHOULD ensure that at least one RR in each RRSet
    supports the default transports.  This enables compatibility with the
@@ -1121,12 +1137,11 @@ Table of Contents
 
    When selecting between IPv4 and IPv6 addresses to use, clients may
    use an approach such as Happy Eyeballs [HappyEyeballsV2].  When only
-   "ipv4hint" is present, IPv6-only clients may synthesize IPv6
-   addresses as specified in [RFC7050] or ignore the "ipv4hint" key and
-   wait for AAAA resolution (Section 3).  Recursive resolvers MUST NOT
-   perform DNS64 ([RFC6147]) on parameters within a SVCB record.  For
-   best performance, server operators SHOULD include an "ipv6hint"
-   parameter whenever they include an "ipv4hint" parameter.
+   "ipv4hint" is present, NAT64 clients may synthesize IPv6 addresses as
+   specified in [RFC7050] or ignore the "ipv4hint" key and wait for AAAA
+   resolution (Section 3).  For best performance, server operators
+   SHOULD include an "ipv6hint" parameter whenever they include an
+   "ipv4hint" parameter.
 
    These parameters are intended to minimize additional connection
    latency when a recursive resolver is not compliant with the
@@ -1340,12 +1355,12 @@ Table of Contents
    *  HTTP/3 to example.com:8443
 
    Origins that publish an "ech" SvcParam in their HTTPS record SHOULD
-   also publish an "ech" SvcParam for any alt-authorities.  Otherwise,
-   clients might reveal the name of the server in an unencrypted
-   ClientHello.  Similar consistency considerations could apply to
-   future SvcParamKeys, so alt-authorities SHOULD carry the same
-   SvcParams as the origin unless a deviation is specifically known to
-   be safe.
+   also publish an HTTPS record with the "ech" SvcParam for every alt-
+   authority offered in its Alt-Svc Field Values.  Otherwise, clients
+   might reveal the name of the server in an unencrypted ClientHello.
+   Similar consistency considerations could apply to future
+   SvcParamKeys, so alt-authorities SHOULD carry the same SvcParams as
+   the origin unless a deviation is specifically known to be safe.
 
    As noted in Section 2.4 of [AltSvc], clients MAY disallow any Alt-Svc
    connection according to their own criteria, e.g. disallowing Alt-Svc
@@ -1355,8 +1370,9 @@ Table of Contents
 9.4.  Requiring Server Name Indication
 
    Clients MUST NOT use an HTTPS RR response unless the client supports
-   TLS Server Name Indication (SNI) and indicates the origin name when
-   negotiating TLS.  This supports the conservation of IP addresses.
+   TLS Server Name Indication (SNI) and indicates the origin name in the
+   TLS ClientHello (which might be encrypted).  This supports the
+   conservation of IP addresses.
 
    Note that the TLS SNI (and also the HTTP "Host" or ":authority") will
    indicate the origin, not the TargetName.
@@ -1494,11 +1510,13 @@ Table of Contents
    queries for TargetName in advance (see Section 5).  Unless otherwise
    specified, the convention is to set TargetName to the service name
    for an initial ServiceMode record, or to "." if it is reached via an
-   alias.  For foo://foo.example.com:8080, this might look like:
+   alias.
 
    $ORIGIN example.com. ; Origin
    foo                  3600 IN CNAME foosvc.example.net.
    _8080._foo.foo       3600 IN CNAME foosvc.example.net.
+   bar                   300 IN AAAA 2001:db8::2
+   _9090._bar.bar       3600 IN SVCB 1 bar key65444=...
 
    $ORIGIN example.net. ; Service provider zone
    foosvc               3600 IN SVCB 1 . key65333=...
@@ -1563,16 +1581,16 @@ Table of Contents
 
 11.3.3.  Parameter binding
 
-   Suppose that svc.example's default server pool supports HTTP/2, and
-   it has deployed HTTP/3 on a new server pool with a different
-   configuration.  This can be expressed in the following form:
+   Suppose that svc.example's primary server pool supports HTTP/3, but
+   its backup server pool does not.  This can be expressed in the
+   following form:
 
    $ORIGIN svc.example. ; A hosting provider.
-   pool  7200 IN HTTPS 1 h3pool alpn=h2,h3 ech="123..."
-                 HTTPS 2 .      alpn=h2 ech="abc..."
+   pool  7200 IN HTTPS 1 . alpn=h2,h3 ech="123..."
+                 HTTPS 2 backup alpn=h2 ech="abc..."
    pool   300 IN A        192.0.2.2
                  AAAA     2001:db8::2
-   h3pool 300 IN A        192.0.2.3
+   backup 300 IN A        192.0.2.3
                  AAAA     2001:db8::3
 
    This configuration is entirely compatible with the "Apex aliasing"
@@ -1667,11 +1685,12 @@ Table of Contents
       the zone apex directly to a name managed by a CDN.
 
    *  The A, AAAA, and HTTPS resolutions are independent lookups, so
-      clients may observe and follow different CNAMEs to different CDNs.
-      Clients may thus find a TargetName pointing to a name other than
-      the one which returned along with the A and AAAA lookups and will
-      need to do an additional resolution for them.  Including ipv6hint
-      and ipv4hint will reduce the performance impact of this case.
+      resolvers may observe and follow different CNAMEs to different
+      CDNs.  Clients may thus find that the A and AAAA responses do not
+      correspond to the TargetName in the HTTPS response, and will need
+      to perform additional queries to retrieve the correct IP
+      addresses.  Including ipv6hint and ipv4hint will reduce the
+      performance impact of this case.
 
    *  If not all CDNs publish HTTPS records, clients will sometimes
       receive NODATA for HTTPS queries (as with cdn3.svc3.example
@@ -1932,10 +1951,6 @@ Table of Contents
               BCP 222, RFC 8552, DOI 10.17487/RFC8552, March 2019,
               <https://www.rfc-editor.org/rfc/rfc8552>.
 
-   [DNAME]    Rose, S. and W. Wijngaards, "DNAME Redirection in the
-              DNS", RFC 6672, DOI 10.17487/RFC6672, June 2012,
-              <https://www.rfc-editor.org/rfc/rfc6672>.
-
    [DoH]      Hoffman, P. and P. McManus, "DNS Queries over HTTPS
               (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
               <https://www.rfc-editor.org/rfc/rfc8484>.
@@ -1956,11 +1971,6 @@ Table of Contents
               Better Connectivity Using Concurrency", RFC 8305,
               DOI 10.17487/RFC8305, December 2017,
               <https://www.rfc-editor.org/rfc/rfc8305>.
-
-   [HSTS]     Hodges, J., Jackson, C., and A. Barth, "HTTP Strict
-              Transport Security (HSTS)", RFC 6797,
-              DOI 10.17487/RFC6797, November 2012,
-              <https://www.rfc-editor.org/rfc/rfc6797>.
 
    [HTTP]     Fielding, R. T., Nottingham, M., and J. Reschke, "HTTP
               Semantics", Work in Progress, Internet-Draft, draft-ietf-
@@ -2072,12 +2082,21 @@ Table of Contents
               Alternative Services", RFC 7838, DOI 10.17487/RFC7838,
               April 2016, <https://www.rfc-editor.org/rfc/rfc7838>.
 
+   [DNAME]    Rose, S. and W. Wijngaards, "DNAME Redirection in the
+              DNS", RFC 6672, DOI 10.17487/RFC6672, June 2012,
+              <https://www.rfc-editor.org/rfc/rfc6672>.
+
    [DNSTerm]  Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
               January 2019, <https://www.rfc-editor.org/rfc/rfc8499>.
 
    [FETCH]    "Fetch Living Standard", May 2020,
               <https://fetch.spec.whatwg.org/>.
+
+   [HSTS]     Hodges, J., Jackson, C., and A. Barth, "HTTP Strict
+              Transport Security (HSTS)", RFC 6797,
+              DOI 10.17487/RFC6797, November 2012,
+              <https://www.rfc-editor.org/rfc/rfc6797>.
 
    [HTTP3]    Bishop, M., "Hypertext Transfer Protocol Version 3
               (HTTP/3)", Work in Progress, Internet-Draft, draft-ietf-

@@ -25,11 +25,11 @@ both performance and privacy.
 The most recent working version of the document, open issues, etc. should all be
 available there.  The authors (gratefully) accept pull requests. 
     ' name="description">
-<meta content="xml2rfc 3.12.4" name="generator">
+<meta content="xml2rfc 3.12.5" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-dnsop-svcb-https" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.12.4
+  xml2rfc 3.12.5
     Python 3.9.7
     appdirs 1.4.4
     ConfigArgParse 1.3
@@ -1029,11 +1029,11 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">SVCB and HTTPS RRs for DNS</td>
-<td class="right">April 2022</td>
+<td class="right">May 2022</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Schwartz, et al.</td>
-<td class="center">Expires 31 October 2022</td>
+<td class="center">Expires 4 November 2022</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1046,12 +1046,12 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <dd class="internet-draft">draft-ietf-dnsop-svcb-https</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-04-29" class="published">29 April 2022</time>
+<time datetime="2022-05-03" class="published">3 May 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-10-31">31 October 2022</time></dd>
+<dd class="expires"><time datetime="2022-11-04">4 November 2022</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1107,7 +1107,7 @@ available there.  The authors (gratefully) accept pull requests.<a href="#sectio
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 31 October 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 November 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1211,6 +1211,11 @@ available there.  The authors (gratefully) accept pull requests.<a href="#sectio
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-recursive-resolvers" class="xref">Recursive resolvers</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.1">
+                    <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="xref">4.2.1</a>.  <a href="#name-dns64" class="xref">DNS64</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
                 <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-general-requirements" class="xref">General requirements</a></p>
@@ -1564,7 +1569,7 @@ authoritative servers can attach in-bailiwick SVCB, A, AAAA, and CNAME
 records in the Additional Section to responses for a SVCB query (<a href="#authoritative-behavior" class="xref">Section 4.1</a>).<a href="#section-1.2-5" class="pilcrow">¶</a></p>
 <p id="section-1.2-6">In ServiceMode, the SvcParams of the SVCB RR
 provide an extensible data model for describing alternative
-endpoints that are authoritative for the origin, along with
+endpoints that are authoritative for a service, along with
 parameters associated with each of these alternative endpoints (<a href="#keys" class="xref">Section 7</a>).<a href="#section-1.2-6" class="pilcrow">¶</a></p>
 <p id="section-1.2-7">For HTTP use-cases, the HTTPS RR (<a href="#https" class="xref">Section 9</a>) enables many of the benefits of Alt-Svc
 <span>[<a href="#AltSvc" class="xref">AltSvc</a>]</span>
@@ -1645,14 +1650,15 @@ and their formats are defined in <a href="#keys" class="xref">Section 7</a>.<a h
         <h3 id="name-zone-file-presentation-form">
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-zone-file-presentation-form" class="section-name selfRef">Zone file presentation format</a>
         </h3>
-<p id="section-2.1-1">The presentation format of the record is:<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1-1">The presentation format <code>&lt;RDATA&gt;</code> of the record (<span>[<a href="#RFC1035" class="xref">RFC1035</a>], <a href="https://rfc-editor.org/rfc/rfc1035#section-5.1" class="relref">Section 5.1</a></span>) has
+the form:<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-2.1-2">
 <pre>
-Name TTL IN SVCB SvcPriority TargetName SvcParams
+SvcPriority TargetName SvcParams
 </pre><a href="#section-2.1-2" class="pilcrow">¶</a>
 </div>
 <p id="section-2.1-3">The SVCB record is defined specifically within
-the Internet ("IN") Class (<span>[<a href="#RFC1035" class="xref">RFC1035</a>]</span>).<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+the Internet ("IN") Class (<span>[<a href="#RFC1035" class="xref">RFC1035</a>], <a href="https://rfc-editor.org/rfc/rfc1035#section-3.2.4" class="relref">Section 3.2.4</a></span>).<a href="#section-2.1-3" class="pilcrow">¶</a></p>
 <p id="section-2.1-4">SvcPriority is a number in the range 0-65535,
 TargetName is a <code>&lt;domain-name&gt;</code> (<span>[<a href="#RFC1035" class="xref">RFC1035</a>], <a href="https://rfc-editor.org/rfc/rfc1035#section-5.1" class="relref">Section 5.1</a></span>),
 and the SvcParams are a whitespace-separated list, with each SvcParam
@@ -1668,7 +1674,7 @@ alpha-lc      = %x61-7A   ;  a-z
 SvcParamKey   = 1*63(alpha-lc / DIGIT / "-")
 SvcParam      = SvcParamKey ["=" SvcParamValue]
 SvcParamValue = char-string ; See Appendix A
-value         = *OCTET
+value         = *OCTET ; Value before key-specific parsing
 </pre><a href="#section-2.1-6" class="pilcrow">¶</a>
 </div>
 <p id="section-2.1-7">The SvcParamValue is parsed using the
@@ -1841,7 +1847,8 @@ _8080._foo.example.com. 3600 IN SVCB 0 foosvc.example.net.
 foosvc.example.net can add or remove ServiceMode SVCB records without
 requiring a corresponding change to example.com.  Note that if
 foosvc.example.net promises to always publish a SVCB record, this AliasMode
-record can be replaced by a CNAME, which would likely improve performance.<a href="#section-2.4.2-6" class="pilcrow">¶</a></p>
+record can be replaced by a CNAME at the same owner name, which would likely
+improve performance.<a href="#section-2.4.2-6" class="pilcrow">¶</a></p>
 <p id="section-2.4.2-7">AliasMode is especially useful for SVCB-compatible RR types that do not
 require an underscore prefix, such as the HTTPS RR type.  For example,
 the operator of https://example.com could point requests to a server
@@ -2131,6 +2138,22 @@ MUST NOT themselves cause the resolver to send a failure response.<a href="#sect
 <p id="section-4.2-4">See <a href="#alias-mode" class="xref">Section 2.4.2</a> for additional safeguards for recursive resolvers
 to implement to mitigate loops.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
 <p id="section-4.2-5">See <a href="#incomplete-response" class="xref">Section 5.2</a> for possible optimizations of this procedure.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
+<div id="dns64">
+<section id="section-4.2.1">
+          <h4 id="name-dns64">
+<a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-dns64" class="section-name selfRef">DNS64</a>
+          </h4>
+<p id="section-4.2.1-1">DNS64 resolvers synthesize responses to AAAA queries for names that only
+have an A record (<span><a href="https://rfc-editor.org/rfc/rfc6147#section-5.1.7" class="relref">Section 5.1.7</a> of [<a href="#RFC6147" class="xref">RFC6147</a>]</span>).  SVCB-aware DNS64
+resolvers SHOULD apply the same synthesis logic when resolving AAAA
+records for the TargetName for inclusion as Additionals (Step 2 in
+<a href="#recursive-behavior" class="xref">Section 4.2</a>), and MAY omit the Additional A records.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-2">DNS64 resolvers MUST NOT extrapolate the AAAA synthesis logic to the IP
+hints in the SvcParams (<a href="#svcparamkeys-iphints" class="xref">Section 7.4</a>).  Modifying the IP hints
+would break DNSSEC validation for the SVCB record and would not improve 
+performance when the above recommendation is implemented.<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="general-requirements">
@@ -2397,14 +2420,15 @@ traffic can prevent a successful transport connection, but cannot otherwise
 interfere with ALPN protocol selection.  This procedure also ensures that
 each ProtocolNameList includes at least one protocol from the SVCB ALPN set.<a href="#section-7.1.2-6" class="pilcrow">¶</a></p>
 <p id="section-7.1.2-7">Clients SHOULD NOT attempt connection to a service endpoint whose SVCB
-ALPN set does not contain any supported protocols.  To ensure
+ALPN set does not contain any supported protocols.<a href="#section-7.1.2-7" class="pilcrow">¶</a></p>
+<p id="section-7.1.2-8">To ensure
 consistency of behavior, clients MAY reject the entire SVCB RRSet and fall
 back to basic connection establishment if all of the compatible RRs indicate
 "no-default-alpn", even if connection could have succeeded using a
-non-default alpn.<a href="#section-7.1.2-7" class="pilcrow">¶</a></p>
-<p id="section-7.1.2-8">Zone operators SHOULD ensure that at least one RR in each RRSet supports the
+non-default alpn.<a href="#section-7.1.2-8" class="pilcrow">¶</a></p>
+<p id="section-7.1.2-9">Zone operators SHOULD ensure that at least one RR in each RRSet supports the
 default transports.  This enables compatibility with the greatest number of
-clients.<a href="#section-7.1.2-8" class="pilcrow">¶</a></p>
+clients.<a href="#section-7.1.2-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2478,10 +2502,9 @@ unordered collection, and clients SHOULD pick addresses to use in a random order
 An empty list of addresses is invalid.<a href="#section-7.4-3" class="pilcrow">¶</a></p>
 <p id="section-7.4-4">When selecting between IPv4 and IPv6 addresses to use, clients may use an
 approach such as Happy Eyeballs <span>[<a href="#HappyEyeballsV2" class="xref">HappyEyeballsV2</a>]</span>.
-When only "ipv4hint" is present, IPv6-only clients may synthesize
+When only "ipv4hint" is present, NAT64 clients may synthesize
 IPv6 addresses as specified in <span>[<a href="#RFC7050" class="xref">RFC7050</a>]</span> or ignore the "ipv4hint" key and
-wait for AAAA resolution (<a href="#client-behavior" class="xref">Section 3</a>).  Recursive resolvers MUST NOT
-perform DNS64 (<span>[<a href="#RFC6147" class="xref">RFC6147</a>]</span>) on parameters within a SVCB record.
+wait for AAAA resolution (<a href="#client-behavior" class="xref">Section 3</a>).
 For best performance, server operators SHOULD include an "ipv6hint" parameter
 whenever they include an "ipv4hint" parameter.<a href="#section-7.4-4" class="pilcrow">¶</a></p>
 <p id="section-7.4-5">These parameters are intended to minimize additional connection latency
@@ -2728,7 +2751,8 @@ the "ech" SvcParam is present (<a href="#ech-client-behavior" class="xref">Secti
 </li>
         </ul>
 <p id="section-9.3-12">Origins that publish an "ech" SvcParam in their HTTPS record SHOULD
-also publish an "ech" SvcParam for any alt-authorities.  Otherwise,
+also publish an HTTPS record with the "ech" SvcParam for every
+alt-authority offered in its Alt-Svc Field Values.  Otherwise,
 clients might reveal the name of the server in an unencrypted ClientHello.
 Similar consistency considerations could apply to future SvcParamKeys, so
 alt-authorities SHOULD carry the same SvcParams as the origin unless
@@ -2746,7 +2770,7 @@ connection for this origin.<a href="#section-9.3-13" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-9.4-1">Clients MUST NOT use an HTTPS RR response unless the
 client supports TLS Server Name Indication (SNI) and
-indicates the origin name when negotiating TLS.
+indicates the origin name in the TLS ClientHello (which might be encrypted).
 This supports the conservation of IP addresses.<a href="#section-9.4-1" class="pilcrow">¶</a></p>
 <p id="section-9.4-2">Note that the TLS SNI (and also the HTTP "Host" or ":authority") will indicate
 the origin, not the TargetName.<a href="#section-9.4-2" class="pilcrow">¶</a></p>
@@ -2898,13 +2922,14 @@ choose TargetName according to a predictable convention that is known
 to the client, so that clients can issue A and/or AAAA queries for TargetName
 in advance (see <a href="#optimizations" class="xref">Section 5</a>).  Unless otherwise specified, the
 convention is to set TargetName to the service name for an initial
-ServiceMode record, or to "." if it is reached via an alias.  For
-foo://foo.example.com:8080, this might look like:<a href="#section-11.2-1" class="pilcrow">¶</a></p>
+ServiceMode record, or to "." if it is reached via an alias.<a href="#section-11.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-11.2-2">
 <pre>
 $ORIGIN example.com. ; Origin
 foo                  3600 IN CNAME foosvc.example.net.
 _8080._foo.foo       3600 IN CNAME foosvc.example.net.
+bar                   300 IN AAAA 2001:db8::2
+_9090._bar.bar       3600 IN SVCB 1 bar key65444=...
 
 $ORIGIN example.net. ; Service provider zone
 foosvc               3600 IN SVCB 1 . key65333=...
@@ -2992,17 +3017,16 @@ respectively, and will validate TLS server certificates accordingly.<a href="#se
           <h4 id="name-parameter-binding">
 <a href="#section-11.3.3" class="section-number selfRef">11.3.3. </a><a href="#name-parameter-binding" class="section-name selfRef">Parameter binding</a>
           </h4>
-<p id="section-11.3.3-1">Suppose that svc.example's default server pool supports HTTP/2, and
-it has deployed HTTP/3 on a new server pool with a different
-configuration.  This can be expressed in the following form:<a href="#section-11.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-11.3.3-1">Suppose that svc.example's primary server pool supports HTTP/3, but its
+backup server pool does not.  This can be expressed in the following form:<a href="#section-11.3.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-11.3.3-2">
 <pre>
 $ORIGIN svc.example. ; A hosting provider.
-pool  7200 IN HTTPS 1 h3pool alpn=h2,h3 ech="123..."
-              HTTPS 2 .      alpn=h2 ech="abc..."
+pool  7200 IN HTTPS 1 . alpn=h2,h3 ech="123..."
+              HTTPS 2 backup alpn=h2 ech="abc..."
 pool   300 IN A        192.0.2.2
               AAAA     2001:db8::2
-h3pool 300 IN A        192.0.2.3
+backup 300 IN A        192.0.2.3
               AAAA     2001:db8::3
 </pre><a href="#section-11.3.3-2" class="pilcrow">¶</a>
 </div>
@@ -3098,11 +3122,11 @@ increases resolution latency, especially when using a non-HTTPS-aware
 recursive resolver.  An alternative would be to alias the zone
 apex directly to a name managed by a CDN.<a href="#section-11.3.4-6.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-11.3.4-6.3">The A, AAAA, and HTTPS resolutions are independent lookups, so clients may
+            <li class="normal" id="section-11.3.4-6.3">The A, AAAA, and HTTPS resolutions are independent lookups, so resolvers may
 observe and follow different CNAMEs to different CDNs.
-Clients may thus find a TargetName pointing to a name
-other than the one which returned along with the A and AAAA lookups
-and will need to do an additional resolution for them.
+Clients may thus find that the A and AAAA responses do not correspond to the
+TargetName in the HTTPS response, and will need to perform additional
+queries to retrieve the correct IP addresses.
 Including ipv6hint and ipv4hint will reduce the performance
 impact of this case.<a href="#section-11.3.4-6.3" class="pilcrow">¶</a>
 </li>
@@ -3467,10 +3491,6 @@ and suggestions on this draft.<a href="#section-16-2" class="pilcrow">¶</a></p>
         <dd>
 <span class="refAuthor">Crocker, D.</span>, <span class="refTitle">"Scoped Interpretation of DNS Resource Records through "Underscored" Naming of Attribute Leaves"</span>, <span class="seriesInfo">BCP 222</span>, <span class="seriesInfo">RFC 8552</span>, <span class="seriesInfo">DOI 10.17487/RFC8552</span>, <time datetime="2019-03" class="refDate">March 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8552">https://www.rfc-editor.org/rfc/rfc8552</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="DNAME">[DNAME]</dt>
-        <dd>
-<span class="refAuthor">Rose, S.</span> and <span class="refAuthor">W. Wijngaards</span>, <span class="refTitle">"DNAME Redirection in the DNS"</span>, <span class="seriesInfo">RFC 6672</span>, <span class="seriesInfo">DOI 10.17487/RFC6672</span>, <time datetime="2012-06" class="refDate">June 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6672">https://www.rfc-editor.org/rfc/rfc6672</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="DoH">[DoH]</dt>
         <dd>
 <span class="refAuthor">Hoffman, P.</span> and <span class="refAuthor">P. McManus</span>, <span class="refTitle">"DNS Queries over HTTPS (DoH)"</span>, <span class="seriesInfo">RFC 8484</span>, <span class="seriesInfo">DOI 10.17487/RFC8484</span>, <time datetime="2018-10" class="refDate">October 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8484">https://www.rfc-editor.org/rfc/rfc8484</a>&gt;</span>. </dd>
@@ -3486,10 +3506,6 @@ and suggestions on this draft.<a href="#section-16-2" class="pilcrow">¶</a></p>
 <dt id="HappyEyeballsV2">[HappyEyeballsV2]</dt>
         <dd>
 <span class="refAuthor">Schinazi, D.</span> and <span class="refAuthor">T. Pauly</span>, <span class="refTitle">"Happy Eyeballs Version 2: Better Connectivity Using Concurrency"</span>, <span class="seriesInfo">RFC 8305</span>, <span class="seriesInfo">DOI 10.17487/RFC8305</span>, <time datetime="2017-12" class="refDate">December 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8305">https://www.rfc-editor.org/rfc/rfc8305</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="HSTS">[HSTS]</dt>
-        <dd>
-<span class="refAuthor">Hodges, J.</span>, <span class="refAuthor">Jackson, C.</span>, and <span class="refAuthor">A. Barth</span>, <span class="refTitle">"HTTP Strict Transport Security (HSTS)"</span>, <span class="seriesInfo">RFC 6797</span>, <span class="seriesInfo">DOI 10.17487/RFC6797</span>, <time datetime="2012-11" class="refDate">November 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6797">https://www.rfc-editor.org/rfc/rfc6797</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="HTTP">[HTTP]</dt>
         <dd>
@@ -3590,6 +3606,10 @@ and suggestions on this draft.<a href="#section-16-2" class="pilcrow">¶</a></p>
         <dd>
 <span class="refAuthor">Nottingham, M.</span>, <span class="refAuthor">McManus, P.</span>, and <span class="refAuthor">J. Reschke</span>, <span class="refTitle">"HTTP Alternative Services"</span>, <span class="seriesInfo">RFC 7838</span>, <span class="seriesInfo">DOI 10.17487/RFC7838</span>, <time datetime="2016-04" class="refDate">April 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7838">https://www.rfc-editor.org/rfc/rfc7838</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="DNAME">[DNAME]</dt>
+        <dd>
+<span class="refAuthor">Rose, S.</span> and <span class="refAuthor">W. Wijngaards</span>, <span class="refTitle">"DNAME Redirection in the DNS"</span>, <span class="seriesInfo">RFC 6672</span>, <span class="seriesInfo">DOI 10.17487/RFC6672</span>, <time datetime="2012-06" class="refDate">June 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6672">https://www.rfc-editor.org/rfc/rfc6672</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="DNSTerm">[DNSTerm]</dt>
         <dd>
 <span class="refAuthor">Hoffman, P.</span>, <span class="refAuthor">Sullivan, A.</span>, and <span class="refAuthor">K. Fujiwara</span>, <span class="refTitle">"DNS Terminology"</span>, <span class="seriesInfo">BCP 219</span>, <span class="seriesInfo">RFC 8499</span>, <span class="seriesInfo">DOI 10.17487/RFC8499</span>, <time datetime="2019-01" class="refDate">January 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8499">https://www.rfc-editor.org/rfc/rfc8499</a>&gt;</span>. </dd>
@@ -3597,6 +3617,10 @@ and suggestions on this draft.<a href="#section-16-2" class="pilcrow">¶</a></p>
 <dt id="FETCH">[FETCH]</dt>
         <dd>
 <span class="refTitle">"Fetch Living Standard"</span>, <time datetime="2020-05" class="refDate">May 2020</time>, <span>&lt;<a href="https://fetch.spec.whatwg.org/">https://fetch.spec.whatwg.org/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="HSTS">[HSTS]</dt>
+        <dd>
+<span class="refAuthor">Hodges, J.</span>, <span class="refAuthor">Jackson, C.</span>, and <span class="refAuthor">A. Barth</span>, <span class="refTitle">"HTTP Strict Transport Security (HSTS)"</span>, <span class="seriesInfo">RFC 6797</span>, <span class="seriesInfo">DOI 10.17487/RFC6797</span>, <time datetime="2012-11" class="refDate">November 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6797">https://www.rfc-editor.org/rfc/rfc6797</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="HTTP3">[HTTP3]</dt>
         <dd>
