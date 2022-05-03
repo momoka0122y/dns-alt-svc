@@ -25,11 +25,11 @@ both performance and privacy.
 The most recent working version of the document, open issues, etc. should all be
 available there.  The authors (gratefully) accept pull requests. 
     ' name="description">
-<meta content="xml2rfc 3.12.4" name="generator">
+<meta content="xml2rfc 3.12.5" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-dnsop-svcb-https" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.12.4
+  xml2rfc 3.12.5
     Python 3.9.7
     appdirs 1.4.4
     ConfigArgParse 1.3
@@ -1029,11 +1029,11 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">SVCB and HTTPS RRs for DNS</td>
-<td class="right">April 2022</td>
+<td class="right">May 2022</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Schwartz, et al.</td>
-<td class="center">Expires 31 October 2022</td>
+<td class="center">Expires 4 November 2022</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1046,12 +1046,12 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <dd class="internet-draft">draft-ietf-dnsop-svcb-https</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-04-29" class="published">29 April 2022</time>
+<time datetime="2022-05-03" class="published">3 May 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-10-31">31 October 2022</time></dd>
+<dd class="expires"><time datetime="2022-11-04">4 November 2022</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1107,7 +1107,7 @@ available there.  The authors (gratefully) accept pull requests.<a href="#sectio
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 31 October 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 November 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2144,12 +2144,12 @@ to implement to mitigate loops.<a href="#section-4.2-4" class="pilcrow">¶</a></
 <p id="section-4.2.1-1">DNS64 resolvers synthesize responses to AAAA queries for names that only
 have an A record (<span><a href="https://rfc-editor.org/rfc/rfc6147#section-5.1.7" class="relref">Section 5.1.7</a> of [<a href="#RFC6147" class="xref">RFC6147</a>]</span>).  SVCB-aware DNS64
 resolvers SHOULD apply the same synthesis logic when resolving AAAA
-records for the TargetName (Step 2 in <a href="#recursive-behavior" class="xref">Section 4.2</a>), and MAY
-omit the Additional A records.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
+records for the TargetName for inclusion as Additionals (Step 2 in
+<a href="#recursive-behavior" class="xref">Section 4.2</a>), and MAY omit the Additional A records.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.2.1-2">DNS64 resolvers MUST NOT extrapolate the AAAA synthesis logic to the IP
 hints in the SvcParams (<a href="#svcparamkeys-iphints" class="xref">Section 7.4</a>).  Modifying the IP hints
-would break DNSSEC validation and would not improve performance when the
-above recommendation is implemented.<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
+would break DNSSEC validation for the SVCB record and would not improve 
+performance when the above recommendation is implemented.<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
