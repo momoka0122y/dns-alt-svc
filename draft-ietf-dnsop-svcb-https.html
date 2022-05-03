@@ -2150,7 +2150,7 @@ records for the TargetName for inclusion as Additionals (Step 2 in
 <a href="#recursive-behavior" class="xref">Section 4.2</a>), and MAY omit the Additional A records.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.2.1-2">DNS64 resolvers MUST NOT extrapolate the AAAA synthesis logic to the IP
 hints in the SvcParams (<a href="#svcparamkeys-iphints" class="xref">Section 7.4</a>).  Modifying the IP hints
-would break DNSSEC validation for the SVCB record and would not improve 
+would break DNSSEC validation for the SVCB record and would not improve
 performance when the above recommendation is implemented.<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2493,7 +2493,7 @@ AAAA response addresses could negatively impact load balancing or other
 geo-aware features and thereby degrade client performance.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
 <p id="section-7.4-2">The presentation <code>value</code> SHALL be a comma-separated list (<a href="#value-list" class="xref">Appendix A.1</a>)
 of one or more IP addresses of the appropriate
-family in standard textual format <span>[<a href="#RFC5952" class="xref">RFC5952</a>]</span>, <span>[<a href="#RFC4001" class="xref">RFC4001</a>]</span>.  To enable simpler parsing,
+family in standard textual format <span>[<a href="#RFC5952" class="xref">RFC5952</a>]</span><span>[<a href="#RFC4001" class="xref">RFC4001</a>]</span>.  To enable simpler parsing,
 this SvcParamValue MUST NOT contain escape sequences.<a href="#section-7.4-2" class="pilcrow">¶</a></p>
 <p id="section-7.4-3">The wire format for each parameter is a sequence of IP addresses in network
 byte order (for the respective address-family).
@@ -2845,7 +2845,7 @@ be defined to take precedence over HTTPS RRs.<a href="#section-9.6-3" class="pil
 <p id="section-10-1">The SVCB "ech" parameter is defined for
 conveying the ECH configuration of an alternative endpoint.
 In wire format, the value of the parameter is an ECHConfigList
-<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-14#section-4" class="relref">Section 4</a> of [<a href="#ECH" class="xref">ECH</a>]</span>, including the redundant length prefix.  In presentation format,
+(<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-14#section-4" class="relref">Section 4</a> of [<a href="#ECH" class="xref">ECH</a>]</span>), including the redundant length prefix.  In presentation format,
 the value is the ECHConfigList in Base 64 Encoding (<span><a href="https://rfc-editor.org/rfc/rfc4648#section-4" class="relref">Section 4</a> of [<a href="#RFC4648" class="xref">RFC4648</a>]</span>).
 Base 64 is used here to simplify integration with TLS server software.
 To enable simpler parsing, this SvcParam MUST NOT contain escape sequences.<a href="#section-10-1" class="pilcrow">¶</a></p>
@@ -2923,7 +2923,8 @@ to the client, so that clients can issue A and/or AAAA queries for TargetName
 in advance (see <a href="#optimizations" class="xref">Section 5</a>).  Unless otherwise specified, the
 convention is to set TargetName to the service name for an initial
 ServiceMode record, or to "." if it is reached via an alias.<a href="#section-11.2-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-11.2-2">
+<span id="name-foo-fooexamplecom8080-is-de"></span><figure id="figure-1">
+          <div class="alignLeft art-text artwork" id="section-11.2-2.1">
 <pre>
 $ORIGIN example.com. ; Origin
 foo                  3600 IN CNAME foosvc.example.net.
@@ -2934,8 +2935,11 @@ _9090._bar.bar       3600 IN SVCB 1 bar key65444=...
 $ORIGIN example.net. ; Service provider zone
 foosvc               3600 IN SVCB 1 . key65333=...
 foosvc                300 IN AAAA 2001:db8::1
-</pre><a href="#section-11.2-2" class="pilcrow">¶</a>
+</pre>
 </div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-foo-fooexamplecom8080-is-de" class="selfRef">foo://foo.example.com:8080 is delegated to foosvc.example.net, but bar://bar.example.com:9090 is served locally.</a>
+          </figcaption></figure>
 <p id="section-11.2-3">Domain owners SHOULD avoid using a TargetName that is below a DNAME, as
 this is likely unnecessary and makes responses slower and larger.
 Also, zone structures that require following more than 8 aliases
@@ -3916,7 +3920,7 @@ long, it is broken into several lines.<a href="#appendix-D-1" class="pilcrow">¶
         <h3 id="name-aliasmode-3">
 <a href="#appendix-D.1" class="section-number selfRef">D.1. </a><a href="#name-aliasmode-3" class="section-name selfRef">AliasMode</a>
         </h3>
-<span id="name-aliasmode-4"></span><figure id="figure-1">
+<span id="name-aliasmode-4"></span><figure id="figure-2">
           <div class="alignLeft art-text artwork" id="appendix-D.1-1.1">
 <pre>
 example.com.   HTTPS   0 foo.example.com.
@@ -3930,7 +3934,7 @@ example.com.   HTTPS   0 foo.example.com.
 \x03foo\x07example\x03com\x00                      # target
 </pre>
 </div>
-<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
 <a href="#name-aliasmode-4" class="selfRef">AliasMode</a>
           </figcaption></figure>
 </section>
@@ -3940,7 +3944,7 @@ example.com.   HTTPS   0 foo.example.com.
         <h3 id="name-servicemode-3">
 <a href="#appendix-D.2" class="section-number selfRef">D.2. </a><a href="#name-servicemode-3" class="section-name selfRef">ServiceMode</a>
         </h3>
-<span id="name-targetname-is"></span><figure id="figure-2">
+<span id="name-targetname-is"></span><figure id="figure-3">
           <div class="alignLeft art-text artwork" id="appendix-D.2-1.1">
 <pre>
 example.com.   SVCB   1 .
@@ -3954,10 +3958,10 @@ example.com.   SVCB   1 .
 \x00       # target, root label
 </pre>
 </div>
-<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
 <a href="#name-targetname-is" class="selfRef">TargetName is "."</a>
           </figcaption></figure>
-<span id="name-specifies-a-port"></span><figure id="figure-3">
+<span id="name-specifies-a-port"></span><figure id="figure-4">
           <div class="alignLeft art-text artwork" id="appendix-D.2-2.1">
 <pre>
 example.com.   SVCB   16 foo.example.com. port=53
@@ -3977,10 +3981,10 @@ example.com.   SVCB   16 foo.example.com. port=53
 \x00\x35                                           # value
 </pre>
 </div>
-<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
 <a href="#name-specifies-a-port" class="selfRef">Specifies a port</a>
           </figcaption></figure>
-<span id="name-a-generic-key-and-unquoted-"></span><figure id="figure-4">
+<span id="name-a-generic-key-and-unquoted-"></span><figure id="figure-5">
           <div class="alignLeft art-text artwork" id="appendix-D.2-3.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. key667=hello
@@ -4000,10 +4004,10 @@ example.com.   SVCB   1 foo.example.com. key667=hello
 hello                                              # value
 </pre>
 </div>
-<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
 <a href="#name-a-generic-key-and-unquoted-" class="selfRef">A generic key and unquoted value</a>
           </figcaption></figure>
-<span id="name-a-generic-key-and-quoted-va"></span><figure id="figure-5">
+<span id="name-a-generic-key-and-quoted-va"></span><figure id="figure-6">
           <div class="alignLeft art-text artwork" id="appendix-D.2-4.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. key667="hello\210qoo"
@@ -4023,10 +4027,10 @@ example.com.   SVCB   1 foo.example.com. key667="hello\210qoo"
 hello\xd2qoo                                       # value
 </pre>
 </div>
-<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
 <a href="#name-a-generic-key-and-quoted-va" class="selfRef">A generic key and quoted value with a decimal escape</a>
           </figcaption></figure>
-<span id="name-two-quoted-ipv6-hints"></span><figure id="figure-6">
+<span id="name-two-quoted-ipv6-hints"></span><figure id="figure-7">
           <div class="alignLeft art-text artwork" id="appendix-D.2-5.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. (
@@ -4052,10 +4056,10 @@ example.com.   SVCB   1 foo.example.com. (
      \x00\x00\x00\x00\x00\x53\x00\x01              # second address
 </pre>
 </div>
-<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
 <a href="#name-two-quoted-ipv6-hints" class="selfRef">Two quoted IPv6 hints</a>
           </figcaption></figure>
-<span id="name-an-ipv6-hint-using-the-embe"></span><figure id="figure-7">
+<span id="name-an-ipv6-hint-using-the-embe"></span><figure id="figure-8">
           <div class="alignLeft art-text artwork" id="appendix-D.2-6.1">
 <pre>
 example.com.   SVCB   1 example.com. ipv6hint="2001:db8:122:344::192.0.2.33"
@@ -4076,10 +4080,10 @@ example.com.   SVCB   1 example.com. ipv6hint="2001:db8:122:344::192.0.2.33"
      \x00\x00\x00\x00\xc0\x00\x02\x21              # address
 </pre>
 </div>
-<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
 <a href="#name-an-ipv6-hint-using-the-embe" class="selfRef">An IPv6 hint using the embedded IPv4 syntax</a>
           </figcaption></figure>
-<span id="name-svcparamkey-ordering-is-arb"></span><figure id="figure-8">
+<span id="name-svcparamkey-ordering-is-arb"></span><figure id="figure-9">
           <div class="alignLeft art-text artwork" id="appendix-D.2-7.1">
 <pre>
 example.com.   SVCB   16 foo.example.org. (
@@ -4122,10 +4126,10 @@ h3-19                                              # alpn value
 \xc0\x00\x02\x01                                   # param value
 </pre>
 </div>
-<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
 <a href="#name-svcparamkey-ordering-is-arb" class="selfRef">SvcParamKey ordering is arbitrary in presentation format but sorted in wire format</a>
           </figcaption></figure>
-<span id="name-an-alpn-value-with-an-escap"></span><figure id="figure-9">
+<span id="name-an-alpn-value-with-an-escap"></span><figure id="figure-10">
           <div class="alignLeft art-text artwork" id="appendix-D.2-8.1">
 <pre>
 example.com.   SVCB   16 foo.example.org. alpn="f\\\\oo\\,bar,h2"
@@ -4152,7 +4156,7 @@ f\oo,bar                                           # alpn value
 h2                                                 # alpn value
 </pre>
 </div>
-<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
+<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
 <a href="#name-an-alpn-value-with-an-escap" class="selfRef">An alpn value with an escaped comma and an escaped backslash in two presentation formats</a>
           </figcaption></figure>
 </section>
@@ -4165,7 +4169,7 @@ h2                                                 # alpn value
 <p id="appendix-D.3-1">This subsection contains test vectors which are not
 compliant with this document. The various reasons for non-compliance
 are explained with each example.<a href="#appendix-D.3-1" class="pilcrow">¶</a></p>
-<span id="name-multiple-instances-of-the-s"></span><figure id="figure-10">
+<span id="name-multiple-instances-of-the-s"></span><figure id="figure-11">
           <div class="alignLeft art-text artwork" id="appendix-D.3-2.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. (
@@ -4173,10 +4177,10 @@ example.com.   SVCB   1 foo.example.com. (
                        )
 </pre>
 </div>
-<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
+<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
 <a href="#name-multiple-instances-of-the-s" class="selfRef">Multiple instances of the same SvcParamKey</a>
           </figcaption></figure>
-<span id="name-missing-svcparamvalues-that"></span><figure id="figure-11">
+<span id="name-missing-svcparamvalues-that"></span><figure id="figure-12">
           <div class="alignLeft art-text artwork" id="appendix-D.3-3.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. mandatory
@@ -4186,37 +4190,37 @@ example.com.   SVCB   1 foo.example.com. ipv4hint
 example.com.   SVCB   1 foo.example.com. ipv6hint
 </pre>
 </div>
-<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
+<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
 <a href="#name-missing-svcparamvalues-that" class="selfRef">Missing SvcParamValues that must be nonempty</a>
           </figcaption></figure>
-<span id="name-the-no-default-alpn-svcpara"></span><figure id="figure-12">
+<span id="name-the-no-default-alpn-svcpara"></span><figure id="figure-13">
           <div class="alignLeft art-text artwork" id="appendix-D.3-4.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. no-default-alpn=abc
 </pre>
 </div>
-<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
+<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
 <a href="#name-the-no-default-alpn-svcpara" class="selfRef">The "no-default-alpn" SvcParamKey value must be empty</a>
           </figcaption></figure>
-<span id="name-a-mandatory-svcparam-is-mis"></span><figure id="figure-13">
+<span id="name-a-mandatory-svcparam-is-mis"></span><figure id="figure-14">
           <div class="alignLeft art-text artwork" id="appendix-D.3-5.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. mandatory=key123
 </pre>
 </div>
-<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
+<figcaption><a href="#figure-14" class="selfRef">Figure 14</a>:
 <a href="#name-a-mandatory-svcparam-is-mis" class="selfRef">A mandatory SvcParam is missing</a>
           </figcaption></figure>
-<span id="name-the-mandatory-svcparamkey-m"></span><figure id="figure-14">
+<span id="name-the-mandatory-svcparamkey-m"></span><figure id="figure-15">
           <div class="alignLeft art-text artwork" id="appendix-D.3-6.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. mandatory=mandatory
 </pre>
 </div>
-<figcaption><a href="#figure-14" class="selfRef">Figure 14</a>:
+<figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
 <a href="#name-the-mandatory-svcparamkey-m" class="selfRef">The "mandatory" SvcParamKey must not be included in the mandatory list</a>
           </figcaption></figure>
-<span id="name-multiple-instances-of-the-sa"></span><figure id="figure-15">
+<span id="name-multiple-instances-of-the-sa"></span><figure id="figure-16">
           <div class="alignLeft art-text artwork" id="appendix-D.3-7.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. (
@@ -4224,7 +4228,7 @@ example.com.   SVCB   1 foo.example.com. (
                       )
 </pre>
 </div>
-<figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
+<figcaption><a href="#figure-16" class="selfRef">Figure 16</a>:
 <a href="#name-multiple-instances-of-the-sa" class="selfRef">Multiple instances of the same SvcParamKey in the mandatory list</a>
           </figcaption></figure>
 </section>

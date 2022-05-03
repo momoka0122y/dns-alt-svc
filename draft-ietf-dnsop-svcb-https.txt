@@ -1126,7 +1126,7 @@ Table of Contents
 
    The presentation value SHALL be a comma-separated list (Appendix A.1)
    of one or more IP addresses of the appropriate family in standard
-   textual format [RFC5952], [RFC4001].  To enable simpler parsing, this
+   textual format [RFC5952][RFC4001].  To enable simpler parsing, this
    SvcParamValue MUST NOT contain escape sequences.
 
    The wire format for each parameter is a sequence of IP addresses in
@@ -1440,7 +1440,7 @@ Table of Contents
 
    The SVCB "ech" parameter is defined for conveying the ECH
    configuration of an alternative endpoint.  In wire format, the value
-   of the parameter is an ECHConfigList Section 4 of [ECH], including
+   of the parameter is an ECHConfigList (Section 4 of [ECH]), including
    the redundant length prefix.  In presentation format, the value is
    the ECHConfigList in Base 64 Encoding (Section 4 of [RFC4648]).  Base
    64 is used here to simplify integration with TLS server software.  To
@@ -1521,6 +1521,10 @@ Table of Contents
    $ORIGIN example.net. ; Service provider zone
    foosvc               3600 IN SVCB 1 . key65333=...
    foosvc                300 IN AAAA 2001:db8::1
+
+            Figure 1: foo://foo.example.com:8080 is delegated to
+        foosvc.example.net, but bar://bar.example.com:9090 is served
+                                  locally.
 
    Domain owners SHOULD avoid using a TargetName that is below a DNAME,
    as this is likely unnecessary and makes responses slower and larger.
@@ -2328,7 +2332,7 @@ D.1.  AliasMode
    \x00\x00                                           # priority
    \x03foo\x07example\x03com\x00                      # target
 
-                            Figure 1: AliasMode
+                            Figure 2: AliasMode
 
 D.2.  ServiceMode
 
@@ -2342,7 +2346,7 @@ D.2.  ServiceMode
    \x00\x01   # priority
    \x00       # target, root label
 
-                        Figure 2: TargetName is "."
+                        Figure 3: TargetName is "."
 
    example.com.   SVCB   16 foo.example.com. port=53
 
@@ -2360,7 +2364,7 @@ D.2.  ServiceMode
    \x00\x02                                           # length: 2 bytes
    \x00\x35                                           # value
 
-                         Figure 3: Specifies a port
+                         Figure 4: Specifies a port
 
    example.com.   SVCB   1 foo.example.com. key667=hello
 
@@ -2378,7 +2382,7 @@ D.2.  ServiceMode
    \x00\x05                                           # length 5
    hello                                              # value
 
-                 Figure 4: A generic key and unquoted value
+                 Figure 5: A generic key and unquoted value
 
    example.com.   SVCB   1 foo.example.com. key667="hello\210qoo"
 
@@ -2396,7 +2400,7 @@ D.2.  ServiceMode
    \x00\x09                                           # length 9
    hello\xd2qoo                                       # value
 
-       Figure 5: A generic key and quoted value with a decimal escape
+       Figure 6: A generic key and quoted value with a decimal escape
 
    example.com.   SVCB   1 foo.example.com. (
                          ipv6hint="2001:db8::1,2001:db8::53:1"
@@ -2420,7 +2424,7 @@ D.2.  ServiceMode
    \x20\x01\x0d\xb8\x00\x00\x00\x00
         \x00\x00\x00\x00\x00\x53\x00\x01              # second address
 
-                      Figure 6: Two quoted IPv6 hints
+                      Figure 7: Two quoted IPv6 hints
 
 example.com.   SVCB   1 example.com. ipv6hint="2001:db8:122:344::192.0.2.33"
 
@@ -2439,7 +2443,7 @@ example.com.   SVCB   1 example.com. ipv6hint="2001:db8:122:344::192.0.2.33"
 \x20\x01\x0d\xb8\x01\x22\x03\x44
      \x00\x00\x00\x00\xc0\x00\x02\x21              # address
 
-        Figure 7: An IPv6 hint using the embedded IPv4 syntax
+        Figure 8: An IPv6 hint using the embedded IPv4 syntax
 
    example.com.   SVCB   16 foo.example.org. (
                          alpn=h2,h3-19 mandatory=ipv4hint,alpn
@@ -2480,7 +2484,7 @@ example.com.   SVCB   1 example.com. ipv6hint="2001:db8:122:344::192.0.2.33"
    \x00\x04                                           # param length 4
    \xc0\x00\x02\x01                                   # param value
 
-        Figure 8: SvcParamKey ordering is arbitrary in presentation
+        Figure 9: SvcParamKey ordering is arbitrary in presentation
                       format but sorted in wire format
 
    example.com.   SVCB   16 foo.example.org. alpn="f\\\\oo\\,bar,h2"
@@ -2506,7 +2510,7 @@ example.com.   SVCB   1 example.com. ipv6hint="2001:db8:122:344::192.0.2.33"
    \x02                                               # alpn length 2
    h2                                                 # alpn value
 
-        Figure 9: An alpn value with an escaped comma and an escaped
+       Figure 10: An alpn value with an escaped comma and an escaped
                    backslash in two presentation formats
 
 D.3.  Failure cases
@@ -2519,7 +2523,7 @@ D.3.  Failure cases
                           key123=abc key123=def
                           )
 
-           Figure 10: Multiple instances of the same SvcParamKey
+           Figure 11: Multiple instances of the same SvcParamKey
 
    example.com.   SVCB   1 foo.example.com. mandatory
    example.com.   SVCB   1 foo.example.com. alpn
@@ -2527,26 +2531,26 @@ D.3.  Failure cases
    example.com.   SVCB   1 foo.example.com. ipv4hint
    example.com.   SVCB   1 foo.example.com. ipv6hint
 
-          Figure 11: Missing SvcParamValues that must be nonempty
+          Figure 12: Missing SvcParamValues that must be nonempty
 
    example.com.   SVCB   1 foo.example.com. no-default-alpn=abc
 
-      Figure 12: The "no-default-alpn" SvcParamKey value must be empty
+      Figure 13: The "no-default-alpn" SvcParamKey value must be empty
 
    example.com.   SVCB   1 foo.example.com. mandatory=key123
 
-                 Figure 13: A mandatory SvcParam is missing
+                 Figure 14: A mandatory SvcParam is missing
 
    example.com.   SVCB   1 foo.example.com. mandatory=mandatory
 
-       Figure 14: The "mandatory" SvcParamKey must not be included in
+       Figure 15: The "mandatory" SvcParamKey must not be included in
                              the mandatory list
 
    example.com.   SVCB   1 foo.example.com. (
                          mandatory=key123,key123 key123=abc
                          )
 
-        Figure 15: Multiple instances of the same SvcParamKey in the
+        Figure 16: Multiple instances of the same SvcParamKey in the
                                mandatory list
 
 Appendix E.  Change history
