@@ -2557,6 +2557,34 @@ Appendix E.  Change history
 
    (This section to be removed by the RFC editor.)
 
+   *  draft-ietf-dnsop-svcb-https-09
+
+      -  Extensive adjustments based on IESG reviews, including:
+
+         o  IANA registry changed to Expert Review policy
+
+         o  Adjustments to the use of normative language
+
+         o  Revised and expanded description of HSTS behavior
+
+         o  Expanded discussion of CNAME handling
+
+         o  Discussion of SvcParams in AliasMode records
+
+         o  Restructured ABNF for comma-separated lists
+
+         o  Additional references and many other minor clarifications
+
+      -  Other changes include:
+
+         o  New section on interaction with DNS64
+
+         o  New text on the interpretation of wildcard owner names
+
+         o  Adjusted guidance on default ALPN enforcement
+
+         o  Removed mention of IPv4-mapped IPv6
+
    *  draft-ietf-dnsop-svcb-https-08
 
       -  Extensive structural and editorial adjustments based on area
