@@ -25,11 +25,11 @@ both performance and privacy.
 The most recent working version of the document, open issues, etc. should all be
 available there.  The authors (gratefully) accept pull requests. 
     ' name="description">
-<meta content="xml2rfc 3.12.4" name="generator">
+<meta content="xml2rfc 3.12.7" name="generator">
 <meta content="Internet-Draft" name="keyword">
-<meta content="draft-ietf-dnsop-svcb-https" name="ietf.draft">
+<meta content="draft-ietf-dnsop-svcb-https-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.12.4
+  xml2rfc 3.12.7
     Python 3.9.7
     appdirs 1.4.4
     ConfigArgParse 1.3
@@ -1029,11 +1029,11 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">SVCB and HTTPS RRs for DNS</td>
-<td class="right">April 2022</td>
+<td class="right">May 2022</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Schwartz, et al.</td>
-<td class="center">Expires 28 October 2022</td>
+<td class="center">Expires 24 November 2022</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1043,15 +1043,15 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">DNSOP Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-ietf-dnsop-svcb-https</dd>
+<dd class="internet-draft">draft-ietf-dnsop-svcb-https-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-04-26" class="published">26 April 2022</time>
+<time datetime="2022-05-23" class="published">23 May 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-10-28">28 October 2022</time></dd>
+<dd class="expires"><time datetime="2022-11-24">24 November 2022</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1107,7 +1107,7 @@ available there.  The authors (gratefully) accept pull requests.<a href="#sectio
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 28 October 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 24 November 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1211,6 +1211,11 @@ available there.  The authors (gratefully) accept pull requests.<a href="#sectio
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-recursive-resolvers" class="xref">Recursive resolvers</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.1">
+                    <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="xref">4.2.1</a>.  <a href="#name-dns64" class="xref">DNS64</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
                 <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-general-requirements" class="xref">General requirements</a></p>
@@ -1521,7 +1526,8 @@ alternative endpoint<a href="#section-1.1-4.2" class="pilcrow">¶</a>
 where SRV <span>[<a href="#SRV" class="xref">SRV</a>]</span> has not been widely adopted<a href="#section-1.1-4.4" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-1.1-4.5">Provide an HSTS-like indication <span>[<a href="#HSTS" class="xref">HSTS</a>]</span> signaling that the "https"
-scheme should be used instead of "http" for this request (see <a href="#hsts" class="xref">Section 9.5</a>).<a href="#section-1.1-4.5" class="pilcrow">¶</a>
+scheme should be used instead of "http" for all HTTP requests to this host and port (see
+<a href="#hsts" class="xref">Section 9.5</a>).<a href="#section-1.1-4.5" class="pilcrow">¶</a>
 </li>
         </ul>
 </section>
@@ -1563,7 +1569,7 @@ authoritative servers can attach in-bailiwick SVCB, A, AAAA, and CNAME
 records in the Additional Section to responses for a SVCB query (<a href="#authoritative-behavior" class="xref">Section 4.1</a>).<a href="#section-1.2-5" class="pilcrow">¶</a></p>
 <p id="section-1.2-6">In ServiceMode, the SvcParams of the SVCB RR
 provide an extensible data model for describing alternative
-endpoints that are authoritative for the origin, along with
+endpoints that are authoritative for a service, along with
 parameters associated with each of these alternative endpoints (<a href="#keys" class="xref">Section 7</a>).<a href="#section-1.2-6" class="pilcrow">¶</a></p>
 <p id="section-1.2-7">For HTTP use-cases, the HTTPS RR (<a href="#https" class="xref">Section 9</a>) enables many of the benefits of Alt-Svc
 <span>[<a href="#AltSvc" class="xref">AltSvc</a>]</span>
@@ -1634,24 +1640,25 @@ HTTPS RR (RR type 65) provides special handling
 for the case of "https" origins as described in <a href="#https" class="xref">Section 9</a>.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <p id="section-2-4">SVCB RRs are extensible by a list of SvcParams, which are pairs consisting of a
 SvcParamKey and a SvcParamValue. Each SvcParamKey has a presentation name and a
-registered number. Values are in a format specific to the SvcParamKey. Their
-definition must specify both their presentation format (use in zone files) and
+registered number. Values are in a format specific to the SvcParamKey.  Each
+SvcParam has a specified presentation format (used in zone files) and
 wire encoding
 (e.g., domain names, binary data, or numeric values). The initial SvcParamKeys
-and formats are defined in <a href="#keys" class="xref">Section 7</a>.<a href="#section-2-4" class="pilcrow">¶</a></p>
+and their formats are defined in <a href="#keys" class="xref">Section 7</a>.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <div id="presentation">
 <section id="section-2.1">
         <h3 id="name-zone-file-presentation-form">
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-zone-file-presentation-form" class="section-name selfRef">Zone file presentation format</a>
         </h3>
-<p id="section-2.1-1">The presentation format of the record is:<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1-1">The presentation format <code>&lt;RDATA&gt;</code> of the record (<span>[<a href="#RFC1035" class="xref">RFC1035</a>], <a href="https://rfc-editor.org/rfc/rfc1035#section-5.1" class="relref">Section 5.1</a></span>) has
+the form:<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-2.1-2">
 <pre>
-Name TTL IN SVCB SvcPriority TargetName SvcParams
+SvcPriority TargetName SvcParams
 </pre><a href="#section-2.1-2" class="pilcrow">¶</a>
 </div>
 <p id="section-2.1-3">The SVCB record is defined specifically within
-the Internet ("IN") Class (<span>[<a href="#RFC1035" class="xref">RFC1035</a>]</span>).<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+the Internet ("IN") Class (<span>[<a href="#RFC1035" class="xref">RFC1035</a>], <a href="https://rfc-editor.org/rfc/rfc1035#section-3.2.4" class="relref">Section 3.2.4</a></span>).<a href="#section-2.1-3" class="pilcrow">¶</a></p>
 <p id="section-2.1-4">SvcPriority is a number in the range 0-65535,
 TargetName is a <code>&lt;domain-name&gt;</code> (<span>[<a href="#RFC1035" class="xref">RFC1035</a>], <a href="https://rfc-editor.org/rfc/rfc1035#section-5.1" class="relref">Section 5.1</a></span>),
 and the SvcParams are a whitespace-separated list, with each SvcParam
@@ -1659,7 +1666,7 @@ consisting of a SvcParamKey=SvcParamValue pair or a standalone SvcParamKey.
 SvcParamKeys are subject to IANA control (<a href="#svcparamregistry" class="xref">Section 15.3</a>).<a href="#section-2.1-4" class="pilcrow">¶</a></p>
 <p id="section-2.1-5">Each SvcParamKey SHALL appear at most once in the SvcParams.
 In presentation format, SvcParamKeys are lower-case alphanumeric strings.
-Key names should contain 1-63 characters from the ranges "a"-"z", "0"-"9", and "-".
+Key names contain 1-63 characters from the ranges "a"-"z", "0"-"9", and "-".
 In ABNF <span>[<a href="#RFC5234" class="xref">RFC5234</a>]</span>,<a href="#section-2.1-5" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-2.1-6">
 <pre>
@@ -1667,7 +1674,7 @@ alpha-lc      = %x61-7A   ;  a-z
 SvcParamKey   = 1*63(alpha-lc / DIGIT / "-")
 SvcParam      = SvcParamKey ["=" SvcParamValue]
 SvcParamValue = char-string ; See Appendix A
-value         = *OCTET
+value         = *OCTET ; Value before key-specific parsing
 </pre><a href="#section-2.1-6" class="pilcrow">¶</a>
 </div>
 <p id="section-2.1-7">The SvcParamValue is parsed using the
@@ -1695,7 +1702,7 @@ repeated.<a href="#section-2.1-11" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-2.2-1">The RDATA for the SVCB RR consists of:<a href="#section-2.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2-2.1">a 2 octet field for SvcPriority as an integer in network
+<li class="normal" id="section-2.2-2.1">a 2-octet field for SvcPriority as an integer in network
 byte order.<a href="#section-2.2-2.1" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-2.2-2.2">the uncompressed, fully-qualified TargetName, represented as
@@ -1709,10 +1716,10 @@ and DNS message sizes).<a href="#section-2.2-2.3" class="pilcrow">¶</a>
 <p id="section-2.2-3">When the list of SvcParams is non-empty, it contains a series of
 SvcParamKey=SvcParamValue pairs, represented as:<a href="#section-2.2-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2-4.1">a 2 octet field containing the SvcParamKey as an
+<li class="normal" id="section-2.2-4.1">a 2-octet field containing the SvcParamKey as an
 integer in network byte order.  (See <a href="#iana-keys" class="xref">Section 15.3.2</a> for the defined values.)<a href="#section-2.2-4.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-2.2-4.2">a 2 octet field containing the length of the SvcParamValue
+          <li class="normal" id="section-2.2-4.2">a 2-octet field containing the length of the SvcParamValue
 as an integer between 0 and 65535 in network byte order.<a href="#section-2.2-4.2" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-2.2-4.3">an octet string of this length whose contents are the SvcParamValue in a
@@ -1798,8 +1805,8 @@ If an RRSet contains a record in AliasMode, the recipient MUST ignore
 any ServiceMode records in the set.<a href="#section-2.4.1-2" class="pilcrow">¶</a></p>
 <p id="section-2.4.1-3">RRSets are explicitly unordered collections, so the
 SvcPriority field is used to impose an ordering on SVCB RRs.
-ServiceMode RRs with a smaller SvcPriority value SHOULD be given
-preference over RRs with a larger SvcPriority value.<a href="#section-2.4.1-3" class="pilcrow">¶</a></p>
+A smaller SvcPriority indicates that the domain owner recommends use of this
+record over ServiceMode RRs with a larger SvcPriority value.<a href="#section-2.4.1-3" class="pilcrow">¶</a></p>
 <p id="section-2.4.1-4">When receiving an RRSet containing multiple SVCB records with the
 same SvcPriority value, clients SHOULD apply a random shuffle within a
 priority level to the records before using them, to ensure uniform
@@ -1824,8 +1831,10 @@ Unlike CNAME, AliasMode records do not affect the resolution of other RR
 types, and apply only to a specific service, not an entire domain name.<a href="#section-2.4.2-2" class="pilcrow">¶</a></p>
 <p id="section-2.4.2-3">The AliasMode TargetName SHOULD NOT be equal
 to the owner name, as this would result in a loop.
-In AliasMode, records SHOULD NOT include any SvcParams, and recipients MUST
-ignore any SvcParams that are present.<a href="#section-2.4.2-3" class="pilcrow">¶</a></p>
+In AliasMode, recipients MUST ignore any SvcParams that are present.
+Zone-file parsers MAY emit a warning if an AliasMode record has SvcParams.
+The use of SvcParams in AliasMode records is currently not defined, but a
+future specification could extend AliasMode records to include SvcParams.<a href="#section-2.4.2-3" class="pilcrow">¶</a></p>
 <p id="section-2.4.2-4">For example, the operator of foo://example.com:8080 could
 point requests to a service operating at foosvc.example.net
 by publishing:<a href="#section-2.4.2-4" class="pilcrow">¶</a></p>
@@ -1838,7 +1847,8 @@ _8080._foo.example.com. 3600 IN SVCB 0 foosvc.example.net.
 foosvc.example.net can add or remove ServiceMode SVCB records without
 requiring a corresponding change to example.com.  Note that if
 foosvc.example.net promises to always publish a SVCB record, this AliasMode
-record can be replaced by a CNAME, which would likely improve performance.<a href="#section-2.4.2-6" class="pilcrow">¶</a></p>
+record can be replaced by a CNAME at the same owner name, which would likely
+improve performance.<a href="#section-2.4.2-6" class="pilcrow">¶</a></p>
 <p id="section-2.4.2-7">AliasMode is especially useful for SVCB-compatible RR types that do not
 require an underscore prefix, such as the HTTPS RR type.  For example,
 the operator of https://example.com could point requests to a server
@@ -1856,8 +1866,8 @@ limit on the total number of SVCB aliases they will follow for each resolution
 request.  This limit MUST NOT be zero, i.e. implementations MUST be able to
 follow at least one AliasMode record.  The exact value of this limit
 is left to implementations.<a href="#section-2.4.2-10" class="pilcrow">¶</a></p>
-<p id="section-2.4.2-11">For compatibility and performance, zone owners SHOULD NOT configure their zones
-to require following multiple AliasMode records.<a href="#section-2.4.2-11" class="pilcrow">¶</a></p>
+<p id="section-2.4.2-11">Zones that require following multiple AliasMode records could encounter
+compatibility and performance issues.<a href="#section-2.4.2-11" class="pilcrow">¶</a></p>
 <p id="section-2.4.2-12">As legacy clients will not know to use this record, service
 operators will likely need to retain fallback AAAA and A records
 alongside this SVCB record, although in a common case
@@ -1884,9 +1894,10 @@ protocol mapping, clients MUST ignore any SvcParam that they do
 not recognize.<a href="#section-2.4.3-2" class="pilcrow">¶</a></p>
 <p id="section-2.4.3-3">Some SvcParams impose requirements on other SvcParams in the RR.  A
 ServiceMode RR is called "self-consistent" if its SvcParams all comply with
-each other's requirements.  Zone-file implementations SHOULD enforce
-self-consistency.  Clients MUST reject any RR whose recognized SvcParams
-are not self-consistent, and MAY reject the entire RRSet.<a href="#section-2.4.3-3" class="pilcrow">¶</a></p>
+each other's requirements.  Clients MUST reject any RR whose recognized
+SvcParams are not self-consistent, and MAY reject the entire RRSet.  To
+help zone operators avoid this condition, zone-file implementations SHOULD
+enforce self-consistency as well.<a href="#section-2.4.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1915,7 +1926,9 @@ without the use of SVCB.<a href="#section-2.5.1-1" class="pilcrow">¶</a></p>
 <a href="#section-2.5.2" class="section-number selfRef">2.5.2. </a><a href="#name-servicemode-2" class="section-name selfRef">ServiceMode</a>
           </h4>
 <p id="section-2.5.2-1">For ServiceMode SVCB RRs, if TargetName has the value ".", then the
-owner name of this record MUST be used as the effective TargetName.<a href="#section-2.5.2-1" class="pilcrow">¶</a></p>
+owner name of this record MUST be used as the effective TargetName.
+If the record has a wildcard owner name in the zone file, the recipient
+SHALL use the response's synthesized owner name as the effective TargetName.<a href="#section-2.5.2-1" class="pilcrow">¶</a></p>
 <p id="section-2.5.2-2">For example, in the following example "svc2.example.net"
 is the effective TargetName:<a href="#section-2.5.2-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-2.5.2-3">
@@ -1981,7 +1994,7 @@ fallback to lower-priority alternatives.  Clients resolve AAAA and/or A
 records for the selected TargetName, and MAY choose between them using an
 approach such as Happy Eyeballs <span>[<a href="#HappyEyeballsV2" class="xref">HappyEyeballsV2</a>]</span>.<a href="#section-3-7" class="pilcrow">¶</a></p>
 <p id="section-3-8">If the client is SVCB-optional, and connecting using this list of endpoints has
-failed, the client SHOULD attempt non-SVCB connection modes.<a href="#section-3-8" class="pilcrow">¶</a></p>
+failed, the client now attempts to use non-SVCB connection modes.<a href="#section-3-8" class="pilcrow">¶</a></p>
 <p id="section-3-9">Some important optimizations are discussed in <a href="#optimizations" class="xref">Section 5</a>
 to avoid additional latency in comparison to ordinary AAAA/A lookups.<a href="#section-3-9" class="pilcrow">¶</a></p>
 <div id="client-failures">
@@ -2002,11 +2015,13 @@ occur if an active attacker between the client and the recursive resolver is
 selectively dropping SVCB queries or responses, based on their size or
 other observable patterns.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <p id="section-3.1-3">If the client enforces DNSSEC validation on A/AAAA responses, it SHOULD
-apply the same validation policy to SVCB.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+apply the same validation policy to SVCB.  Otherwise, an attacker could
+defeat the A/AAAA protection by forging SVCB responses that direct the
+client to other IP addresses.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 <p id="section-3.1-4">If DNS responses are not cryptographically protected, clients MAY treat
 SVCB resolution failure as fatal or nonfatal.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
 <p id="section-3.1-5">If the client is unable to complete SVCB resolution due to its chain length
-limit, the client SHOULD fall back to the authority endpoint, as if the
+limit, the client MUST fall back to the authority endpoint, as if the
 origin's SVCB record did not exist.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2018,13 +2033,15 @@ origin's SVCB record did not exist.<a href="#section-3.1-5" class="pilcrow">¶</
 <p id="section-3.2-1">Clients using a domain-oriented transport proxy like HTTP CONNECT
 (<span>[<a href="#RFC7231" class="xref">RFC7231</a>], <a href="https://rfc-editor.org/rfc/rfc7231#section-4.3.6" class="relref">Section 4.3.6</a></span>) or SOCKS5 (<span>[<a href="#RFC1928" class="xref">RFC1928</a>]</span>) have the option to
 use named destinations, in which case the client does not perform
-any A or AAAA queries for destination domains.  If the client is using named
+any A or AAAA queries for destination domains.  If the client is configured
+to use named
 destinations with a proxy that does not provide SVCB query capability
 (e.g. through an affiliated DNS resolver), the client would have to perform
 SVCB resolution separately, likely disclosing the destinations to additional parties than just the proxy.
-Clients that support such proxies SHOULD arrange for a separate SVCB resolution
-procedure with appropriate privacy properties, or disable SVCB resolution entirely if
-SVCB-optional.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+Clients in this configuration SHOULD arrange for a separate SVCB resolution
+procedure with appropriate privacy properties.  If this is not possible,
+SVCB-optional clients MUST disable SVCB resolution entirely, and SVCB-required
+clients MUST treat the configuration as invalid.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.2-2">If the client does use SVCB and named destinations, the client SHOULD follow
 the standard SVCB resolution process, selecting the smallest-SvcPriority
 option that is compatible with the client and the proxy.  When connecting
@@ -2124,6 +2141,22 @@ MUST NOT themselves cause the resolver to send a failure response.<a href="#sect
 <p id="section-4.2-4">See <a href="#alias-mode" class="xref">Section 2.4.2</a> for additional safeguards for recursive resolvers
 to implement to mitigate loops.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
 <p id="section-4.2-5">See <a href="#incomplete-response" class="xref">Section 5.2</a> for possible optimizations of this procedure.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
+<div id="dns64">
+<section id="section-4.2.1">
+          <h4 id="name-dns64">
+<a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-dns64" class="section-name selfRef">DNS64</a>
+          </h4>
+<p id="section-4.2.1-1">DNS64 resolvers synthesize responses to AAAA queries for names that only
+have an A record (<span><a href="https://rfc-editor.org/rfc/rfc6147#section-5.1.7" class="relref">Section 5.1.7</a> of [<a href="#RFC6147" class="xref">RFC6147</a>]</span>).  SVCB-aware DNS64
+resolvers SHOULD apply the same synthesis logic when resolving AAAA
+records for the TargetName for inclusion as Additionals (Step 2 in
+<a href="#recursive-behavior" class="xref">Section 4.2</a>), and MAY omit the Additional A records.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-2">DNS64 resolvers MUST NOT extrapolate the AAAA synthesis logic to the IP
+hints in the SvcParams (<a href="#svcparamkeys-iphints" class="xref">Section 7.4</a>).  Modifying the IP hints
+would break DNSSEC validation for the SVCB record and would not improve
+performance when the above recommendation is implemented.<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="general-requirements">
@@ -2171,11 +2204,11 @@ resolvers SHOULD treat any records in the Additional section as having
 SOURCE PREFIX-LENGTH zero and SCOPE PREFIX-LENGTH as specified
 in the ECS option.  Authoritative servers MUST omit such records if they are
 not suitable for use by any stub resolvers that set SOURCE PREFIX-LENGTH to
-zero.  This will cause the resolver to perform a followup query that can
+zero.  This will cause the resolver to perform a follow-up query that can
 receive properly tailored ECS.  (This is similar to the usage of CNAME with
 ECS discussed in <span>[<a href="#RFC7871" class="xref">RFC7871</a>], <a href="https://rfc-editor.org/rfc/rfc7871#section-7.2.1" class="relref">Section 7.2.1</a></span>.)<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 <p id="section-4.4-3">Authoritative servers that omit Additional records can avoid the added
-latency of a followup query by following the advice in <a href="#zone-performance" class="xref">Section 11.2</a>.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
+latency of a follow-up query by following the advice in <a href="#zone-performance" class="xref">Section 11.2</a>.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2188,7 +2221,7 @@ latency of a followup query by following the advice in <a href="#zone-performanc
 <p id="section-5-1">For optimal performance (i.e. minimum connection setup time), clients
 SHOULD implement a client-side DNS cache.
 Responses in the Additional section of a SVCB response SHOULD be placed
-in cache before performing any followup queries.
+in cache before performing any follow-up queries.
 With this behavior, and conforming DNS servers,
 using SVCB does not add network latency to connection setup.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">To improve performance when using a non-conforming recursive resolver, clients
@@ -2390,14 +2423,15 @@ traffic can prevent a successful transport connection, but cannot otherwise
 interfere with ALPN protocol selection.  This procedure also ensures that
 each ProtocolNameList includes at least one protocol from the SVCB ALPN set.<a href="#section-7.1.2-6" class="pilcrow">¶</a></p>
 <p id="section-7.1.2-7">Clients SHOULD NOT attempt connection to a service endpoint whose SVCB
-ALPN set does not contain any supported protocols.  To ensure
+ALPN set does not contain any supported protocols.<a href="#section-7.1.2-7" class="pilcrow">¶</a></p>
+<p id="section-7.1.2-8">To ensure
 consistency of behavior, clients MAY reject the entire SVCB RRSet and fall
 back to basic connection establishment if all of the compatible RRs indicate
 "no-default-alpn", even if connection could have succeeded using a
-non-default alpn.<a href="#section-7.1.2-7" class="pilcrow">¶</a></p>
-<p id="section-7.1.2-8">For compatibility with clients that require default transports,
-zone operators SHOULD ensure that at least one RR in each RRSet supports the
-default transports.<a href="#section-7.1.2-8" class="pilcrow">¶</a></p>
+non-default alpn.<a href="#section-7.1.2-8" class="pilcrow">¶</a></p>
+<p id="section-7.1.2-9">Zone operators SHOULD ensure that at least one RR in each RRSet supports the
+default transports.  This enables compatibility with the greatest number of
+clients.<a href="#section-7.1.2-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2462,19 +2496,18 @@ AAAA response addresses could negatively impact load balancing or other
 geo-aware features and thereby degrade client performance.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
 <p id="section-7.4-2">The presentation <code>value</code> SHALL be a comma-separated list (<a href="#value-list" class="xref">Appendix A.1</a>)
 of one or more IP addresses of the appropriate
-family in standard textual format <span>[<a href="#RFC5952" class="xref">RFC5952</a>]</span>, <span>[<a href="#RFC4001" class="xref">RFC4001</a>]</span>.  To enable simpler parsing,
+family in standard textual format <span>[<a href="#RFC5952" class="xref">RFC5952</a>]</span><span>[<a href="#RFC4001" class="xref">RFC4001</a>]</span>.  To enable simpler parsing,
 this SvcParamValue MUST NOT contain escape sequences.<a href="#section-7.4-2" class="pilcrow">¶</a></p>
 <p id="section-7.4-3">The wire format for each parameter is a sequence of IP addresses in network
-byte order (for the respective address-family).<br>
+byte order (for the respective address-family).
 Like an A or AAAA RRSet, the list of addresses represents an
 unordered collection, and clients SHOULD pick addresses to use in a random order.
 An empty list of addresses is invalid.<a href="#section-7.4-3" class="pilcrow">¶</a></p>
 <p id="section-7.4-4">When selecting between IPv4 and IPv6 addresses to use, clients may use an
 approach such as Happy Eyeballs <span>[<a href="#HappyEyeballsV2" class="xref">HappyEyeballsV2</a>]</span>.
-When only "ipv4hint" is present, IPv6-only clients may synthesize
+When only "ipv4hint" is present, NAT64 clients may synthesize
 IPv6 addresses as specified in <span>[<a href="#RFC7050" class="xref">RFC7050</a>]</span> or ignore the "ipv4hint" key and
-wait for AAAA resolution (<a href="#client-behavior" class="xref">Section 3</a>).  Recursive resolvers MUST NOT
-perform DNS64 (<span>[<a href="#RFC6147" class="xref">RFC6147</a>]</span>) on parameters within a SVCB record.
+wait for AAAA resolution (<a href="#client-behavior" class="xref">Section 3</a>).
 For best performance, server operators SHOULD include an "ipv6hint" parameter
 whenever they include an "ipv4hint" parameter.<a href="#section-7.4-4" class="pilcrow">¶</a></p>
 <p id="section-7.4-5">These parameters are intended to minimize additional connection latency
@@ -2721,7 +2754,8 @@ the "ech" SvcParam is present (<a href="#ech-client-behavior" class="xref">Secti
 </li>
         </ul>
 <p id="section-9.3-12">Origins that publish an "ech" SvcParam in their HTTPS record SHOULD
-also publish an "ech" SvcParam for any alt-authorities.  Otherwise,
+also publish an HTTPS record with the "ech" SvcParam for every
+alt-authority offered in its Alt-Svc Field Values.  Otherwise,
 clients might reveal the name of the server in an unencrypted ClientHello.
 Similar consistency considerations could apply to future SvcParamKeys, so
 alt-authorities SHOULD carry the same SvcParams as the origin unless
@@ -2739,7 +2773,7 @@ connection for this origin.<a href="#section-9.3-13" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-9.4-1">Clients MUST NOT use an HTTPS RR response unless the
 client supports TLS Server Name Indication (SNI) and
-indicates the origin name when negotiating TLS.
+indicates the origin name in the TLS ClientHello (which might be encrypted).
 This supports the conservation of IP addresses.<a href="#section-9.4-1" class="pilcrow">¶</a></p>
 <p id="section-9.4-2">Note that the TLS SNI (and also the HTTP "Host" or ":authority") will indicate
 the origin, not the TargetName.<a href="#section-9.4-2" class="pilcrow">¶</a></p>
@@ -2769,20 +2803,20 @@ or any compatible ServiceMode HTTPS RRs (see <a href="#mandatory" class="xref">S
 SHOULD behave as if it has received an HTTP 307 (Temporary Redirect) status code
 with this "https" URL in the "Location" field.  (Receipt of an incompatible ServiceMode RR does not
 trigger the redirect behavior.)
-Because HTTPS RRs are received over an often insecure channel (DNS),
+Because HTTPS RRs are received over an often-insecure channel (DNS),
 clients MUST NOT place any more trust in this signal than if they
-had received a 307 redirect over cleartext HTTP.
-If this redirection would result in a loss of functionality (e.g. important
-resources that are only available on the "http" origin), the operator MUST
-NOT publish an HTTPS RR.<a href="#section-9.5-4" class="pilcrow">¶</a></p>
-<p id="section-9.5-5">When an "https" connection fails due to an error in the underlying secure
+had received a 307 (Temporary Redirect) response over cleartext HTTP.<a href="#section-9.5-4" class="pilcrow">¶</a></p>
+<p id="section-9.5-5">Publishing an HTTPS RR has the potential to have unexpected results
+or a loss in functionality in cases where the "http" resource neither
+redirects to the "https" resource nor references the same underlying resource.<a href="#section-9.5-5" class="pilcrow">¶</a></p>
+<p id="section-9.5-6">When an "https" connection fails due to an error in the underlying secure
 transport, such as an error in certificate validation, some clients
 currently offer a "user recourse" that allows the user to bypass the
 security error and connect anyway.
 When making an "https" scheme request to an origin with an HTTPS RR,
 either directly or via the above redirect, such a client MAY remove the user
 recourse option.  Origins that publish HTTPS RRs therefore MUST NOT rely
-on user recourse for access.  For more information, see Section <a href="https://rfc-editor.org/rfc/rfc6797#section-8.4" class="relref">8.4</a> and Section <a href="https://rfc-editor.org/rfc/rfc6797#section-12.1" class="relref">12.1</a> of <span>[<a href="#HSTS" class="xref">HSTS</a>]</span>.<a href="#section-9.5-5" class="pilcrow">¶</a></p>
+on user recourse for access.  For more information, see Section <a href="https://rfc-editor.org/rfc/rfc6797#section-8.4" class="relref">8.4</a> and Section <a href="https://rfc-editor.org/rfc/rfc6797#section-12.1" class="relref">12.1</a> of <span>[<a href="#HSTS" class="xref">HSTS</a>]</span>.<a href="#section-9.5-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="use-of-https-rrs-in-other-protocols">
@@ -2814,7 +2848,7 @@ be defined to take precedence over HTTPS RRs.<a href="#section-9.6-3" class="pil
 <p id="section-10-1">The SVCB "ech" parameter is defined for
 conveying the ECH configuration of an alternative endpoint.
 In wire format, the value of the parameter is an ECHConfigList
-<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-14#section-4" class="relref">Section 4</a> of [<a href="#ECH" class="xref">ECH</a>]</span>, including the redundant length prefix.  In presentation format,
+(<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-14#section-4" class="relref">Section 4</a> of [<a href="#ECH" class="xref">ECH</a>]</span>), including the redundant length prefix.  In presentation format,
 the value is the ECHConfigList in Base 64 Encoding (<span><a href="https://rfc-editor.org/rfc/rfc4648#section-4" class="relref">Section 4</a> of [<a href="#RFC4648" class="xref">RFC4648</a>]</span>).
 Base 64 is used here to simplify integration with TLS server software.
 To enable simpler parsing, this SvcParam MUST NOT contain escape sequences.<a href="#section-10-1" class="pilcrow">¶</a></p>
@@ -2891,19 +2925,24 @@ choose TargetName according to a predictable convention that is known
 to the client, so that clients can issue A and/or AAAA queries for TargetName
 in advance (see <a href="#optimizations" class="xref">Section 5</a>).  Unless otherwise specified, the
 convention is to set TargetName to the service name for an initial
-ServiceMode record, or to "." if it is reached via an alias.  For
-foo://foo.example.com:8080, this might look like:<a href="#section-11.2-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-11.2-2">
+ServiceMode record, or to "." if it is reached via an alias.<a href="#section-11.2-1" class="pilcrow">¶</a></p>
+<span id="name-foo-fooexamplecom8080-is-de"></span><figure id="figure-1">
+          <div class="alignLeft art-text artwork" id="section-11.2-2.1">
 <pre>
 $ORIGIN example.com. ; Origin
 foo                  3600 IN CNAME foosvc.example.net.
 _8080._foo.foo       3600 IN CNAME foosvc.example.net.
+bar                   300 IN AAAA 2001:db8::2
+_9090._bar.bar       3600 IN SVCB 1 bar key65444=...
 
 $ORIGIN example.net. ; Service provider zone
 foosvc               3600 IN SVCB 1 . key65333=...
 foosvc                300 IN AAAA 2001:db8::1
-</pre><a href="#section-11.2-2" class="pilcrow">¶</a>
+</pre>
 </div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-foo-fooexamplecom8080-is-de" class="selfRef">foo://foo.example.com:8080 is delegated to foosvc.example.net, but bar://bar.example.com:9090 is served locally.</a>
+          </figcaption></figure>
 <p id="section-11.2-3">Domain owners SHOULD avoid using a TargetName that is below a DNAME, as
 this is likely unnecessary and makes responses slower and larger.
 Also, zone structures that require following more than 8 aliases
@@ -2985,17 +3024,16 @@ respectively, and will validate TLS server certificates accordingly.<a href="#se
           <h4 id="name-parameter-binding">
 <a href="#section-11.3.3" class="section-number selfRef">11.3.3. </a><a href="#name-parameter-binding" class="section-name selfRef">Parameter binding</a>
           </h4>
-<p id="section-11.3.3-1">Suppose that svc.example's default server pool supports HTTP/2, and
-it has deployed HTTP/3 on a new server pool with a different
-configuration.  This can be expressed in the following form:<a href="#section-11.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-11.3.3-1">Suppose that svc.example's primary server pool supports HTTP/3, but its
+backup server pool does not.  This can be expressed in the following form:<a href="#section-11.3.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-11.3.3-2">
 <pre>
 $ORIGIN svc.example. ; A hosting provider.
-pool  7200 IN HTTPS 1 h3pool alpn=h2,h3 ech="123..."
-              HTTPS 2 .      alpn=h2 ech="abc..."
+pool  7200 IN HTTPS 1 . alpn=h2,h3 ech="123..."
+              HTTPS 2 backup alpn=h2 ech="abc..."
 pool   300 IN A        192.0.2.2
               AAAA     2001:db8::2
-h3pool 300 IN A        192.0.2.3
+backup 300 IN A        192.0.2.3
               AAAA     2001:db8::3
 </pre><a href="#section-11.3.3-2" class="pilcrow">¶</a>
 </div>
@@ -3091,11 +3129,11 @@ increases resolution latency, especially when using a non-HTTPS-aware
 recursive resolver.  An alternative would be to alias the zone
 apex directly to a name managed by a CDN.<a href="#section-11.3.4-6.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-11.3.4-6.3">The A, AAAA, and HTTPS resolutions are independent lookups, so clients may
+            <li class="normal" id="section-11.3.4-6.3">The A, AAAA, and HTTPS resolutions are independent lookups, so resolvers may
 observe and follow different CNAMEs to different CDNs.
-Clients may thus find a TargetName pointing to a name
-other than the one which returned along with the A and AAAA lookups
-and will need to do an additional resolution for them.
+Clients may thus find that the A and AAAA responses do not correspond to the
+TargetName in the HTTPS response, and will need to perform additional
+queries to retrieve the correct IP addresses.
 Including ipv6hint and ipv4hint will reduce the performance
 impact of this case.<a href="#section-11.3.4-6.3" class="pilcrow">¶</a>
 </li>
@@ -3149,8 +3187,8 @@ However, performance improvements, and some modest privacy improvements,
 are possible without the use of those standards.<a href="#section-12-2" class="pilcrow">¶</a></p>
 <p id="section-12-3">Any specification for use of SVCB with a protocol MUST have an entry for its
 scheme under the SVCB RR type in the IANA DNS Underscore Global Scoped Entry
-Registry <span>[<a href="#Attrleaf" class="xref">Attrleaf</a>]</span>.  The scheme SHOULD have an entry in the IANA URI Schemes
-Registry <span>[<a href="#RFC7595" class="xref">RFC7595</a>]</span>.  The scheme SHOULD have a defined specification for use
+Registry <span>[<a href="#Attrleaf" class="xref">Attrleaf</a>]</span>.  The scheme MUST have an entry in the IANA URI Schemes
+Registry <span>[<a href="#RFC7595" class="xref">RFC7595</a>]</span>, and MUST have a defined specification for use
 with SVCB.<a href="#section-12-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3219,7 +3257,7 @@ SVCB support in a new context.<a href="#section-14-1" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-15.1-1">This document defines a new DNS RR type, SVCB, whose value 64 has
 been allocated by IANA from the "Resource Record (RR) TYPEs"
-subregistry of the "Domain Name System (DNS) Parameters" registry:<a href="#section-15.1-1" class="pilcrow">¶</a></p>
+registry on the "Domain Name System (DNS) Parameters" page:<a href="#section-15.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-15.1-2.1">Type: SVCB<a href="#section-15.1-2.1" class="pilcrow">¶</a>
 </li>
@@ -3239,7 +3277,7 @@ subregistry of the "Domain Name System (DNS) Parameters" registry:<a href="#sect
         </h3>
 <p id="section-15.2-1">This document defines a new DNS RR type, "HTTPS", whose value 65 has
 been allocated by IANA from the "Resource Record (RR) TYPEs"
-subregistry of the "Domain Name System (DNS) Parameters" registry:<a href="#section-15.2-1" class="pilcrow">¶</a></p>
+registry on the "Domain Name System (DNS) Parameters" page:<a href="#section-15.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-15.2-2.1">Type: HTTPS<a href="#section-15.2-2.1" class="pilcrow">¶</a>
 </li>
@@ -3460,10 +3498,6 @@ and suggestions on this draft.<a href="#section-16-2" class="pilcrow">¶</a></p>
         <dd>
 <span class="refAuthor">Crocker, D.</span>, <span class="refTitle">"Scoped Interpretation of DNS Resource Records through "Underscored" Naming of Attribute Leaves"</span>, <span class="seriesInfo">BCP 222</span>, <span class="seriesInfo">RFC 8552</span>, <span class="seriesInfo">DOI 10.17487/RFC8552</span>, <time datetime="2019-03" class="refDate">March 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8552">https://www.rfc-editor.org/rfc/rfc8552</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="DNAME">[DNAME]</dt>
-        <dd>
-<span class="refAuthor">Rose, S.</span> and <span class="refAuthor">W. Wijngaards</span>, <span class="refTitle">"DNAME Redirection in the DNS"</span>, <span class="seriesInfo">RFC 6672</span>, <span class="seriesInfo">DOI 10.17487/RFC6672</span>, <time datetime="2012-06" class="refDate">June 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6672">https://www.rfc-editor.org/rfc/rfc6672</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="DoH">[DoH]</dt>
         <dd>
 <span class="refAuthor">Hoffman, P.</span> and <span class="refAuthor">P. McManus</span>, <span class="refTitle">"DNS Queries over HTTPS (DoH)"</span>, <span class="seriesInfo">RFC 8484</span>, <span class="seriesInfo">DOI 10.17487/RFC8484</span>, <time datetime="2018-10" class="refDate">October 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8484">https://www.rfc-editor.org/rfc/rfc8484</a>&gt;</span>. </dd>
@@ -3479,10 +3513,6 @@ and suggestions on this draft.<a href="#section-16-2" class="pilcrow">¶</a></p>
 <dt id="HappyEyeballsV2">[HappyEyeballsV2]</dt>
         <dd>
 <span class="refAuthor">Schinazi, D.</span> and <span class="refAuthor">T. Pauly</span>, <span class="refTitle">"Happy Eyeballs Version 2: Better Connectivity Using Concurrency"</span>, <span class="seriesInfo">RFC 8305</span>, <span class="seriesInfo">DOI 10.17487/RFC8305</span>, <time datetime="2017-12" class="refDate">December 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8305">https://www.rfc-editor.org/rfc/rfc8305</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="HSTS">[HSTS]</dt>
-        <dd>
-<span class="refAuthor">Hodges, J.</span>, <span class="refAuthor">Jackson, C.</span>, and <span class="refAuthor">A. Barth</span>, <span class="refTitle">"HTTP Strict Transport Security (HSTS)"</span>, <span class="seriesInfo">RFC 6797</span>, <span class="seriesInfo">DOI 10.17487/RFC6797</span>, <time datetime="2012-11" class="refDate">November 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6797">https://www.rfc-editor.org/rfc/rfc6797</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="HTTP">[HTTP]</dt>
         <dd>
@@ -3583,6 +3613,10 @@ and suggestions on this draft.<a href="#section-16-2" class="pilcrow">¶</a></p>
         <dd>
 <span class="refAuthor">Nottingham, M.</span>, <span class="refAuthor">McManus, P.</span>, and <span class="refAuthor">J. Reschke</span>, <span class="refTitle">"HTTP Alternative Services"</span>, <span class="seriesInfo">RFC 7838</span>, <span class="seriesInfo">DOI 10.17487/RFC7838</span>, <time datetime="2016-04" class="refDate">April 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7838">https://www.rfc-editor.org/rfc/rfc7838</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="DNAME">[DNAME]</dt>
+        <dd>
+<span class="refAuthor">Rose, S.</span> and <span class="refAuthor">W. Wijngaards</span>, <span class="refTitle">"DNAME Redirection in the DNS"</span>, <span class="seriesInfo">RFC 6672</span>, <span class="seriesInfo">DOI 10.17487/RFC6672</span>, <time datetime="2012-06" class="refDate">June 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6672">https://www.rfc-editor.org/rfc/rfc6672</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="DNSTerm">[DNSTerm]</dt>
         <dd>
 <span class="refAuthor">Hoffman, P.</span>, <span class="refAuthor">Sullivan, A.</span>, and <span class="refAuthor">K. Fujiwara</span>, <span class="refTitle">"DNS Terminology"</span>, <span class="seriesInfo">BCP 219</span>, <span class="seriesInfo">RFC 8499</span>, <span class="seriesInfo">DOI 10.17487/RFC8499</span>, <time datetime="2019-01" class="refDate">January 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8499">https://www.rfc-editor.org/rfc/rfc8499</a>&gt;</span>. </dd>
@@ -3590,6 +3624,10 @@ and suggestions on this draft.<a href="#section-16-2" class="pilcrow">¶</a></p>
 <dt id="FETCH">[FETCH]</dt>
         <dd>
 <span class="refTitle">"Fetch Living Standard"</span>, <time datetime="2020-05" class="refDate">May 2020</time>, <span>&lt;<a href="https://fetch.spec.whatwg.org/">https://fetch.spec.whatwg.org/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="HSTS">[HSTS]</dt>
+        <dd>
+<span class="refAuthor">Hodges, J.</span>, <span class="refAuthor">Jackson, C.</span>, and <span class="refAuthor">A. Barth</span>, <span class="refTitle">"HTTP Strict Transport Security (HSTS)"</span>, <span class="seriesInfo">RFC 6797</span>, <span class="seriesInfo">DOI 10.17487/RFC6797</span>, <time datetime="2012-11" class="refDate">November 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6797">https://www.rfc-editor.org/rfc/rfc6797</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="HTTP3">[HTTP3]</dt>
         <dd>
@@ -3885,7 +3923,7 @@ long, it is broken into several lines.<a href="#appendix-D-1" class="pilcrow">¶
         <h3 id="name-aliasmode-3">
 <a href="#appendix-D.1" class="section-number selfRef">D.1. </a><a href="#name-aliasmode-3" class="section-name selfRef">AliasMode</a>
         </h3>
-<span id="name-aliasmode-4"></span><figure id="figure-1">
+<span id="name-aliasmode-4"></span><figure id="figure-2">
           <div class="alignLeft art-text artwork" id="appendix-D.1-1.1">
 <pre>
 example.com.   HTTPS   0 foo.example.com.
@@ -3899,7 +3937,7 @@ example.com.   HTTPS   0 foo.example.com.
 \x03foo\x07example\x03com\x00                      # target
 </pre>
 </div>
-<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
 <a href="#name-aliasmode-4" class="selfRef">AliasMode</a>
           </figcaption></figure>
 </section>
@@ -3909,7 +3947,7 @@ example.com.   HTTPS   0 foo.example.com.
         <h3 id="name-servicemode-3">
 <a href="#appendix-D.2" class="section-number selfRef">D.2. </a><a href="#name-servicemode-3" class="section-name selfRef">ServiceMode</a>
         </h3>
-<span id="name-targetname-is"></span><figure id="figure-2">
+<span id="name-targetname-is"></span><figure id="figure-3">
           <div class="alignLeft art-text artwork" id="appendix-D.2-1.1">
 <pre>
 example.com.   SVCB   1 .
@@ -3923,10 +3961,10 @@ example.com.   SVCB   1 .
 \x00       # target, root label
 </pre>
 </div>
-<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
 <a href="#name-targetname-is" class="selfRef">TargetName is "."</a>
           </figcaption></figure>
-<span id="name-specifies-a-port"></span><figure id="figure-3">
+<span id="name-specifies-a-port"></span><figure id="figure-4">
           <div class="alignLeft art-text artwork" id="appendix-D.2-2.1">
 <pre>
 example.com.   SVCB   16 foo.example.com. port=53
@@ -3946,10 +3984,10 @@ example.com.   SVCB   16 foo.example.com. port=53
 \x00\x35                                           # value
 </pre>
 </div>
-<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
 <a href="#name-specifies-a-port" class="selfRef">Specifies a port</a>
           </figcaption></figure>
-<span id="name-a-generic-key-and-unquoted-"></span><figure id="figure-4">
+<span id="name-a-generic-key-and-unquoted-"></span><figure id="figure-5">
           <div class="alignLeft art-text artwork" id="appendix-D.2-3.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. key667=hello
@@ -3969,10 +4007,10 @@ example.com.   SVCB   1 foo.example.com. key667=hello
 hello                                              # value
 </pre>
 </div>
-<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
 <a href="#name-a-generic-key-and-unquoted-" class="selfRef">A generic key and unquoted value</a>
           </figcaption></figure>
-<span id="name-a-generic-key-and-quoted-va"></span><figure id="figure-5">
+<span id="name-a-generic-key-and-quoted-va"></span><figure id="figure-6">
           <div class="alignLeft art-text artwork" id="appendix-D.2-4.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. key667="hello\210qoo"
@@ -3992,10 +4030,10 @@ example.com.   SVCB   1 foo.example.com. key667="hello\210qoo"
 hello\xd2qoo                                       # value
 </pre>
 </div>
-<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
 <a href="#name-a-generic-key-and-quoted-va" class="selfRef">A generic key and quoted value with a decimal escape</a>
           </figcaption></figure>
-<span id="name-two-quoted-ipv6-hints"></span><figure id="figure-6">
+<span id="name-two-quoted-ipv6-hints"></span><figure id="figure-7">
           <div class="alignLeft art-text artwork" id="appendix-D.2-5.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. (
@@ -4021,10 +4059,10 @@ example.com.   SVCB   1 foo.example.com. (
      \x00\x00\x00\x00\x00\x53\x00\x01              # second address
 </pre>
 </div>
-<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
 <a href="#name-two-quoted-ipv6-hints" class="selfRef">Two quoted IPv6 hints</a>
           </figcaption></figure>
-<span id="name-an-ipv6-hint-using-the-embe"></span><figure id="figure-7">
+<span id="name-an-ipv6-hint-using-the-embe"></span><figure id="figure-8">
           <div class="alignLeft art-text artwork" id="appendix-D.2-6.1">
 <pre>
 example.com.   SVCB   1 example.com. ipv6hint="2001:db8:122:344::192.0.2.33"
@@ -4045,10 +4083,10 @@ example.com.   SVCB   1 example.com. ipv6hint="2001:db8:122:344::192.0.2.33"
      \x00\x00\x00\x00\xc0\x00\x02\x21              # address
 </pre>
 </div>
-<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
 <a href="#name-an-ipv6-hint-using-the-embe" class="selfRef">An IPv6 hint using the embedded IPv4 syntax</a>
           </figcaption></figure>
-<span id="name-svcparamkey-ordering-is-arb"></span><figure id="figure-8">
+<span id="name-svcparamkey-ordering-is-arb"></span><figure id="figure-9">
           <div class="alignLeft art-text artwork" id="appendix-D.2-7.1">
 <pre>
 example.com.   SVCB   16 foo.example.org. (
@@ -4091,10 +4129,10 @@ h3-19                                              # alpn value
 \xc0\x00\x02\x01                                   # param value
 </pre>
 </div>
-<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
 <a href="#name-svcparamkey-ordering-is-arb" class="selfRef">SvcParamKey ordering is arbitrary in presentation format but sorted in wire format</a>
           </figcaption></figure>
-<span id="name-an-alpn-value-with-an-escap"></span><figure id="figure-9">
+<span id="name-an-alpn-value-with-an-escap"></span><figure id="figure-10">
           <div class="alignLeft art-text artwork" id="appendix-D.2-8.1">
 <pre>
 example.com.   SVCB   16 foo.example.org. alpn="f\\\\oo\\,bar,h2"
@@ -4121,7 +4159,7 @@ f\oo,bar                                           # alpn value
 h2                                                 # alpn value
 </pre>
 </div>
-<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
+<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
 <a href="#name-an-alpn-value-with-an-escap" class="selfRef">An alpn value with an escaped comma and an escaped backslash in two presentation formats</a>
           </figcaption></figure>
 </section>
@@ -4134,7 +4172,7 @@ h2                                                 # alpn value
 <p id="appendix-D.3-1">This subsection contains test vectors which are not
 compliant with this document. The various reasons for non-compliance
 are explained with each example.<a href="#appendix-D.3-1" class="pilcrow">¶</a></p>
-<span id="name-multiple-instances-of-the-s"></span><figure id="figure-10">
+<span id="name-multiple-instances-of-the-s"></span><figure id="figure-11">
           <div class="alignLeft art-text artwork" id="appendix-D.3-2.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. (
@@ -4142,10 +4180,10 @@ example.com.   SVCB   1 foo.example.com. (
                        )
 </pre>
 </div>
-<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
+<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
 <a href="#name-multiple-instances-of-the-s" class="selfRef">Multiple instances of the same SvcParamKey</a>
           </figcaption></figure>
-<span id="name-missing-svcparamvalues-that"></span><figure id="figure-11">
+<span id="name-missing-svcparamvalues-that"></span><figure id="figure-12">
           <div class="alignLeft art-text artwork" id="appendix-D.3-3.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. mandatory
@@ -4155,37 +4193,37 @@ example.com.   SVCB   1 foo.example.com. ipv4hint
 example.com.   SVCB   1 foo.example.com. ipv6hint
 </pre>
 </div>
-<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
+<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
 <a href="#name-missing-svcparamvalues-that" class="selfRef">Missing SvcParamValues that must be nonempty</a>
           </figcaption></figure>
-<span id="name-the-no-default-alpn-svcpara"></span><figure id="figure-12">
+<span id="name-the-no-default-alpn-svcpara"></span><figure id="figure-13">
           <div class="alignLeft art-text artwork" id="appendix-D.3-4.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. no-default-alpn=abc
 </pre>
 </div>
-<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
+<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
 <a href="#name-the-no-default-alpn-svcpara" class="selfRef">The "no-default-alpn" SvcParamKey value must be empty</a>
           </figcaption></figure>
-<span id="name-a-mandatory-svcparam-is-mis"></span><figure id="figure-13">
+<span id="name-a-mandatory-svcparam-is-mis"></span><figure id="figure-14">
           <div class="alignLeft art-text artwork" id="appendix-D.3-5.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. mandatory=key123
 </pre>
 </div>
-<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
+<figcaption><a href="#figure-14" class="selfRef">Figure 14</a>:
 <a href="#name-a-mandatory-svcparam-is-mis" class="selfRef">A mandatory SvcParam is missing</a>
           </figcaption></figure>
-<span id="name-the-mandatory-svcparamkey-m"></span><figure id="figure-14">
+<span id="name-the-mandatory-svcparamkey-m"></span><figure id="figure-15">
           <div class="alignLeft art-text artwork" id="appendix-D.3-6.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. mandatory=mandatory
 </pre>
 </div>
-<figcaption><a href="#figure-14" class="selfRef">Figure 14</a>:
+<figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
 <a href="#name-the-mandatory-svcparamkey-m" class="selfRef">The "mandatory" SvcParamKey must not be included in the mandatory list</a>
           </figcaption></figure>
-<span id="name-multiple-instances-of-the-sa"></span><figure id="figure-15">
+<span id="name-multiple-instances-of-the-sa"></span><figure id="figure-16">
           <div class="alignLeft art-text artwork" id="appendix-D.3-7.1">
 <pre>
 example.com.   SVCB   1 foo.example.com. (
@@ -4193,7 +4231,7 @@ example.com.   SVCB   1 foo.example.com. (
                       )
 </pre>
 </div>
-<figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
+<figcaption><a href="#figure-16" class="selfRef">Figure 16</a>:
 <a href="#name-multiple-instances-of-the-sa" class="selfRef">Multiple instances of the same SvcParamKey in the mandatory list</a>
           </figcaption></figure>
 </section>
@@ -4208,262 +4246,299 @@ example.com.   SVCB   1 foo.example.com. (
 <p id="appendix-E-1">(This section to be removed by the RFC editor.)<a href="#appendix-E-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-E-2.1">
-          <p id="appendix-E-2.1.1">draft-ietf-dnsop-svcb-https-08<a href="#appendix-E-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.1.1">draft-ietf-dnsop-svcb-https-09<a href="#appendix-E-2.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-E-2.1.2.1">
-              <p id="appendix-E-2.1.2.1.1">Extensive structural and editorial adjustments based on area reviews,
-including:<a href="#appendix-E-2.1.2.1.1" class="pilcrow">¶</a></p>
+              <p id="appendix-E-2.1.2.1.1">Extensive adjustments based on IESG reviews, including:<a href="#appendix-E-2.1.2.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.1.2.1.2.1">A new section on SVCB-compatible record types<a href="#appendix-E-2.1.2.1.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.1.2.1.2.1">IANA registry changed to Expert Review policy<a href="#appendix-E-2.1.2.1.2.1" class="pilcrow">¶</a>
 </li>
-                <li class="normal" id="appendix-E-2.1.2.1.2.2">Reorganized description of client behavior<a href="#appendix-E-2.1.2.1.2.2" class="pilcrow">¶</a>
+                <li class="normal" id="appendix-E-2.1.2.1.2.2">Adjustments to the use of normative language<a href="#appendix-E-2.1.2.1.2.2" class="pilcrow">¶</a>
 </li>
-                <li class="normal" id="appendix-E-2.1.2.1.2.3">Test vectors are now in titled figures<a href="#appendix-E-2.1.2.1.2.3" class="pilcrow">¶</a>
+                <li class="normal" id="appendix-E-2.1.2.1.2.3">Revised and expanded description of HSTS behavior<a href="#appendix-E-2.1.2.1.2.3" class="pilcrow">¶</a>
 </li>
-                <li class="normal" id="appendix-E-2.1.2.1.2.4">Adjusted mapping summary<a href="#appendix-E-2.1.2.1.2.4" class="pilcrow">¶</a>
+                <li class="normal" id="appendix-E-2.1.2.1.2.4">Expanded discussion of CNAME handling<a href="#appendix-E-2.1.2.1.2.4" class="pilcrow">¶</a>
 </li>
-                <li class="normal" id="appendix-E-2.1.2.1.2.5">Improve description of rules for resolver handling of invalid
-SvcParamValues.<a href="#appendix-E-2.1.2.1.2.5" class="pilcrow">¶</a>
+                <li class="normal" id="appendix-E-2.1.2.1.2.5">Discussion of SvcParams in AliasMode records<a href="#appendix-E-2.1.2.1.2.5" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-E-2.1.2.1.2.6">Restructured ABNF for comma-separated lists<a href="#appendix-E-2.1.2.1.2.6" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-E-2.1.2.1.2.7">Additional references and many other minor clarifications<a href="#appendix-E-2.1.2.1.2.7" class="pilcrow">¶</a>
 </li>
               </ul>
 </li>
-            <li class="normal" id="appendix-E-2.1.2.2">New text on cross-transport fallback (e.g. QUIC vs. TCP)<a href="#appendix-E-2.1.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.1.2.2">
+              <p id="appendix-E-2.1.2.2.1">Other changes include:<a href="#appendix-E-2.1.2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-E-2.1.2.2.2.1">New section on interaction with DNS64<a href="#appendix-E-2.1.2.2.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.1.2.3">Improved explanation of use with domain-oriented transport proxies<a href="#appendix-E-2.1.2.3" class="pilcrow">¶</a>
+                <li class="normal" id="appendix-E-2.1.2.2.2.2">New text on the interpretation of wildcard owner names<a href="#appendix-E-2.1.2.2.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.1.2.4">HTTP terminology adjusted to match draft-ietf-httpbis-semantics<a href="#appendix-E-2.1.2.4" class="pilcrow">¶</a>
+                <li class="normal" id="appendix-E-2.1.2.2.2.3">Adjusted guidance on default ALPN enforcement<a href="#appendix-E-2.1.2.2.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.1.2.5">Improved and corrected IANA instructions<a href="#appendix-E-2.1.2.5" class="pilcrow">¶</a>
+                <li class="normal" id="appendix-E-2.1.2.2.2.4">Removed mention of IPv4-mapped IPv6<a href="#appendix-E-2.1.2.2.2.4" class="pilcrow">¶</a>
+</li>
+              </ul>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.2">
-          <p id="appendix-E-2.2.1">draft-ietf-dnsop-svcb-https-07<a href="#appendix-E-2.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.2.1">draft-ietf-dnsop-svcb-https-08<a href="#appendix-E-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.2.2.1">Editorial improvements following AD review.<a href="#appendix-E-2.2.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.2.2.1">
+              <p id="appendix-E-2.2.2.1.1">Extensive structural and editorial adjustments based on area reviews,
+including:<a href="#appendix-E-2.2.2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-E-2.2.2.1.2.1">A new section on SVCB-compatible record types<a href="#appendix-E-2.2.2.1.2.1" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-E-2.2.2.1.2.2">Reorganized description of client behavior<a href="#appendix-E-2.2.2.1.2.2" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-E-2.2.2.1.2.3">Test vectors are now in titled figures<a href="#appendix-E-2.2.2.1.2.3" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-E-2.2.2.1.2.4">Adjusted mapping summary<a href="#appendix-E-2.2.2.1.2.4" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-E-2.2.2.1.2.5">Improve description of rules for resolver handling of invalid
+SvcParamValues.<a href="#appendix-E-2.2.2.1.2.5" class="pilcrow">¶</a>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="appendix-E-2.2.2.2">New text on cross-transport fallback (e.g. QUIC vs. TCP)<a href="#appendix-E-2.2.2.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.2.2.3">Improved explanation of use with domain-oriented transport proxies<a href="#appendix-E-2.2.2.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.2.2.4">HTTP terminology adjusted to match draft-ietf-httpbis-semantics<a href="#appendix-E-2.2.2.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.2.2.5">Improved and corrected IANA instructions<a href="#appendix-E-2.2.2.5" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.3">
-          <p id="appendix-E-2.3.1">draft-ietf-dnsop-svcb-https-06<a href="#appendix-E-2.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.3.1">draft-ietf-dnsop-svcb-https-07<a href="#appendix-E-2.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.3.2.1">Add requirements for HTTPS origins that also use Alt-Svc<a href="#appendix-E-2.3.2.1" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.3.2.2">Remove requirement for comma-escaping related to unusual ALPN values<a href="#appendix-E-2.3.2.2" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.3.2.3">Allow resolvers to reject invalid SvcParamValues, with additional
-guidance<a href="#appendix-E-2.3.2.3" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.3.2.1">Editorial improvements following AD review.<a href="#appendix-E-2.3.2.1" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.4">
-          <p id="appendix-E-2.4.1">draft-ietf-dnsop-svcb-https-05<a href="#appendix-E-2.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.4.1">draft-ietf-dnsop-svcb-https-06<a href="#appendix-E-2.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.4.2.1">Specify interaction with EDNS Client Subnet and Additional section caching<a href="#appendix-E-2.4.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.4.2.1">Add requirements for HTTPS origins that also use Alt-Svc<a href="#appendix-E-2.4.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.4.2.2">Rename "echconfig" to "ech"<a href="#appendix-E-2.4.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.4.2.2">Remove requirement for comma-escaping related to unusual ALPN values<a href="#appendix-E-2.4.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.4.2.3">Add a suite of test vectors (both valid and invalid) and more examples<a href="#appendix-E-2.4.2.3" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.4.2.4">Clarify requirements for resolvers' (non-)use of SvcParams<a href="#appendix-E-2.4.2.4" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.4.2.5">Clarify guidance regarding default ALPN values<a href="#appendix-E-2.4.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.4.2.3">Allow resolvers to reject invalid SvcParamValues, with additional
+guidance<a href="#appendix-E-2.4.2.3" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.5">
-          <p id="appendix-E-2.5.1">draft-ietf-dnsop-svcb-https-04<a href="#appendix-E-2.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.5.1">draft-ietf-dnsop-svcb-https-05<a href="#appendix-E-2.5.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.5.2.1">Simplify the IANA instructions (pure First Come First Served)<a href="#appendix-E-2.5.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.5.2.1">Specify interaction with EDNS Client Subnet and Additional section caching<a href="#appendix-E-2.5.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.5.2.2">Recommend against publishing chains of &gt;8 aliases<a href="#appendix-E-2.5.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.5.2.2">Rename "echconfig" to "ech"<a href="#appendix-E-2.5.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.5.2.3">Clarify requirements for using SVCB with a transport proxy<a href="#appendix-E-2.5.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.5.2.3">Add a suite of test vectors (both valid and invalid) and more examples<a href="#appendix-E-2.5.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.5.2.4">Adjust guidance for Port Prefix Naming<a href="#appendix-E-2.5.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.5.2.4">Clarify requirements for resolvers' (non-)use of SvcParams<a href="#appendix-E-2.5.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.5.2.5">Minor editorial updates<a href="#appendix-E-2.5.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.5.2.5">Clarify guidance regarding default ALPN values<a href="#appendix-E-2.5.2.5" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.6">
-          <p id="appendix-E-2.6.1">draft-ietf-dnsop-svcb-https-03<a href="#appendix-E-2.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.6.1">draft-ietf-dnsop-svcb-https-04<a href="#appendix-E-2.6.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.6.2.1">Simplified escaping of comma-separated values<a href="#appendix-E-2.6.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.6.2.1">Simplify the IANA instructions (pure First Come First Served)<a href="#appendix-E-2.6.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.6.2.2">Reorganized client requirements<a href="#appendix-E-2.6.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.6.2.2">Recommend against publishing chains of &gt;8 aliases<a href="#appendix-E-2.6.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.6.2.3">Added a warning about port filtering for cross-protocol attacks<a href="#appendix-E-2.6.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.6.2.3">Clarify requirements for using SVCB with a transport proxy<a href="#appendix-E-2.6.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.6.2.4">Clarified self-consistency rules for SvcParams<a href="#appendix-E-2.6.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.6.2.4">Adjust guidance for Port Prefix Naming<a href="#appendix-E-2.6.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.6.2.5">Added a non-normative mapping summary table for HTTPS<a href="#appendix-E-2.6.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.6.2.5">Minor editorial updates<a href="#appendix-E-2.6.2.5" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.7">
-          <p id="appendix-E-2.7.1">draft-ietf-dnsop-svcb-https-02<a href="#appendix-E-2.7.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.7.1">draft-ietf-dnsop-svcb-https-03<a href="#appendix-E-2.7.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.7.2.1">Added a Privacy Considerations section<a href="#appendix-E-2.7.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.7.2.1">Simplified escaping of comma-separated values<a href="#appendix-E-2.7.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.7.2.2">Adjusted resolution fallback description<a href="#appendix-E-2.7.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.7.2.2">Reorganized client requirements<a href="#appendix-E-2.7.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.7.2.3">Clarified status of SvcParams in AliasMode<a href="#appendix-E-2.7.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.7.2.3">Added a warning about port filtering for cross-protocol attacks<a href="#appendix-E-2.7.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.7.2.4">Improved advice on zone structuring and use with Alt-Svc<a href="#appendix-E-2.7.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.7.2.4">Clarified self-consistency rules for SvcParams<a href="#appendix-E-2.7.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.7.2.5">Improved examples, including a new Multi-CDN example<a href="#appendix-E-2.7.2.5" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.7.2.6">Reorganized text on value-list parsing and SvcPriority<a href="#appendix-E-2.7.2.6" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.7.2.7">Improved phrasing and other editorial improvements throughout<a href="#appendix-E-2.7.2.7" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.7.2.5">Added a non-normative mapping summary table for HTTPS<a href="#appendix-E-2.7.2.5" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.8">
-          <p id="appendix-E-2.8.1">draft-ietf-dnsop-svcb-https-01<a href="#appendix-E-2.8.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.8.1">draft-ietf-dnsop-svcb-https-02<a href="#appendix-E-2.8.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.8.2.1">Added a "mandatory" SvcParamKey<a href="#appendix-E-2.8.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.8.2.1">Added a Privacy Considerations section<a href="#appendix-E-2.8.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.8.2.2">Added the ability to indicate that a service does not exist<a href="#appendix-E-2.8.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.8.2.2">Adjusted resolution fallback description<a href="#appendix-E-2.8.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.8.2.3">Adjusted resolution and ALPN algorithms<a href="#appendix-E-2.8.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.8.2.3">Clarified status of SvcParams in AliasMode<a href="#appendix-E-2.8.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.8.2.4">Major terminology revisions for "origin" and CamelCase names<a href="#appendix-E-2.8.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.8.2.4">Improved advice on zone structuring and use with Alt-Svc<a href="#appendix-E-2.8.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.8.2.5">Revised ABNF<a href="#appendix-E-2.8.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.8.2.5">Improved examples, including a new Multi-CDN example<a href="#appendix-E-2.8.2.5" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.8.2.6">Include allocated RR type numbers<a href="#appendix-E-2.8.2.6" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.8.2.6">Reorganized text on value-list parsing and SvcPriority<a href="#appendix-E-2.8.2.6" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.8.2.7">Various corrections, explanations, and recommendations<a href="#appendix-E-2.8.2.7" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.8.2.7">Improved phrasing and other editorial improvements throughout<a href="#appendix-E-2.8.2.7" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.9">
-          <p id="appendix-E-2.9.1">draft-ietf-dnsop-svcb-https-00<a href="#appendix-E-2.9.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.9.1">draft-ietf-dnsop-svcb-https-01<a href="#appendix-E-2.9.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.9.2.1">Rename HTTPSSVC RR to HTTPS RR<a href="#appendix-E-2.9.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.9.2.1">Added a "mandatory" SvcParamKey<a href="#appendix-E-2.9.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.9.2.2">Rename "an SVCB" to "a SVCB"<a href="#appendix-E-2.9.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.9.2.2">Added the ability to indicate that a service does not exist<a href="#appendix-E-2.9.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.9.2.3">Removed "design considerations and open issues" section and some other "to be removed" text<a href="#appendix-E-2.9.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.9.2.3">Adjusted resolution and ALPN algorithms<a href="#appendix-E-2.9.2.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.9.2.4">Major terminology revisions for "origin" and CamelCase names<a href="#appendix-E-2.9.2.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.9.2.5">Revised ABNF<a href="#appendix-E-2.9.2.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.9.2.6">Include allocated RR type numbers<a href="#appendix-E-2.9.2.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.9.2.7">Various corrections, explanations, and recommendations<a href="#appendix-E-2.9.2.7" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.10">
-          <p id="appendix-E-2.10.1">draft-ietf-dnsop-svcb-httpssvc-03<a href="#appendix-E-2.10.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.10.1">draft-ietf-dnsop-svcb-https-00<a href="#appendix-E-2.10.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.10.2.1">Revised chain length limit requirements<a href="#appendix-E-2.10.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.10.2.1">Rename HTTPSSVC RR to HTTPS RR<a href="#appendix-E-2.10.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.10.2.2">Revised IANA registry rules for SvcParamKeys<a href="#appendix-E-2.10.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.10.2.2">Rename "an SVCB" to "a SVCB"<a href="#appendix-E-2.10.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.10.2.3">Require HTTPS clients to implement SNI<a href="#appendix-E-2.10.2.3" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.10.2.4">Update terminology for Encrypted ClientHello<a href="#appendix-E-2.10.2.4" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.10.2.5">Clarifications: non-default ports, transport proxies, HSTS procedure, WebSocket behavior, wire format, IP hints, inner/outer ClientHello with ECH<a href="#appendix-E-2.10.2.5" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.10.2.6">Various textual and ABNF corrections<a href="#appendix-E-2.10.2.6" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.10.2.3">Removed "design considerations and open issues" section and some other "to be removed" text<a href="#appendix-E-2.10.2.3" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.11">
-          <p id="appendix-E-2.11.1">draft-ietf-dnsop-svcb-httpssvc-02<a href="#appendix-E-2.11.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.11.1">draft-ietf-dnsop-svcb-httpssvc-03<a href="#appendix-E-2.11.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.11.2.1">All changes to Alt-Svc have been removed<a href="#appendix-E-2.11.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.11.2.1">Revised chain length limit requirements<a href="#appendix-E-2.11.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.11.2.2">Expanded and reorganized examples<a href="#appendix-E-2.11.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.11.2.2">Revised IANA registry rules for SvcParamKeys<a href="#appendix-E-2.11.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.11.2.3">Priority zero is now the definition of AliasForm<a href="#appendix-E-2.11.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.11.2.3">Require HTTPS clients to implement SNI<a href="#appendix-E-2.11.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.11.2.4">Repeated SvcParamKeys are no longer allowed<a href="#appendix-E-2.11.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.11.2.4">Update terminology for Encrypted ClientHello<a href="#appendix-E-2.11.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.11.2.5">The "=" sign may be omitted in a key=value pair if the value is also empty<a href="#appendix-E-2.11.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.11.2.5">Clarifications: non-default ports, transport proxies, HSTS procedure, WebSocket behavior, wire format, IP hints, inner/outer ClientHello with ECH<a href="#appendix-E-2.11.2.5" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.11.2.6">In the wire format, SvcParamKeys must be in sorted order<a href="#appendix-E-2.11.2.6" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.11.2.7">New text regarding how to handle resolution timeouts<a href="#appendix-E-2.11.2.7" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.11.2.8">Expanded description of recursive resolver behavior<a href="#appendix-E-2.11.2.8" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.11.2.9">Much more precise description of the intended ALPN behavior<a href="#appendix-E-2.11.2.9" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.11.2.10">Match the HSTS specification's language on HTTPS enforcement<a href="#appendix-E-2.11.2.10" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.11.2.11">Removed 'esniconfig=""' mechanism and simplified ESNI connection logic<a href="#appendix-E-2.11.2.11" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.11.2.6">Various textual and ABNF corrections<a href="#appendix-E-2.11.2.6" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.12">
-          <p id="appendix-E-2.12.1">draft-ietf-dnsop-svcb-httpssvc-01<a href="#appendix-E-2.12.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.12.1">draft-ietf-dnsop-svcb-httpssvc-02<a href="#appendix-E-2.12.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.12.2.1">Reduce the emphasis on conversion between HTTPSSVC and Alt-Svc<a href="#appendix-E-2.12.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.12.2.1">All changes to Alt-Svc have been removed<a href="#appendix-E-2.12.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.12.2.2">Make the "untrusted channel" concept more precise.<a href="#appendix-E-2.12.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.12.2.2">Expanded and reorganized examples<a href="#appendix-E-2.12.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.12.2.3">Make SvcFieldPriority = 0 the definition of AliasForm, instead of a requirement.<a href="#appendix-E-2.12.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.12.2.3">Priority zero is now the definition of AliasForm<a href="#appendix-E-2.12.2.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.12.2.4">Repeated SvcParamKeys are no longer allowed<a href="#appendix-E-2.12.2.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.12.2.5">The "=" sign may be omitted in a key=value pair if the value is also empty<a href="#appendix-E-2.12.2.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.12.2.6">In the wire format, SvcParamKeys must be in sorted order<a href="#appendix-E-2.12.2.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.12.2.7">New text regarding how to handle resolution timeouts<a href="#appendix-E-2.12.2.7" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.12.2.8">Expanded description of recursive resolver behavior<a href="#appendix-E-2.12.2.8" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.12.2.9">Much more precise description of the intended ALPN behavior<a href="#appendix-E-2.12.2.9" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.12.2.10">Match the HSTS specification's language on HTTPS enforcement<a href="#appendix-E-2.12.2.10" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.12.2.11">Removed 'esniconfig=""' mechanism and simplified ESNI connection logic<a href="#appendix-E-2.12.2.11" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.13">
-          <p id="appendix-E-2.13.1">draft-ietf-dnsop-svcb-httpssvc-00<a href="#appendix-E-2.13.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.13.1">draft-ietf-dnsop-svcb-httpssvc-01<a href="#appendix-E-2.13.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.13.2.1">Document an optimization for optimistic pre-connection. (Chris Wood)<a href="#appendix-E-2.13.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.13.2.1">Reduce the emphasis on conversion between HTTPSSVC and Alt-Svc<a href="#appendix-E-2.13.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.13.2.2">Relax IP hint handling requirements. (Eric Rescorla)<a href="#appendix-E-2.13.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.13.2.2">Make the "untrusted channel" concept more precise.<a href="#appendix-E-2.13.2.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.13.2.3">Make SvcFieldPriority = 0 the definition of AliasForm, instead of a requirement.<a href="#appendix-E-2.13.2.3" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.14">
-          <p id="appendix-E-2.14.1">draft-nygren-dnsop-svcb-httpssvc-00<a href="#appendix-E-2.14.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.14.1">draft-ietf-dnsop-svcb-httpssvc-00<a href="#appendix-E-2.14.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.14.2.1">Generalize to an SVCB record, with special-case
-handling for Alt-Svc and HTTPS separated out
-to dedicated sections.<a href="#appendix-E-2.14.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.14.2.1">Document an optimization for optimistic pre-connection. (Chris Wood)<a href="#appendix-E-2.14.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-E-2.14.2.2">Split out a separate HTTPSSVC record for
-the HTTPS use-case.<a href="#appendix-E-2.14.2.2" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.14.2.3">Remove the explicit SvcRecordType=0/1 and instead
-make the AliasForm vs ServiceForm be implicit.
-This was based on feedback recommending against
-subtyping RR type.<a href="#appendix-E-2.14.2.3" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.14.2.4">Remove one optimization.<a href="#appendix-E-2.14.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-E-2.14.2.2">Relax IP hint handling requirements. (Eric Rescorla)<a href="#appendix-E-2.14.2.2" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.15">
-          <p id="appendix-E-2.15.1">draft-nygren-httpbis-httpssvc-03<a href="#appendix-E-2.15.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.15.1">draft-nygren-dnsop-svcb-httpssvc-00<a href="#appendix-E-2.15.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.15.2.1">Change redirect type for HSTS-style behavior
-from 302 to 307 to reduce ambiguities.<a href="#appendix-E-2.15.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.15.2.1">Generalize to an SVCB record, with special-case
+handling for Alt-Svc and HTTPS separated out
+to dedicated sections.<a href="#appendix-E-2.15.2.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.15.2.2">Split out a separate HTTPSSVC record for
+the HTTPS use-case.<a href="#appendix-E-2.15.2.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.15.2.3">Remove the explicit SvcRecordType=0/1 and instead
+make the AliasForm vs ServiceForm be implicit.
+This was based on feedback recommending against
+subtyping RR type.<a href="#appendix-E-2.15.2.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.15.2.4">Remove one optimization.<a href="#appendix-E-2.15.2.4" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.16">
-          <p id="appendix-E-2.16.1">draft-nygren-httpbis-httpssvc-02<a href="#appendix-E-2.16.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.16.1">draft-nygren-httpbis-httpssvc-03<a href="#appendix-E-2.16.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.16.2.1">Remove the redundant length fields from the wire format.<a href="#appendix-E-2.16.2.1" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.16.2.2">Define a SvcDomainName of "." for SvcRecordType=1
-as being the HTTPSSVC RRNAME.<a href="#appendix-E-2.16.2.2" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-E-2.16.2.3">Replace "hq" with "h3".<a href="#appendix-E-2.16.2.3" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.16.2.1">Change redirect type for HSTS-style behavior
+from 302 to 307 to reduce ambiguities.<a href="#appendix-E-2.16.2.1" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.17">
-          <p id="appendix-E-2.17.1">draft-nygren-httpbis-httpssvc-01<a href="#appendix-E-2.17.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.17.1">draft-nygren-httpbis-httpssvc-02<a href="#appendix-E-2.17.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.17.2.1">Fixes of record name.  Replace references to "HTTPSVC" with "HTTPSSVC".<a href="#appendix-E-2.17.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.17.2.1">Remove the redundant length fields from the wire format.<a href="#appendix-E-2.17.2.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.17.2.2">Define a SvcDomainName of "." for SvcRecordType=1
+as being the HTTPSSVC RRNAME.<a href="#appendix-E-2.17.2.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-E-2.17.2.3">Replace "hq" with "h3".<a href="#appendix-E-2.17.2.3" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-E-2.18">
-          <p id="appendix-E-2.18.1">draft-nygren-httpbis-httpssvc-00<a href="#appendix-E-2.18.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-2.18.1">draft-nygren-httpbis-httpssvc-01<a href="#appendix-E-2.18.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-E-2.18.2.1">Initial version<a href="#appendix-E-2.18.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-E-2.18.2.1">Fixes of record name.  Replace references to "HTTPSVC" with "HTTPSSVC".<a href="#appendix-E-2.18.2.1" class="pilcrow">¶</a>
+</li>
+          </ul>
+</li>
+        <li class="normal" id="appendix-E-2.19">
+          <p id="appendix-E-2.19.1">draft-nygren-httpbis-httpssvc-00<a href="#appendix-E-2.19.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-E-2.19.2.1">Initial version<a href="#appendix-E-2.19.2.1" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
