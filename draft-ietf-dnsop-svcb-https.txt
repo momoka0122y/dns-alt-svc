@@ -5,14 +5,14 @@
 DNSOP Working Group                                          B. Schwartz
 Internet-Draft                                                    Google
 Intended status: Standards Track                               M. Bishop
-Expires: 7 November 2022                                       E. Nygren
+Expires: 25 November 2022                                      E. Nygren
                                                      Akamai Technologies
-                                                              6 May 2022
+                                                             24 May 2022
 
 
  Service binding and parameter specification via the DNS (DNS SVCB and
                                HTTPS RRs)
-                      draft-ietf-dnsop-svcb-https
+                   draft-ietf-dnsop-svcb-https-latest
 
 Abstract
 
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 November 2022.
+   This Internet-Draft will expire on 25 November 2022.
 
 Copyright Notice
 
@@ -579,10 +579,10 @@ Table of Contents
 
    Some SvcParams impose requirements on other SvcParams in the RR.  A
    ServiceMode RR is called "self-consistent" if its SvcParams all
-   comply with each other's requirements.  Zone-file implementations
-   SHOULD enforce self-consistency.  Clients MUST reject any RR whose
-   recognized SvcParams are not self-consistent, and MAY reject the
-   entire RRSet.
+   comply with each other's requirements.  Clients MUST reject any RR
+   whose recognized SvcParams are not self-consistent, and MAY reject
+   the entire RRSet.  To help zone operators avoid this condition, zone-
+   file implementations SHOULD enforce self-consistency as well.
 
 2.5.  Special handling of "." in TargetName
 
@@ -689,7 +689,9 @@ Table of Contents
    responses, based on their size or other observable patterns.
 
    If the client enforces DNSSEC validation on A/AAAA responses, it
-   SHOULD apply the same validation policy to SVCB.
+   SHOULD apply the same validation policy to SVCB.  Otherwise, an
+   attacker could defeat the A/AAAA protection by forging SVCB responses
+   that direct the client to other IP addresses.
 
    If DNS responses are not cryptographically protected, clients MAY
    treat SVCB resolution failure as fatal or nonfatal.
